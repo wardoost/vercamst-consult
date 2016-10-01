@@ -5,6 +5,7 @@ import Who from './sections/Who';
 import Participation from './sections/Participation';
 import Blog from './sections/Blog';
 import Contact from './sections/Contact';
+import Footer from './Footer'
 import './Layout.sass';
 
 export default class Layout extends Component {
@@ -22,6 +23,7 @@ export default class Layout extends Component {
           <Participation />
           <Blog />
           <Contact />
+          <Footer />
         </div>
       </div>
     )
