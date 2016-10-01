@@ -1,4 +1,4 @@
-.App {
+section {
   text-align: center;
 }
 
@@ -8,14 +8,13 @@
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  background-color: #eee;
+  height: 180px;
   padding: 20px;
-  color: white;
 }
 
 .App-intro {
-  font-size: large;
+  padding: 20px;
 }
 
 @keyframes App-logo-spin {
