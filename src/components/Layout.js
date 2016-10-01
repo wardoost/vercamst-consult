@@ -5,7 +5,7 @@ import Who from './sections/Who';
 import Participation from './sections/Participation';
 import Blog from './sections/Blog';
 import Contact from './sections/Contact';
-import './Layout.css';
+import './Layout.sass';
 
 export default class Layout extends Component {
   render() {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
-import './Participation.css';
+import './Participation.sass';
 
 export default class Participation extends Component {
   render() {

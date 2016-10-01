@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
-import './Who.css';
+import './Who.sass';
 
 export default class Who extends Component {
   render() {

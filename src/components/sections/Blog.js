@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
-import './Blog.css';
+import './Blog.sass';
 
 export default class Blog extends Component {
 

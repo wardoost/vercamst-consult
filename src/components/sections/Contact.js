@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col} from 'react-bootstrap';
-import './Contact.css';
+import './Contact.sass';
 
 export default class Contact extends Component {
   render() {
