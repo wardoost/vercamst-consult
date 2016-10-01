@@ -1,5 +1,62 @@
+.navbar-default
+  background-color: rgba(#fff, 0.9)
+  border: none
+  text-transform: uppercase
+
+.navbar-collapse
+  border: 0
+
 .navbar-brand
   padding: 9px
 
 .navbar-brand > img
   height: 32px
+
+.navbar-toggle
+  border: none
+  background-color: transparent !important
+
+  .icon-hamburger
+    position: relative
+    transform: rotate(0deg)
+    transition: .5s ease-in-out
+    width: 30px
+    height: 24px
+
+    span
+      display: block
+      position: absolute
+      width: 100%
+      background-color: #014662
+      height: 2px
+      opacity: 1
+      left: 0
+      transform: rotate(0deg)
+      transition: .25s ease-in-out
+
+      &:nth-child(1)
+        transform: rotate(-45deg)
+        top: -1px
+        transform-origin: right top
+      &:nth-child(2)
+        width: 0%
+        left: 30px
+        opacity: 0
+      &:nth-child(3)
+        transform: rotate(45deg)
+        top: 20px
+        transform-origin: right bottom
+
+  &.collapsed
+    .icon-hamburger span
+        &:nth-child(1)
+          transform: rotate(0deg)
+          top: 0px
+        &:nth-child(2)
+          width: 100%
+          top: 11px
+          left: 0
+          opacity: 1
+        &:nth-child(3)
+          transform: rotate(0deg)
+          top: 22px

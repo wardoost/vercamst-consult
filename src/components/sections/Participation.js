@@ -10,28 +10,22 @@ export default class Participation extends Component {
         <Grid>
           <Row>
             <Col mdOffset={3} md={6}>
-              <h2>Werknemersparticipatie</h2>
+              <h1>Werknemersparticipatie</h1>
               <p>{loremIpsum({count: 2})}</p>
             </Col>
           </Row>
-          <Row>
+          <Row className="content">
             <Col md={4}>
-              <h3>{loremIpsum({count: 3, units: "words"})}</h3>
-              <p>{loremIpsum({count: 2})}</p>
-              <p>{loremIpsum({count: 7})}</p>
-              <p>{loremIpsum({count: 2})}</p>
-            </Col>
-            <Col md={4}>
-              <h3>{loremIpsum({count: 2, units: "words"})}</h3>
-              <p>{loremIpsum({count: 6})}</p>
-              <p>{loremIpsum({count: 5})}</p>
-              <p>{loremIpsum({count: 2})}</p>
-            </Col>
-            <Col md={4}>
-              <h3>{loremIpsum({count: 3, units: "words"})}</h3>
-              <p>{loremIpsum({count: 5})}</p>
+              <h2>{loremIpsum({count: 3, units: "words"})}</h2>
               <p>{loremIpsum({count: 3})}</p>
+            </Col>
+            <Col md={4}>
+              <h2>{loremIpsum({count: 2, units: "words"})}</h2>
               <p>{loremIpsum({count: 2})}</p>
+            </Col>
+            <Col md={4}>
+              <h2>{loremIpsum({count: 3, units: "words"})}</h2>
+              <p>{loremIpsum({count: 3})}</p>
             </Col>
           </Row>
         </Grid>

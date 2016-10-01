@@ -11,7 +11,13 @@ export default class Navigation extends Component {
           <Navbar.Brand>
             <a href="/"><img src={logo} alt="Vercamst Consult" /></a>
           </Navbar.Brand>
-          <Navbar.Toggle />
+          <Navbar.Toggle>
+            <div className="icon-hamburger">
+              <span />
+              <span />
+              <span />
+            </div>
+          </Navbar.Toggle>
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Grid, Row, Col, Clearfix} from 'react-bootstrap';
+import {Button, Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
 import './Blog.sass';
 
@@ -9,9 +9,11 @@ export default class Blog extends Component {
     let articles = [];
 
     for(var i = 1; i <= amount; i++){
+      const date = new Date()
       articles.push(
         <Col sm={6} md={4} key={i}>
-          <h3>{loremIpsum({count: 5, units: 'words'})}</h3>
+          <h2>{loremIpsum({count: 5, units: 'words'})}</h2>
+          <p className="text-muted">{date.toDateString()}</p>
           <p>{loremIpsum({count: 5})}</p>
         </Col>
       )
@@ -36,11 +38,16 @@ export default class Blog extends Component {
         <Grid>
           <Row>
             <Col md={12}>
-              <h2>Blog</h2>
+              <h1>Blog</h1>
             </Col>
           </Row>
           <Row>
             {this.generateArticles(6)}
+          </Row>
+          <Row className="more">
+            <Col md={12} className="text-center">
+              <Button bsStyle="primary">Show more</Button>
+            </Col>
           </Row>
         </Grid>
       </section>
