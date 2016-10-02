@@ -15,12 +15,18 @@ export default class Navigation extends Component {
     }
 
     this.handleScrollEnd = this.handleScrollEnd.bind(this);
-    this.handleMenuClick = this.handleMenuClick.bind(this);
     this.handleSetActive = this.handleSetActive.bind(this);
+    this.toggleMenu = this.toggleMenu.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
   }
-  handleMenuClick() {
+  toggleMenu() {
     this.setState({
       open: !this.state.open
+    });
+  }
+  closeMenu() {
+    this.setState({
+      open: false
     });
   }
   handleSetActive(to) {
@@ -52,6 +58,7 @@ export default class Navigation extends Component {
       self.setState({
         goto: to,
       });
+      self.closeMenu();
     });
 
     Events.scrollEvent.register('end', function(to, element) {
@@ -72,34 +79,34 @@ export default class Navigation extends Component {
   }
   render() {
     return (
-      <Navbar fixedTop>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="/"><img src={logo} alt="Vercamst Consult" /></a>
-          </Navbar.Brand>
-          <Navbar.Toggle onClick={this.handleMenuClick}>
-            <div className="icon-hamburger">
-              <span />
-              <span />
-              <span />
-            </div>
-          </Navbar.Toggle>
-        </Navbar.Header>
-        <ul className={"nav navbar-nav navbar-collapse navbar-right" + (!this.state.open ? " collapse" : "")}>
-          <li role="presentation" to="wie" className={((this.state.goto ? this.state.goto : this.state.active) === "wie") && !this.state.scrollEnd ? "active" : null}>
-            <Link className="nav-link" to="wie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Wie</Link>
-          </li>
-          <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "werknemersparticipatie") && !this.state.scrollEnd ? "active" : null}>
-            <Link className="nav-link" to="werknemersparticipatie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Werknemersparticipatie</Link>
-          </li>
-          <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "blog") && !this.state.scrollEnd ? "active" : null}>
-            <Link className="nav-link" to="blog" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Blog</Link>
-          </li>
-          <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "contact") || this.state.scrollEnd ? "active" : null}>
-            <Link className="nav-link" to="contact" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Contact</Link>
-          </li>
-        </ul>
-      </Navbar>
+      <nav className="navbar navbar-default navbar-fixed-top">
+        <div className="container">
+          <div className="navbar-header">
+            <a href="/" className="navbar-brand"><img src={logo} alt="Vercamst Consult" /></a>
+            <button type="button" className={"navbar-toggle" + (this.state.open ? " open" : "")} onClick={this.toggleMenu}>
+              <div className="icon-hamburger">
+                <span />
+                <span />
+                <span />
+              </div>
+            </button>
+          </div>
+          <ul className={"nav navbar-nav navbar-right" + (this.state.open ? " open" : "")}>
+            <li role="presentation" to="wie" className={((this.state.goto ? this.state.goto : this.state.active) === "wie") && !this.state.scrollEnd ? "active" : ""}>
+              <Link className="nav-link" to="wie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Wie</Link>
+            </li>
+            <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "werknemersparticipatie") && !this.state.scrollEnd ? "active" : ""}>
+              <Link className="nav-link" to="werknemersparticipatie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Werknemersparticipatie</Link>
+            </li>
+            <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "blog") && !this.state.scrollEnd ? "active" : ""}>
+              <Link className="nav-link" to="blog" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Blog</Link>
+            </li>
+            <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "contact") || this.state.scrollEnd ? "active" : ""}>
+              <Link className="nav-link" to="contact" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Contact</Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
     );
   }
 }

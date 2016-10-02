@@ -2,9 +2,6 @@
   text-transform: uppercase
   font-family: 'Montserrat', sans-serif
 
-.navbar-collapse
-  border: 0
-
 .navbar-brand
   padding: 9px
   > img
@@ -19,13 +16,22 @@
     margin-top: 0
     margin-bottom: 0
 
+    @media (max-width: 767px)
+      max-height: 0
+      transition: max-height 0.3s
+      overflow: hidden
+
+    &.open
+      @media (max-width: 767px)
+        max-height: 4 * 40px
+
     li > a
       @media (max-width: 767px)
         transition: background-color 0.3s linear
 
       &:hover
         @media (max-width: 767px)
-          background-color: #eee
+          background-color: rgba(#eee, 0.8)
 
       @media (min-width: 768px)
         position: relative
@@ -54,14 +60,14 @@
 
       @media (max-width: 767px)
         color: #0083AE
-        background-color: #eee
+        background-color: rgba(#eee, 0.8)
         transition: background-color 0.3s linear
 
       &:hover
         background-color: transparent
 
         @media (max-width: 767px)
-          background-color: #ddd
+          background-color: rgba(#eee, 0.8)
 
       &:before
         visibility: visible
@@ -90,28 +96,24 @@
       transition: .25s ease-in-out
 
       &:nth-child(1)
-        transform: rotate(-45deg)
-        top: -1px
+        top: 0px
         transform-origin: right top
       &:nth-child(2)
-        width: 0%
-        left: 30px
-        opacity: 0
+        width: 100%
+        top: 11px
       &:nth-child(3)
-        transform: rotate(45deg)
-        top: 20px
+        top: 22px
         transform-origin: right bottom
 
-  &.collapsed
+  &.open
     .icon-hamburger span
         &:nth-child(1)
-          transform: rotate(0deg)
-          top: 0px
+          transform: rotate(-45deg)
+          top: -1px
         &:nth-child(2)
-          width: 100%
-          top: 11px
-          left: 0
-          opacity: 1
+          width: 0%
+          left: 30px
+          opacity: 0
         &:nth-child(3)
-          transform: rotate(0deg)
-          top: 22px
+          transform: rotate(45deg)
+          top: 20px
