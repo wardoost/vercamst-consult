@@ -20,11 +20,11 @@ export default class Who extends Component {
               <p>{loremIpsum({count: 1})}</p>
             </Col>
           </Row>
-          <Row className="profile">
-            <Col md={3} mdOffset={1}>
+          <Row className="row-profile">
+            <Col sm={4} className="profile-pic">
               <img src={profile} alt="Jan Vercamst" />
             </Col>
-            <Col md={6} mdOffset={1}>
+            <Col sm={8} className="profile-txt">
               <h2>{loremIpsum({count: 3, units: "words"})}</h2>
               <p>{loremIpsum({count: 4})}</p>
               <p>{loremIpsum({count: 3})}</p>

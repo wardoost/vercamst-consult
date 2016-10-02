@@ -1,9 +1,75 @@
 import React, {Component} from 'react';
-import {Navbar, Nav, NavItem} from 'react-bootstrap';
+import {Navbar} from 'react-bootstrap';
 import logo from '../assets/logo.svg';
+import {Link, Events, scrollSpy} from 'react-scroll';
 import './Navigation.sass';
 
 export default class Navigation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      active: null,
+      goto: null,
+      scrollEnd : false
+    }
+
+    this.handleScrollEnd = this.handleScrollEnd.bind(this);
+    this.handleMenuClick = this.handleMenuClick.bind(this);
+    this.handleSetActive = this.handleSetActive.bind(this);
+  }
+  handleMenuClick() {
+    this.setState({
+      open: !this.state.open
+    });
+  }
+  handleSetActive(to) {
+    this.setState({
+      active: to
+    });
+
+    // Add update url hash here
+  }
+  handleScrollEnd(e) {
+    const body = document.body,
+          html = document.documentElement,
+          maxScrollY = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) - window.innerHeight;
+
+    if(window.scrollY >= maxScrollY - window.innerHeight / 4){
+      this.setState({
+        scrollEnd: true
+      });
+    } else {
+      this.setState({
+        scrollEnd: false
+      });
+    }
+  }
+  componentDidMount() {
+    const self = this;
+
+    Events.scrollEvent.register('begin', function(to, element) {
+      self.setState({
+        goto: to,
+      });
+    });
+
+    Events.scrollEvent.register('end', function(to, element) {
+      self.setState({
+        goto: null,
+      });
+    });
+
+    scrollSpy.update();
+
+     window.addEventListener('scroll', this.handleScrollEnd.bind(this));
+  }
+  componentWillUnmount() {
+    Events.scrollEvent.remove('begin');
+    Events.scrollEvent.remove('end');
+
+    window.removeEventListener('scroll', this.handleScrollEnd.bind(this));
+  }
   render() {
     return (
       <Navbar fixedTop>
@@ -11,7 +77,7 @@ export default class Navigation extends Component {
           <Navbar.Brand>
             <a href="/"><img src={logo} alt="Vercamst Consult" /></a>
           </Navbar.Brand>
-          <Navbar.Toggle>
+          <Navbar.Toggle onClick={this.handleMenuClick}>
             <div className="icon-hamburger">
               <span />
               <span />
@@ -19,14 +85,20 @@ export default class Navigation extends Component {
             </div>
           </Navbar.Toggle>
         </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight>
-            <NavItem eventKey={1} href="#wie">Wie</NavItem>
-            <NavItem eventKey={2} href="#werknemersparticipatie">Werknemersparticipatie</NavItem>
-            <NavItem eventKey={3} href="#blog">Blog</NavItem>
-            <NavItem eventKey={4} href="#contact">Contact</NavItem>
-          </Nav>
-        </Navbar.Collapse>
+        <ul className={"nav navbar-nav navbar-collapse navbar-right" + (!this.state.open ? " collapse" : "")}>
+          <li role="presentation" to="wie" className={((this.state.goto ? this.state.goto : this.state.active) === "wie") && !this.state.scrollEnd ? "active" : null}>
+            <Link className="nav-link" to="wie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Wie</Link>
+          </li>
+          <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "werknemersparticipatie") && !this.state.scrollEnd ? "active" : null}>
+            <Link className="nav-link" to="werknemersparticipatie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Werknemersparticipatie</Link>
+          </li>
+          <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "blog") && !this.state.scrollEnd ? "active" : null}>
+            <Link className="nav-link" to="blog" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Blog</Link>
+          </li>
+          <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "contact") || this.state.scrollEnd ? "active" : null}>
+            <Link className="nav-link" to="contact" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Contact</Link>
+          </li>
+        </ul>
       </Navbar>
     );
   }

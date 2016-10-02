@@ -53,7 +53,8 @@
     "lorem-ipsum": "^1.0.3",
     "react": "^15.3.2",
     "react-bootstrap": "^0.30.3",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "react-scroll": "^1.4.0"
   },
   "scripts": {
     "start": "node scripts/start.js",

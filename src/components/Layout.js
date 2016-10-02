@@ -13,18 +13,20 @@ export default class Layout extends Component {
     return (
       <div className="App">
         <Navigation />
-        <div className="splash-container">
-          <div className="splash">
-            <Intro />
+        <main className="content">
+          <div className="splash-container">
+            <div className="splash">
+              <Intro />
+            </div>
           </div>
-        </div>
-        <div className="content-container">
-          <Who />
-          <Participation />
-          <Blog />
-          <Contact />
-          <Footer />
-        </div>
+          <div className="content-container">
+            <Who />
+            <Participation />
+            <Blog />
+            <Contact />
+            <Footer />
+          </div>
+        </main>
       </div>
     )
   }

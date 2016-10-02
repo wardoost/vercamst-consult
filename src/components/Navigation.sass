@@ -1,22 +1,71 @@
 .navbar
   text-transform: uppercase
   font-family: 'Montserrat', sans-serif
-  
-  a:before
-    background-color: #0083AE
-
-.navbar-default
-  background-color: rgba(#fff, 0.9)
-  border: none
 
 .navbar-collapse
   border: 0
 
 .navbar-brand
   padding: 9px
+  > img
+    height: 32px
 
-.navbar-brand > img
-  height: 32px
+.navbar-default
+  background-color: rgba(#fff, 0.9)
+  border: none
+
+  .navbar-nav
+    padding: 0
+    margin-top: 0
+    margin-bottom: 0
+
+    li > a
+      @media (max-width: 767px)
+        transition: background-color 0.3s linear
+
+      &:hover
+        @media (max-width: 767px)
+          background-color: #eee
+
+      @media (min-width: 768px)
+        position: relative
+        transition: color 0.3s ease-in-out 0s
+
+        &:before
+          content: ""
+          position: absolute
+          width: 100%
+          height: 2px
+          bottom: 0
+          left: 0
+          background-color: #0083AE
+          visibility: hidden
+          transform: scaleX(0)
+          transition: all 0.3s ease-in-out 0s
+
+        &:hover
+          text-decoration: none
+          &:before
+            visibility: visible
+            transform: scaleX(1)
+
+    li.active > a
+      background-color: transparent
+
+      @media (max-width: 767px)
+        color: #0083AE
+        background-color: #eee
+        transition: background-color 0.3s linear
+
+      &:hover
+        background-color: transparent
+
+        @media (max-width: 767px)
+          background-color: #ddd
+
+      &:before
+        visibility: visible
+        transform: scaleX(1)
 
 .navbar-toggle
   border: none
