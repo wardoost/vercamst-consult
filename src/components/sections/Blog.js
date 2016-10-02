@@ -15,6 +15,7 @@ export default class Blog extends Component {
           <h2>{loremIpsum({count: 5, units: 'words'})}</h2>
           <p className="text-muted">{date.toDateString()}</p>
           <p>{loremIpsum({count: 5})}</p>
+          <p><a href="#">Read more</a></p>
         </Col>
       )
 

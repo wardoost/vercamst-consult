@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
+import profile from '../../assets/profile.jpg'
 import './Who.sass';
 
 export default class Who extends Component {
@@ -19,15 +20,15 @@ export default class Who extends Component {
               <p>{loremIpsum({count: 1})}</p>
             </Col>
           </Row>
-          <Row>
-            <Col md={6}>
-              <h2>{loremIpsum({count: 2, units: "words"})}</h2>
-              <p>{loremIpsum({count: 1})}</p>
-              <p>{loremIpsum({count: 4})}</p>
+          <Row className="profile">
+            <Col md={3} mdOffset={1}>
+              <img src={profile} alt="Jan Vercamst" />
             </Col>
-            <Col md={6}>
+            <Col md={6} mdOffset={1}>
               <h2>{loremIpsum({count: 3, units: "words"})}</h2>
-              <p>{loremIpsum({count: 2})}</p>
+              <p>{loremIpsum({count: 4})}</p>
+              <p>{loremIpsum({count: 3})}</p>
+              <p>{loremIpsum({count: 1})}</p>
             </Col>
           </Row>
         </Grid>

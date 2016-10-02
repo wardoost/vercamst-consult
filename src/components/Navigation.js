@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Navbar, Nav, NavItem} from 'react-bootstrap';
-import logo from '../logo.svg';
+import logo from '../assets/logo.svg';
 import './Navigation.sass';
 
 export default class Navigation extends Component {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import logo from '../../logo-large.svg';
+import logo from '../../assets/logo-large.svg';
 import './Intro.sass';
 
 export default class Intro extends Component {

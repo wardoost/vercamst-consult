@@ -22,11 +22,11 @@ export default class Contact extends Component {
             </Col>
             <Col sm={4}>
               <p>jan@vercamstconsult.be</p>
-              <Button bsStyle="primary" bsSize="large" href="mailto:jan@vercamstconsult.be">Mail</Button>
+              <Button bsStyle="primary" bsSize="large" href="mailto:jan@vercamstconsult.be">Send me an email</Button>
             </Col>
             <Col sm={4}>
               <p>+32 (0) 475 47 87 23</p>
-              <Button bsStyle="primary" bsSize="large" href="tel:+32475478723">Call</Button>
+              <Button bsStyle="primary" bsSize="large" href="tel:+32475478723">Give me a call</Button>
             </Col>
           </Row>
         </Grid>
