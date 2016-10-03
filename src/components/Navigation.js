@@ -10,10 +10,11 @@ export default class Navigation extends Component {
       open: false,
       active: null,
       goto: null,
-      scrollEnd : false
+      scrollEnd : false,
+      showLogo: false
     }
 
-    this.handleScrollEnd = this.handleScrollEnd.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
     this.handleSetActive = this.handleSetActive.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
@@ -30,25 +31,20 @@ export default class Navigation extends Component {
   }
   handleSetActive(to) {
     this.setState({
-      active: to
+      active: to,
     });
 
     // Add update url hash here
   }
-  handleScrollEnd(e) {
+  handleScroll(e) {
     const body = document.body,
           html = document.documentElement,
           maxScrollY = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) - window.innerHeight;
 
-    if(window.scrollY >= maxScrollY - window.innerHeight / 4){
-      this.setState({
-        scrollEnd: true
-      });
-    } else {
-      this.setState({
-        scrollEnd: false
-      });
-    }
+    this.setState({
+      showLogo: (window.scrollY > window.innerHeight / 3 - 50),
+      scrollEnd: (window.scrollY >= maxScrollY - window.innerHeight / 4)
+    });
   }
   componentDidMount() {
     const self = this;
@@ -68,20 +64,20 @@ export default class Navigation extends Component {
 
     scrollSpy.update();
 
-     window.addEventListener('scroll', this.handleScrollEnd.bind(this));
+     window.addEventListener('scroll', this.handleScroll.bind(this));
   }
   componentWillUnmount() {
     Events.scrollEvent.remove('begin');
     Events.scrollEvent.remove('end');
 
-    window.removeEventListener('scroll', this.handleScrollEnd.bind(this));
+    window.removeEventListener('scroll', this.handleScroll.bind(this));
   }
   render() {
     return (
       <nav className="navbar navbar-default navbar-fixed-top">
         <div className="container">
           <div className="navbar-header">
-            <a href="/" className="navbar-brand"><img src={logo} alt="Vercamst Consult" /></a>
+            <a href="/" className={"navbar-brand" + (this.state.showLogo ? " show" : "")}><img src={logo} alt="Vercamst Consult" /></a>
             <button type="button" className={"navbar-toggle" + (this.state.open ? " open" : "")} onClick={this.toggleMenu}>
               <div className="icon-hamburger">
                 <span />

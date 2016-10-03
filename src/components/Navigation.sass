@@ -1,8 +1,17 @@
 .navbar
   font-family: 'Montserrat', sans-serif
+  overflow: hidden
 
 .navbar-brand
   padding: 9px
+  position: relative
+  top: 50px
+  transition: top 0.3s ease-in-out
+
+
+  &.show
+    top: 0
+
   > img
     height: 32px
 
@@ -34,7 +43,7 @@
 
       @media (min-width: 768px)
         position: relative
-        transition: color 0.3s ease-in-out 0s
+        transition: color 0.3s ease-in-out
 
         &:before
           content: ""
@@ -46,7 +55,7 @@
           background-color: #0083AE
           visibility: hidden
           transform: scaleX(0)
-          transition: all 0.3s ease-in-out 0s
+          transition: all 0.3s ease-in-out
 
         &:hover
           text-decoration: none
