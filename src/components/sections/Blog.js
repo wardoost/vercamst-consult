@@ -2,9 +2,16 @@ import React, {Component} from 'react';
 import {Button, Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
 import moment from 'moment';
+import isTouchDevice from '../../utils/isTouchDevice';
 import './Blog.sass';
 
 export default class Blog extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      touch: isTouchDevice() ? " always-show" : ""
+    }
+  }
   goToArticle(e) {
     console.log("Load article " + e.id);
   }
@@ -22,8 +29,8 @@ export default class Blog extends Component {
             <div className="summary">
               <p>{loremIpsum({count: 5})}</p>
             </div>
-            <div className="read-more">
-              <Button onClick={this.goToArticle.bind(this, key)}>Lees meer</Button>
+            <div className={"read-more" + this.state.touch}>
+              <Button>Lees meer</Button>
             </div>
         </Col>
       )

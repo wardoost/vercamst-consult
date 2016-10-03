@@ -77,7 +77,7 @@ export default class Navigation extends Component {
       <nav className="navbar navbar-default navbar-fixed-top">
         <div className="container">
           <div className="navbar-header">
-            <a href="/" className={"navbar-brand" + (this.state.showLogo ? " show" : "")}><img src={logo} alt="Vercamst Consult" /></a>
+            <a href="/" className={"navbar-brand" + (this.state.showLogo || this.state.open ? " show" : "")}><img src={logo} alt="Vercamst Consult" /></a>
             <button type="button" className={"navbar-toggle" + (this.state.open ? " open" : "")} onClick={this.toggleMenu}>
               <div className="icon-hamburger">
                 <span />

@@ -33,17 +33,22 @@
     .read-more
       font-family: 'Montserrat', sans-serif
       position: relative
-      top: -2px
+      top: 50px
       margin-left: -15px
       margin-right: -15px
       transition: top 0.3s ease-in-out 0s
 
+      &.always-show
+        top: -2px
+
       button
         color: #0083AE
         width: 100%
+        background-color: #eee
 
       @media (min-width: 768px)
-        top: 50px
+        button
+          background-color: #fff
 
     .summary p
       color: #014662
