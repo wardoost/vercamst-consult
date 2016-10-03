@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Navbar} from 'react-bootstrap';
 import logo from '../assets/logo.svg';
 import {Link, Events, scrollSpy} from 'react-scroll';
 import './Navigation.sass';

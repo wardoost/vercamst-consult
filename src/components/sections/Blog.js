@@ -1,21 +1,30 @@
 import React, {Component} from 'react';
 import {Button, Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
+import moment from 'moment';
 import './Blog.sass';
 
 export default class Blog extends Component {
-
+  goToArticle(e) {
+    console.log("Load article " + e.id);
+  }
   generateArticles(amount) {
     let articles = [];
+    moment.locale('nl');
 
     for(var i = 1; i <= amount; i++){
-      const date = new Date()
+      const date = moment(new Date()).format("dddd D MMMM YYYY"),
+            key = { id: i };
       articles.push(
-        <Col sm={6} md={4} key={i}>
-          <h2>{loremIpsum({count: 5, units: 'words'})}</h2>
-          <p className="text-muted">{date.toDateString()}</p>
-          <p>{loremIpsum({count: 5})}</p>
-          <p><a href="#">Read more</a></p>
+        <Col sm={6} md={4} key={key.id} className="article" onClick={this.goToArticle.bind(this, key)}>
+            <h2>{loremIpsum({count: 5, units: 'words'})}</h2>
+            <p className="text-muted">{date}</p>
+            <div className="summary">
+              <p>{loremIpsum({count: 5})}</p>
+            </div>
+            <div className="read-more">
+              <Button onClick={this.goToArticle.bind(this, key)}>Lees meer</Button>
+            </div>
         </Col>
       )
 
@@ -45,7 +54,7 @@ export default class Blog extends Component {
           <Row>
             {this.generateArticles(6)}
           </Row>
-          <Row className="more">
+          <Row className="load-more">
             <Col md={12} className="text-center">
               <Button bsStyle="primary">Show more</Button>
             </Col>
