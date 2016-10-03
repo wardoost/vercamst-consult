@@ -2,54 +2,6 @@
   padding: 100px 0
 
   .article
-    position: relative
-    cursor: pointer
-    overflow: hidden
-    transition: background-color 0.3s linear
-
-    &:before
-      content: ""
-      position: absolute
-      z-index: 1
-      width: 100%
-      height: 2px
-      bottom: 0
-      left: 0
-      background-color: #0083AE
-      visibility: hidden
-      transform: scaleX(0)
-      transition: all 0.3s ease-in-out 0s
-
-    &:hover
-      background-color: #eee
-
-      &:before
-        visibility: visible
-        transform: scaleX(1)
-
-      .read-more
-        top: -2px
-
-    .read-more
-      font-family: 'Montserrat', sans-serif
-      position: relative
-      top: 50px
-      margin-left: -15px
-      margin-right: -15px
-      transition: top 0.3s ease-in-out 0s
-
-      &.always-show
-        top: -2px
-
-      button
-        color: #0083AE
-        width: 100%
-        background-color: #eee
-
-      @media (min-width: 768px)
-        button
-          background-color: #fff
-
     .summary p
       color: #014662
 

@@ -23,13 +23,13 @@ export default class Blog extends Component {
       const date = moment(new Date()).format("dddd D MMMM YYYY"),
             key = { id: i };
       articles.push(
-        <Col sm={6} md={4} key={key.id} className="article" onClick={this.goToArticle.bind(this, key)}>
+        <Col sm={6} md={4} key={key.id} className="col-btn article" onClick={this.goToArticle.bind(this, key)}>
             <h2>{loremIpsum({count: 5, units: 'words'})}</h2>
             <p className="text-muted">{date}</p>
             <div className="summary">
               <p>{loremIpsum({count: 5})}</p>
             </div>
-            <div className={"read-more" + this.state.touch}>
+            <div className={"action" + this.state.touch}>
               <Button>Lees meer</Button>
             </div>
         </Col>
