@@ -10,6 +10,8 @@ export default class ColButton extends Col {
     const colProps = {...props};
     delete colProps.action;
     delete colProps.href;
+    delete colProps.bsStyle;
+    delete colProps.bsSize;
     colProps.className += " col-btn"
 
     this.state = {
@@ -25,7 +27,7 @@ export default class ColButton extends Col {
           {this.props.children}
         </div>
         <div className={"action" + (this.state.touchClass ? " isTouchDevice" : "")}>
-          <Button href={this.props.href}>{this.props.action}</Button>
+          <Button bsStyle={this.props.bsStyle} bsSize={this.props.bsSize} href={this.props.href}>{this.props.action}</Button>
         </div>
       </Col>
     )
