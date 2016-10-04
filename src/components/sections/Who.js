@@ -1,43 +1,62 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col, Button} from 'react-bootstrap';
-import {animateScroll} from 'react-scroll';
 import profile from '../../assets/profile.jpg'
 import './Who.sass';
 
 export default class Who extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       btnUpDisabled: true,
       btnDownDisabled: false,
-      scrollable: false
+      scrollOffset: 0
     }
 
-    this.toggleScrollable = this.toggleScrollable.bind(this);
-  }
-  scrollDown() {
-    animateScroll.scrollMore(190, {containerId: "vScrollerContainer", duration: 300});
-  }
-  scrollUp() {
-    animateScroll.scrollMore(-190, {containerId: "vScrollerContainer", duration: 300});
-  }
-  handleScroll(e) {
-    let container = e.target,
-          content = document.getElementById("vScrollerContent");
-
-    this.setState({
-      btnUpDisabled: container.scrollTop <= 0,
-      btnDownDisabled: container.scrollTop >= content.offsetHeight - container.offsetHeight
-    });
-  }
-  toggleScrollable(e) {
-    this.setState({
-      scrollable: !this.state.scrollable
-    });
+    this.scrollUp = this.scrollUp.bind(this);
+    this.scrollDown = this.scrollDown.bind(this);
   }
   componentDidMount() {
-    const container = document.getElementById("vScrollerContainer");
-    container.addEventListener('scroll', this.handleScroll.bind(this));
+    const containerHeight = this.refs.vScrollerContainer.offsetHeight,
+          contentHeight = this.refs.vScrollerContent.offsetHeight;
+
+    this.setState({
+      containerHeight: containerHeight,
+      contentHeight: contentHeight,
+      maxOffset: contentHeight - containerHeight
+    });
+
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const contentHeight = this.refs.vScrollerContent.offsetHeight,
+          containerHeight = this.refs.vScrollerContainer.offsetHeight;
+
+    if (prevState.contentHeight !== contentHeight || prevState.containerHeight !== containerHeight) {
+      this.setState({
+        containerHeight: containerHeight,
+        contentHeight: contentHeight,
+        minOffset: 0,
+        maxOffset: contentHeight - containerHeight
+      });
+    }
+  }
+  scrollUp() {
+    const newOffset = this.state.scrollOffset - this.state.containerHeight;
+
+    this.setState({
+      scrollOffset: newOffset > this.state.minOffset ? newOffset : 0,
+      btnUpDisabled: newOffset > this.state.minOffset ? false: true,
+      btnDownDisabled: newOffset < this.state.maxOffset ? false : true
+    });
+  }
+  scrollDown() {
+    const newOffset = this.state.scrollOffset + this.state.containerHeight;
+
+    this.setState({
+      scrollOffset: newOffset < this.state.maxOffset ? newOffset : this.state.maxOffset,
+      btnUpDisabled: newOffset > this.state.minOffset ? false: true,
+      btnDownDisabled: newOffset < this.state.maxOffset ? false : true
+    });
   }
   render() {
     return (
@@ -98,8 +117,8 @@ export default class Who extends Component {
                 <Button className="vScrollerBtn up" onClick={this.scrollUp} disabled={this.state.btnUpDisabled}>
                   <i className="fa fa-angle-double-up" />
                 </Button>
-                <div className="vScrollerContainer" id="vScrollerContainer"  onClick={this.toggleScrollable}>
-                  <ul className="vScrollerContent list-group text-center" id="vScrollerContent">
+                <div className="vScrollerContainer" ref="vScrollerContainer">
+                  <ul className="vScrollerContent list-group text-center" ref="vScrollerContent" style={{top: -this.state.scrollOffset}}>
                     <li className="list-group-item">
                       <p className="list-group-item-heading">Belgische Vereniging voor Arbeidsverhoudingen (BVVA) </p>
                       <p className="list-group-item-text text-muted">Bestuurder</p>
