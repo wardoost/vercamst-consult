@@ -2,16 +2,10 @@ import React, {Component} from 'react';
 import {Button, Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
 import moment from 'moment';
-import isTouchDevice from '../../utils/isTouchDevice';
+import ColButton from '../ui/ColButton';
 import './Blog.sass';
 
 export default class Blog extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      touch: isTouchDevice() ? " always-show" : ""
-    }
-  }
   goToArticle(e) {
     console.log("Load article " + e.id);
   }
@@ -23,16 +17,13 @@ export default class Blog extends Component {
       const date = moment(new Date()).format("dddd D MMMM YYYY"),
             key = { id: i };
       articles.push(
-        <Col sm={6} md={4} key={key.id} className="col-btn article" onClick={this.goToArticle.bind(this, key)}>
-            <h2>{loremIpsum({count: 5, units: 'words'})}</h2>
-            <p className="text-muted">{date}</p>
-            <div className="summary">
-              <p>{loremIpsum({count: 5})}</p>
-            </div>
-            <div className={"action" + this.state.touch}>
-              <Button>Lees meer</Button>
-            </div>
-        </Col>
+        <ColButton sm={6} md={4} className="article" onClick={this.goToArticle.bind(this, key)} key={key.id} action="Lees meer" >
+          <h2>{loremIpsum({count: 5, units: 'words'})}</h2>
+          <p className="text-muted">{date}</p>
+          <div className="summary">
+            <p>{loremIpsum({count: 5})}</p>
+          </div>
+        </ColButton>
       )
 
       if(i%2 === 0){
@@ -61,9 +52,9 @@ export default class Blog extends Component {
           <Row>
             {this.generateArticles(6)}
           </Row>
-          <Row className="load-more">
+          <Row>
             <Col md={12} className="text-center">
-              <Button bsStyle="primary">Show more</Button>
+              <Button bsStyle="primary" className="show-more">Show more</Button>
             </Col>
           </Row>
         </Grid>

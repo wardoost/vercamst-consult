@@ -1,9 +1,12 @@
 #blog
   padding: 100px 0
 
-  .article
-    .summary p
-      color: #014662
+  @media (max-width: 767px)
+    .article:not(:last-child)
+      margin-bottom: 20px
 
-  .load-more
+  .summary p
+    color: #014662
+
+  .show-more
     margin-top: 50px
