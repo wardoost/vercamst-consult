@@ -88,16 +88,19 @@ export default class Navigation extends Component {
           </div>
           <ul className={"nav navbar-nav navbar-right" + (this.state.open ? " open" : "")}>
             <li role="presentation" to="wie" className={((this.state.goto ? this.state.goto : this.state.active) === "wie") && !this.state.scrollEnd ? "active" : ""}>
-              <Link className="nav-link" to="wie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Wie</Link>
+              <Link className="nav-link" to="wie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">Wie</Link>
+            </li>
+            <li role="presentation" to="themas" className={((this.state.goto ? this.state.goto : this.state.active) === "themas") && !this.state.scrollEnd ? "active" : ""}>
+              <Link className="nav-link" to="themas" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">Thema's</Link>
             </li>
             <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "werknemersparticipatie") && !this.state.scrollEnd ? "active" : ""}>
               <Link className="nav-link" to="werknemersparticipatie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Werknemersparticipatie</Link>
             </li>
             <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "blog") && !this.state.scrollEnd ? "active" : ""}>
-              <Link className="nav-link" to="blog" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Blog</Link>
+              <Link className="nav-link" to="blog" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">Blog</Link>
             </li>
             <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "contact") || this.state.scrollEnd ? "active" : ""}>
-              <Link className="nav-link" to="contact" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Contact</Link>
+              <Link className="nav-link" to="contact" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">Contact</Link>
             </li>
           </ul>
         </div>

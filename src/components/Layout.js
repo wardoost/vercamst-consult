@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Navigation from './Navigation';
 import Intro from './sections/Intro';
 import Who from './sections/Who';
+import Themes from './sections/Themes'
 import Participation from './sections/Participation';
 import Blog from './sections/Blog';
 import Contact from './sections/Contact';
@@ -21,6 +22,7 @@ export default class Layout extends Component {
           </div>
           <div className="content-container">
             <Who />
+            <Themes />
             <Participation />
             <Blog />
             <Contact />
