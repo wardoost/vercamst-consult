@@ -40,7 +40,7 @@ export default class Who extends Component {
               </ul>
             </Col>
           </Row>
-          <Row>
+          <Row className="row-mandates">
             <Col sm={5}>
               <h2 className="text-center">Huidige functies of mandaten</h2>
               <ul className="list-group text-center">

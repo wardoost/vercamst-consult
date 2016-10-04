@@ -4,6 +4,9 @@
   &:hover
     background-color: #eee
 
+    .vertical-scroller-indicator
+      transform: scaleY(1)
+
   .vertical-scroller-btn
     position: relative
     width: 100%
@@ -28,7 +31,7 @@
       bottom: 0
 
     &:hover
-      background-color: #eee
+      background-color: #ddd
 
       &:not([disabled]):before
         visibility: visible
@@ -49,3 +52,12 @@
     position: absolute
     top: 0
     transition: top 0.3s ease-in-out
+
+  .vertical-scroller-indicator
+    position: absolute
+    top: 0
+    right: 0
+    width: 2px
+    background-color: #0083AE
+    transform: scaleY(0)
+    transition: all 0.3s ease-in-out

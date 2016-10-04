@@ -9,52 +9,68 @@ export default class VerticalScroller extends Component {
     this.state = {
       btnUpDisabled: true,
       btnDownDisabled: false,
-      scrollOffset: 0
+      scrollOffset: 0,
+      minOffset: 0,
+      indicatorHeight: 0,
+      indicatorOffset: 0
     }
 
     this.scrollUp = this.scrollUp.bind(this);
     this.scrollDown = this.scrollDown.bind(this);
+    this.handleResize = this.handleResize.bind(this);
   }
   componentDidMount() {
-    const containerHeight = this.refs.vScrollerContainer.offsetHeight,
-          contentHeight = this.refs.vScrollerContent.offsetHeight;
+    const containerHeight = this.refs.verticalScrollerContainer.offsetHeight,
+          contentHeight = this.refs.verticalScrollerContent.offsetHeight;
 
     this.setState({
       containerHeight: containerHeight,
       contentHeight: contentHeight,
-      maxOffset: contentHeight - containerHeight
+      maxOffset: contentHeight - containerHeight,
+      indicatorHeight: Math.round(containerHeight / (contentHeight / containerHeight)),
+      indicatorOffset: 0
     })
 
+    window.addEventListener('resize', this.handleResize);
   }
-  componentDidUpdate(prevProps, prevState) {
-    const contentHeight = this.refs.vScrollerContent.offsetHeight,
-          containerHeight = this.refs.vScrollerContainer.offsetHeight;
-
-    if (prevState.contentHeight !== contentHeight || prevState.containerHeight !== containerHeight) {
-      this.setState({
-        containerHeight: containerHeight,
-        contentHeight: contentHeight,
-        minOffset: 0,
-        maxOffset: contentHeight - containerHeight
-      })
-    }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   }
-  scrollUp() {
-    const newOffset = this.state.scrollOffset - this.state.containerHeight;
+  handleResize(e) {
+    const contentHeight = this.refs.verticalScrollerContent.offsetHeight,
+          containerHeight = this.refs.verticalScrollerContainer.offsetHeight,
+          maxOffset = contentHeight - containerHeight,
+          newOffset = this.state.scrollOffset / this.state.maxOffset * maxOffset,
+          indicatorHeight = Math.round(containerHeight / (contentHeight / containerHeight));
 
     this.setState({
-      scrollOffset: newOffset > this.state.minOffset ? newOffset : 0,
+      containerHeight: containerHeight,
+      contentHeight: contentHeight,
+      maxOffset: maxOffset,
+      indicatorHeight: indicatorHeight,
+      indicatorOffset: Math.round((containerHeight - indicatorHeight) * newOffset / (maxOffset - this.state.minOffset))
+    })
+  }
+  scrollUp() {
+    const newOffset = this.state.scrollOffset - this.state.containerHeight,
+          scrollOffset = newOffset > this.state.minOffset ? newOffset : this.state.minOffset;
+
+    this.setState({
+      scrollOffset: Math.round(scrollOffset),
       btnUpDisabled: newOffset > this.state.minOffset ? false: true,
-      btnDownDisabled: newOffset < this.state.maxOffset ? false : true
+      btnDownDisabled: newOffset < this.state.maxOffset ? false : true,
+      indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset))
     })
   }
   scrollDown() {
-    const newOffset = this.state.scrollOffset + this.state.containerHeight;
+    const newOffset = this.state.scrollOffset + this.state.containerHeight,
+          scrollOffset = newOffset < this.state.maxOffset ? newOffset : this.state.maxOffset;
 
     this.setState({
-      scrollOffset: newOffset < this.state.maxOffset ? newOffset : this.state.maxOffset,
+      scrollOffset: Math.round(scrollOffset),
       btnUpDisabled: newOffset > this.state.minOffset ? false: true,
-      btnDownDisabled: newOffset < this.state.maxOffset ? false : true
+      btnDownDisabled: newOffset < this.state.maxOffset ? false : true,
+      indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset))
     })
   }
   render() {
@@ -63,10 +79,11 @@ export default class VerticalScroller extends Component {
         <Button className="vertical-scroller-btn up" onClick={this.scrollUp} disabled={this.state.btnUpDisabled}>
           <i className="fa fa-angle-double-up" />
         </Button>
-        <div className="vertical-scroller-container" ref="vScrollerContainer">
-          <div className="vertical-scroller-content" ref="vScrollerContent" style={{top: -this.state.scrollOffset}}>
+        <div className="vertical-scroller-container" ref="verticalScrollerContainer">
+          <div className="vertical-scroller-content" ref="verticalScrollerContent" style={{top: -this.state.scrollOffset}}>
             {this.props.children}
           </div>
+          <span className="vertical-scroller-indicator" ref="vertical-scroller-indicator" style={{height: this.state.indicatorHeight, top: this.state.indicatorOffset}} />
         </div>
         <Button className="vertical-scroller-btn down" onClick={this.scrollDown} disabled={this.state.btnDownDisabled}>
           <i className="fa fa-angle-double-down" />
