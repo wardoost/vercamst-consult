@@ -3,6 +3,34 @@ import logo from '../assets/logo.svg';
 import {Link, Events, scrollSpy} from 'react-scroll';
 import './Navigation.sass';
 
+const menu = [
+  {
+    title: "Wie",
+    path: "#wie",
+    to: "wie"
+  },
+  {
+    title: "Thema's",
+    path: "#themas",
+    to: "themas"
+  },
+  {
+    title: "Werknemersparticipatie",
+    path: "#werknemersparticipatie",
+    to: "werknemersparticipatie"
+  },
+  {
+    title: "Blog",
+    path: "#blog",
+    to: "blog"
+  },
+  {
+    title: "Contact",
+    path: "#contact",
+    to: "contact"
+  }
+]
+
 export default class Navigation extends Component {
   constructor(props) {
     super(props);
@@ -72,6 +100,23 @@ export default class Navigation extends Component {
 
     window.removeEventListener('scroll', this.handleScroll.bind(this));
   }
+  getMenu() {
+    return menu.map((item, i) => {
+      if(i < menu.length - 1) {
+        return (
+          <li key={item.path} role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === item.to) && !this.state.scrollEnd && this.state.showLogo ? "active" : ""}>
+            <Link className="nav-link" to={item.to} spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">{item.title}</Link>
+          </li>
+        )
+      } else {
+        return (
+          <li key={item.path} role="presentation" className={(((this.state.goto ? this.state.goto : this.state.active) === item.to) || this.state.scrollEnd) && this.state.showLogo ? "active" : ""}>
+            <Link className="nav-link" to={item.to} spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">{item.title}</Link>
+          </li>
+        )
+      }
+    })
+  }
   render() {
     return (
       <nav className="navbar navbar-default navbar-fixed-top">
@@ -86,22 +131,8 @@ export default class Navigation extends Component {
               </div>
             </button>
           </div>
-          <ul className={"nav navbar-nav navbar-right" + (this.state.open ? " open" : "")}>
-            <li role="presentation" to="wie" className={((this.state.goto ? this.state.goto : this.state.active) === "wie") && !this.state.scrollEnd ? "active" : ""}>
-              <Link className="nav-link" to="wie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">Wie</Link>
-            </li>
-            <li role="presentation" to="themas" className={((this.state.goto ? this.state.goto : this.state.active) === "themas") && !this.state.scrollEnd ? "active" : ""}>
-              <Link className="nav-link" to="themas" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">Thema's</Link>
-            </li>
-            <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "werknemersparticipatie") && !this.state.scrollEnd ? "active" : ""}>
-              <Link className="nav-link" to="werknemersparticipatie" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} role="button">Werknemersparticipatie</Link>
-            </li>
-            <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "blog") && !this.state.scrollEnd ? "active" : ""}>
-              <Link className="nav-link" to="blog" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">Blog</Link>
-            </li>
-            <li role="presentation" className={((this.state.goto ? this.state.goto : this.state.active) === "contact") || this.state.scrollEnd ? "active" : ""}>
-              <Link className="nav-link" to="contact" spy={true} smooth={true} duration={1000} offset={-50} onSetActive={this.handleSetActive} isDynamic={true} role="button">Contact</Link>
-            </li>
+          <ul className={"nav navbar-nav" + (this.state.open ? " open" : "") + (!this.state.showLogo ? " center" : "")}>
+            {this.getMenu()}
           </ul>
         </div>
       </nav>

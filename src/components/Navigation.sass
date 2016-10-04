@@ -11,7 +11,6 @@
   top: 50px
   transition: top 0.3s ease-in-out
 
-
   &.show
     top: 0
 
@@ -27,14 +26,27 @@
     margin-top: 0
     margin-bottom: 0
 
+    @media (min-width: 768px)
+      float: right
+      margin-right: -15px
+      position: relative
+      right: 0
+      transition: right 0.4s ease-in-out, transform 0.4s ease-in-out
+
+      &.center
+        right: 50%
+        transform: translateX(50%)
+
     @media (max-width: 767px)
-      max-height: 0
-      transition: max-height 0.3s
+      height: 0
       overflow: hidden
+      transition: height 0.3s
 
     &.open
       @media (max-width: 767px)
-        max-height: 4 * 40px
+        height: 5*40px
+        overflow-y: scroll
+        max-height: 340px
 
     li > a
       @media (max-width: 767px)
