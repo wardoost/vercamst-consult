@@ -7,10 +7,31 @@
     .vertical-scroller-indicator
       transform: scaleY(1)
 
+  .vertical-scroller-container
+    position: relative
+    overflow-y: hidden
+    width: 100%
+    height: 200px
+
+  .vertical-scroller-content
+    position: absolute
+    top: 0
+    transition: top 0.3s ease-in-out
+
+  .vertical-scroller-indicator
+    position: absolute
+    top: 0
+    right: 0
+    width: 2px
+    background-color: #0083AE
+    transform: scaleY(0)
+    transition: all 0.3s ease-in-out
+
   .vertical-scroller-btn
     position: relative
     width: 100%
     background-color: transparent
+    color: #0083AE
 
     &:not([disabled]):before
       content: ""
@@ -41,23 +62,3 @@
       outline: 0
     &:active
       background-color: #ddd
-
-  .vertical-scroller-container
-    position: relative
-    overflow-y: hidden
-    width: 100%
-    height: 200px
-
-  .vertical-scroller-content
-    position: absolute
-    top: 0
-    transition: top 0.3s ease-in-out
-
-  .vertical-scroller-indicator
-    position: absolute
-    top: 0
-    right: 0
-    width: 2px
-    background-color: #0083AE
-    transform: scaleY(0)
-    transition: all 0.3s ease-in-out

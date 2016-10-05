@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
+import isTouchDevice from '../../utils/isTouchDevice';
 import './VerticalScroller.sass';
 
 export default class VerticalScroller extends Component {
@@ -12,7 +13,8 @@ export default class VerticalScroller extends Component {
       scrollOffset: 0,
       minOffset: 0,
       indicatorHeight: 0,
-      indicatorOffset: 0
+      indicatorOffset: 0,
+      touchEnabled: isTouchDevice()
     }
 
     this.scrollUp = this.scrollUp.bind(this);
@@ -75,8 +77,8 @@ export default class VerticalScroller extends Component {
   }
   render() {
     return (
-      <div className={"vertical-scroller" + (this.state.scrollable ? " scrollable" : "")}>
-        <Button className="vertical-scroller-btn up" onClick={this.scrollUp} disabled={this.state.btnUpDisabled}>
+      <div className={"vertical-scroller" + (this.state.scrollable ? " scrollable" : "") + (this.state.touchEnabled ? " touchEnabled" : "")}>
+        <Button className={"vertical-scroller-btn up"} onClick={this.scrollUp} disabled={this.state.btnUpDisabled}>
           <i className="fa fa-angle-double-up" />
         </Button>
         <div className="vertical-scroller-container" ref="verticalScrollerContainer">
