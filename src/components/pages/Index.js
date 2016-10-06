@@ -34,7 +34,6 @@ export default class Index extends Component {
       //
       // console.log("scrolling to " + hash, offsetY)
     }
-    console.log("mounted index!!!");
   }
   render() {
     return (

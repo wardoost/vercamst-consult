@@ -115,13 +115,14 @@ export default class Navigation extends Component {
             pathMatched = (path === document.location.pathname),
             activeScrollLinkMatched = ((this.state.goto ? this.state.goto : this.state.activeScrollLink) === to),
             url = to ? path + "#" + to : path;
-      let isActive = !to ? pathMatched : ((pathMatched && activeScrollLinkMatched) ? true : false);
 
       if (pathMatched && to) {
+        let isActive;
+
         if (i < menu.length - 1) {
           isActive = pathMatched && activeScrollLinkMatched && !this.state.scrollEnd && this.state.showLogo;
         } else {
-          isActive = pathMatched && (activeScrollLinkMatched || this.state.scrollEnd) && this.state.showLogo
+          isActive = pathMatched && (activeScrollLinkMatched || this.state.scrollEnd) && this.state.showLogo;
         }
 
         return(
