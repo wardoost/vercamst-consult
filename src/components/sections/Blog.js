@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import {Button, Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
 import moment from 'moment';
+import {browserHistory} from 'react-router';
 import ColButton from '../ui/ColButton';
 import './Blog.sass';
 
 export default class Blog extends Component {
   goToArticle(e) {
-    console.log("Load article " + e.id);
+    // const slug = e.postSlug
+    // browserHistory.push("posts/" + slug)
+    browserHistory.push("posts/")
   }
   generateArticles(amount) {
     let articles = [];
@@ -15,9 +18,10 @@ export default class Blog extends Component {
 
     for(var i = 1; i <= amount; i++){
       const date = moment(new Date()).format("dddd D MMMM YYYY"),
-            key = { id: i };
+            key = { postId: i, postSlug: i };
+
       articles.push(
-        <ColButton sm={6} md={4} className="article" onClick={this.goToArticle.bind(this, key)} key={key.id} action="Lees meer" >
+        <ColButton sm={6} md={4} className="article" onClick={this.goToArticle.bind(this, key)} key={key.postId} action="Lees meer" >
           <h2>{loremIpsum({count: 5, units: 'words'})}</h2>
           <p className="text-muted">{date}</p>
           <div className="summary">

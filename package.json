@@ -50,11 +50,13 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "lodash": "^4.16.4",
     "lorem-ipsum": "^1.0.3",
     "moment": "^2.15.1",
     "react": "^15.3.2",
     "react-bootstrap": "^0.30.3",
     "react-dom": "^15.3.2",
+    "react-router": "^2.8.1",
     "react-scroll": "^1.4.0"
   },
   "scripts": {
