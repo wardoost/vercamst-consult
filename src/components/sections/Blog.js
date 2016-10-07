@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import {Button, Grid, Row, Col, Clearfix} from 'react-bootstrap';
+import {Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
 import moment from 'moment';
 import {browserHistory} from 'react-router';

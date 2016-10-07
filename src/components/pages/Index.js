@@ -31,8 +31,6 @@ export default class Index extends Component {
       //       offsetY = el ? el.offsetTop : 0;
       //
       // window.scrollTo(0, offsetY);
-      //
-      // console.log("scrolling to " + hash, offsetY)
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
