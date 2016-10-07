@@ -42,7 +42,8 @@ export default class Navigation extends Component {
       activeScrollLink: null,
       goto: null,
       scrollEnd : false,
-      showLogo: this.shouldShowLogo()
+      showLogo: this.shouldShowLogo(),
+      scrollDuration: 1000
     }
 
     this.handleScroll = debounce(this.handleScroll.bind(this), 50);
@@ -94,6 +95,7 @@ export default class Navigation extends Component {
 
       self.setState({
         goto: to,
+        activeScrollLink: null
       });
       self.closeMenu();
     });
@@ -107,38 +109,35 @@ export default class Navigation extends Component {
 
     scrollSpy.update();
 
-     window.addEventListener('scroll', this.handleScroll.bind(this));
+     window.addEventListener('scroll', this.handleScroll);
   }
   componentWillUnmount() {
     Events.scrollEvent.remove('begin');
     Events.scrollEvent.remove('end');
 
-    window.removeEventListener('scroll', this.handleScroll.bind(this));
+    window.removeEventListener('scroll', this.handleScroll);
   }
   getMenu() {
-    let arr = [];
     return menu.map((item, i) => {
       const {path, activePaths, to, title} = item,
             pathMatched = (path === document.location.pathname),
             activePathsMatched = activePaths ? activePaths.includes(document.location.pathname) : false,
             activeScrollLinkMatched = ((this.state.goto ? this.state.goto : this.state.activeScrollLink) === to),
             url = to ? path + "#" + to : path,
-            atScrollEnd = this.atScrollEnd();
+            lastItemActive = this.atScrollEnd();
 
       if (pathMatched && to) {
-        let isActive;
+        let isActive = false;
 
         if (i < menu.length - 1) {
-          isActive = (pathMatched || activePathsMatched) && this.state.showLogo && activeScrollLinkMatched && !atScrollEnd;
+          isActive = (pathMatched || activePathsMatched) && this.state.showLogo && activeScrollLinkMatched && !lastItemActive;
         } else {
-          isActive = (pathMatched || activePathsMatched) && this.state.showLogo && (activeScrollLinkMatched || atScrollEnd);
+          isActive = (pathMatched || activePathsMatched) && this.state.showLogo && (activeScrollLinkMatched || lastItemActive);
         }
-
-        arr.push(item.title + " active: " + isActive);
 
         return(
           <li key={url} role="presentation" className={isActive ? "active" : ""}>
-            <ScrollLink to={to} spy={true} smooth={true} duration={300} offset={-50} isDynamic={true} onSetActive={this.handleSetActive} className="nav-link" role="button">{title}</ScrollLink>
+            <ScrollLink to={to} spy={true} smooth={true} duration={this.state.scrollDuration} offset={-50} isDynamic={true} onSetActive={this.handleSetActive} className="nav-link" role="button">{title}</ScrollLink>
           </li>
         )
 
@@ -159,7 +158,7 @@ export default class Navigation extends Component {
         <div className="container">
           <div className="navbar-header">
             { this.props.logoScrollLink ?
-              <ScrollLink to={"welcome"} spy={false} smooth={true} duration={300} isDynamic={true} className={"navbar-brand" + (this.state.showLogo || this.state.menuOpen ? " show" : "")} role="button">
+              <ScrollLink to={"welcome"} spy={false} smooth={true} duration={this.state.scrollDuration} isDynamic={true} className={"navbar-brand" + (this.state.showLogo || this.state.menuOpen ? " show" : "")} role="button">
                 <img src={logo} alt="Vercamst Consult" />
               </ScrollLink>
               :
