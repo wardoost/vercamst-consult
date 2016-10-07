@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import {Grid, Row, Col} from 'react-bootstrap';
+import {Grid, Row, Col, Button} from 'react-bootstrap';
+import {scroller} from 'react-scroll';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {fetchPost} from '../../redux/actions/post';
@@ -11,12 +12,18 @@ import './Post.sass';
 moment.locale('nl');
 
 class Post extends Component {
+  scrollToContent() {
+    scroller.scrollTo("begin", {
+      smooth: true,
+      duration: 500
+    });
+  }
   componentWillMount() {
     this.props.fetchPost(this.props.params.slug);
   }
   render() {
     return (
-      <main className={"post"}>
+      <main className="post">
         <div className="splash-container">
           <div className="splash">
             <header className="post-header">
@@ -31,7 +38,10 @@ class Post extends Component {
             </header>
           </div>
         </div>
-        <div className={"content-container"}>
+        <div className="content-container invert-sections" id="begin">
+          <Button onClick={this.scrollToContent} className="btn-show-content">
+            <i className="fa fa-angle-double-down" />
+          </Button>
           <section className="post-content">
             <Grid>
               <Row>
