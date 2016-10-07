@@ -1,50 +1,44 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {Grid, Row, Col, Clearfix} from 'react-bootstrap';
-import loremIpsum from 'lorem-ipsum';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {fetchPosts} from '../../redux/actions/posts';
 import moment from 'moment';
-import {browserHistory} from 'react-router';
 import ColButton from '../ui/ColButton';
 import './Blog.sass';
 
-export default class Blog extends Component {
-  goToArticle(e) {
-    // const slug = e.postSlug
-    // browserHistory.push("posts/" + slug)
-    browserHistory.push("posts/")
+class Blog extends Component {
+  componentWillMount() {
+    this.props.fetchPosts();
   }
-  generateArticles(amount) {
-    let articles = [];
-    moment.locale('nl');
-
-    for(var i = 1; i <= amount; i++){
-      const date = moment(new Date()).format("dddd D MMMM YYYY"),
-            key = { postId: i, postSlug: i };
-
-      articles.push(
-        <ColButton sm={6} md={4} className="article" onClick={this.goToArticle.bind(this, key)} key={key.postId} action="Lees meer" >
-          <h2>{loremIpsum({count: 5, units: 'words'})}</h2>
-          <p className="text-muted">{date}</p>
-          <div className="summary">
-            <p>{loremIpsum({count: 5})}</p>
-          </div>
-        </ColButton>
+  checkCreateClearfix(i) {
+    if (i%2 === 0) {
+      return (
+        <Clearfix visibleSmBlock key={"cf-" + i}/>
       )
-
-      if(i%2 === 0){
-        articles.push(
-          <Clearfix visibleSmBlock key={"cf-a" + i}/>
-        )
-      }
-      if(i%3 === 0){
-        articles.push(
-          <Clearfix visibleMdBlock visibleLgBlock key={"cf-b" + i}/>
-        )
-      }
+    } else if (i%3 === 0) {
+      return (
+        <Clearfix visibleMdBlock visibleLgBlock key={"cf-" + i}/>
+      )
     }
-    return articles
   }
+  createPosts() {
+    return this.props.posts.map((post, i) => {
+      const humanDate = moment(post.createdAt).format("dddd D MMMM YYYY");
 
+      return ([
+        <ColButton sm={6} md={4} className="article" key={post.id} to={post.slug} action="Lees meer" >
+          <h2>{post.title}</h2>
+          <p className="text-muted">{humanDate}</p>
+          <div className="summary">
+            <p>{post.body}</p>
+          </div>
+        </ColButton>,
+        this.checkCreateClearfix(i + 1)
+      ])
+    })
+  }
   render() {
     return (
       <section id="blog">
@@ -55,7 +49,7 @@ export default class Blog extends Component {
             </Col>
           </Row>
           <Row>
-            {this.generateArticles(6)}
+            {this.createPosts()}
           </Row>
           <Row>
             <Col md={12} className="text-center">
@@ -67,3 +61,13 @@ export default class Blog extends Component {
     )
   }
 }
+
+function mapStateToProps(store) {
+  return store.posts;
+}
+
+function matchDispatchToProps(dispatch){
+  return bindActionCreators({fetchPosts: fetchPosts}, dispatch)
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(Blog);

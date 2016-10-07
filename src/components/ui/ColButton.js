@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {Component} from 'react';
+import {Link} from 'react-router';
 import {Button, Col} from 'react-bootstrap';
 import isTouchDevice from '../../utils/isTouchDevice';
 import './ColButton.sass';
 
-export default class ColButton extends Col {
+export default class ColButton extends Component {
   constructor(props) {
     super(props);
 
@@ -18,16 +19,17 @@ export default class ColButton extends Col {
       colProps: colProps
     }
   }
-
   render() {
     return (
       <Col {...this.state.colProps}>
-        <div className="content">
-          {this.props.children}
-        </div>
-        <div className="action">
-          <Button bsStyle={this.props.bsStyle} bsSize={this.props.bsSize} href={this.props.href}>{this.props.action}</Button>
-        </div>
+        <Link to={this.props.to} className="col-btn-link">
+          <div className="content">
+            {this.props.children}
+          </div>
+          <div className="action">
+            <Button bsStyle={this.props.bsStyle} bsSize={this.props.bsSize}>{this.props.action}</Button>
+          </div>
+        </Link>
       </Col>
     )
   }
