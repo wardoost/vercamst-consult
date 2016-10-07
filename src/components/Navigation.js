@@ -24,6 +24,7 @@ const menu = [
   {
     title: "Blog",
     path: "/",
+    activePaths: "/posts/",
     to: "blog"
   },
   {
@@ -117,8 +118,9 @@ export default class Navigation extends Component {
   getMenu() {
     let arr = [];
     return menu.map((item, i) => {
-      const {path, to, title} = item,
+      const {path, activePaths, to, title} = item,
             pathMatched = (path === document.location.pathname),
+            activePathsMatched = activePaths ? activePaths.includes(document.location.pathname) : false,
             activeScrollLinkMatched = ((this.state.goto ? this.state.goto : this.state.activeScrollLink) === to),
             url = to ? path + "#" + to : path,
             atScrollEnd = this.atScrollEnd();
@@ -126,11 +128,10 @@ export default class Navigation extends Component {
       if (pathMatched && to) {
         let isActive;
 
-
         if (i < menu.length - 1) {
-          isActive = pathMatched && this.state.showLogo && activeScrollLinkMatched && !atScrollEnd;
+          isActive = (pathMatched || activePathsMatched) && this.state.showLogo && activeScrollLinkMatched && !atScrollEnd;
         } else {
-          isActive = pathMatched && this.state.showLogo && (activeScrollLinkMatched || atScrollEnd);
+          isActive = (pathMatched || activePathsMatched) && this.state.showLogo && (activeScrollLinkMatched || atScrollEnd);
         }
 
         arr.push(item.title + " active: " + isActive);
@@ -142,7 +143,7 @@ export default class Navigation extends Component {
         )
 
       } else {
-        const isActive = pathMatched;
+        const isActive = pathMatched || activePathsMatched;
 
         return(
           <li key={url} role="presentation" className={isActive ? "active" : ""}>

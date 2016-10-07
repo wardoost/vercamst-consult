@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router';
 import Footer from '../Footer';
-import Contact from '../sections/Contact';
 import './Post.sass';
 
 export default class Posts extends Component {
@@ -11,9 +11,11 @@ export default class Posts extends Component {
     return (
       <main className={"content-container post"}>
         <div className="post-content">
-          <h1>Post</h1>
+          <div>
+            <h1>Post</h1>
+            <p><Link to="/#blog">Back to the overview</Link></p>
+          </div>
         </div>
-        <Contact />
         <Footer />
       </main>
     )
