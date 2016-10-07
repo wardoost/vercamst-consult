@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router';
 import {Button, Grid, Row, Col, Clearfix} from 'react-bootstrap';
 import loremIpsum from 'lorem-ipsum';
 import moment from 'moment';
@@ -58,7 +59,7 @@ export default class Blog extends Component {
           </Row>
           <Row>
             <Col md={12} className="text-center">
-              <Button bsStyle="primary" className="show-more">Show more</Button>
+              <Link to="/posts" className="show-more btn btn-primary">Toon meer</Link>
             </Col>
           </Row>
         </Grid>

@@ -42,3 +42,24 @@
 
   &.touchEnabled .action
     top: -2px
+
+.content-container
+  > section:nth-child(odd), &.invert-sections > section:nth-child(even)
+    .col-btn
+      background-color: #fff
+
+      &:hover
+        background-color: #eee
+
+      .action .btn
+        background-color: #fff
+
+  > section:nth-child(even), &.invert-sections > section:nth-child(odd)
+    .col-btn
+      background-color: #eee
+
+      &:hover
+        background-color: #ddd
+
+      .action .btn
+        background-color: #eee

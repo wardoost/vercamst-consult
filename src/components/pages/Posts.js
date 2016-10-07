@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import Footer from '../ui/Footer';
-import './Post.sass';
+import './Posts.sass';
 
 export default class Posts extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -10,12 +10,12 @@ export default class Posts extends Component {
   render() {
     return (
       <main className={"content-container post"}>
-        <div className="post-content">
+        <section className="post-content">
           <div>
-            <h1>Post</h1>
+            <h1>Posts</h1>
             <p><Link to="/#blog">Back to the overview</Link></p>
           </div>
-        </div>
+        </section>
         <Footer />
       </main>
     )
