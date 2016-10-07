@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import logo from '../assets/logo.svg';
-import {Link as RouterLink} from 'react-router';
+import {Link as RouterLink, browserHistory} from 'react-router';
 import {Link as ScrollLink, Events, scrollSpy} from 'react-scroll';
 import {debounce} from 'lodash';
 import './Navigation.sass';
@@ -45,7 +45,7 @@ export default class Navigation extends Component {
     }
 
     this.handleScroll = debounce(this.handleScroll.bind(this), 50);
-    this.handleSetActive = this.handleSetActive.bind(this);
+    this.handleSetActive = debounce(this.handleSetActive.bind(this), 50);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
   }
@@ -63,30 +63,34 @@ export default class Navigation extends Component {
     const atHomePage = (document.location.pathname === "/"),
           overSplash = (window.scrollY > window.innerHeight / 3 - 50);
 
-    // Add update url hash here
     return !atHomePage ? true : overSplash
   }
-  handleSetActive(to) {
-    this.setState({
-      activeScrollLink: to,
-    });
-
-    // Add update url hash here
-  }
-  handleScroll(e) {
+  atScrollEnd() {
     const body = document.body,
           html = document.documentElement,
           maxScrollY = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) - window.innerHeight;
 
+    return (window.scrollY >= maxScrollY - window.innerHeight / 4);
+  }
+  handleSetActive(to) {
+    if(!this.state.goto){
+      this.setState({
+        activeScrollLink: to,
+      });
+    }
+  }
+  handleScroll(e) {
     this.setState({
       showLogo: this.shouldShowLogo(),
-      scrollEnd: (window.scrollY >= maxScrollY - window.innerHeight / 4)
+      scrollEnd: this.atScrollEnd()
     });
   }
   componentDidMount() {
     const self = this;
 
     Events.scrollEvent.register('begin', function(to, element) {
+      browserHistory.replace(document.location.pathname + "#" + to);
+
       self.setState({
         goto: to,
       });
@@ -96,6 +100,7 @@ export default class Navigation extends Component {
     Events.scrollEvent.register('end', function(to, element) {
       self.setState({
         goto: null,
+        activeScrollLink: to
       });
     });
 
@@ -110,24 +115,29 @@ export default class Navigation extends Component {
     window.removeEventListener('scroll', this.handleScroll.bind(this));
   }
   getMenu() {
+    let arr = [];
     return menu.map((item, i) => {
       const {path, to, title} = item,
             pathMatched = (path === document.location.pathname),
             activeScrollLinkMatched = ((this.state.goto ? this.state.goto : this.state.activeScrollLink) === to),
-            url = to ? path + "#" + to : path;
+            url = to ? path + "#" + to : path,
+            atScrollEnd = this.atScrollEnd();
 
       if (pathMatched && to) {
         let isActive;
 
+
         if (i < menu.length - 1) {
-          isActive = pathMatched && activeScrollLinkMatched && !this.state.scrollEnd && this.state.showLogo;
+          isActive = pathMatched && this.state.showLogo && activeScrollLinkMatched && !atScrollEnd;
         } else {
-          isActive = pathMatched && (activeScrollLinkMatched || this.state.scrollEnd) && this.state.showLogo;
+          isActive = pathMatched && this.state.showLogo && (activeScrollLinkMatched || atScrollEnd);
         }
+
+        arr.push(item.title + " active: " + isActive);
 
         return(
           <li key={url} role="presentation" className={isActive ? "active" : ""}>
-            <ScrollLink to={to} spy={true} smooth={true} duration={1000} offset={-50} isDynamic={true} onSetActive={this.handleSetActive} className="nav-link" role="button">{title}</ScrollLink>
+            <ScrollLink to={to} spy={true} smooth={true} duration={300} offset={-50} isDynamic={true} onSetActive={this.handleSetActive} className="nav-link" role="button">{title}</ScrollLink>
           </li>
         )
 
@@ -147,7 +157,15 @@ export default class Navigation extends Component {
       <nav className="navbar navbar-default navbar-fixed-top">
         <div className="container">
           <div className="navbar-header">
-            <a href="/" className={"navbar-brand" + (this.state.showLogo || this.state.menuOpen ? " show" : "")}><img src={logo} alt="Vercamst Consult" /></a>
+            { this.props.logoScrollLink ?
+              <ScrollLink to={"welcome"} spy={false} smooth={true} duration={300} isDynamic={true} className={"navbar-brand" + (this.state.showLogo || this.state.menuOpen ? " show" : "")} role="button">
+                <img src={logo} alt="Vercamst Consult" />
+              </ScrollLink>
+              :
+              <RouterLink to="/" className={"navbar-brand" + (this.state.showLogo || this.state.menuOpen ? " show" : "")}>
+                <img src={logo} alt="Vercamst Consult" />
+              </RouterLink>
+            }
             <button type="button" className={"navbar-toggle" + (this.state.menuOpen ? " open" : "")} onClick={this.toggleMenu}>
               <div className="icon-hamburger">
                 <span />

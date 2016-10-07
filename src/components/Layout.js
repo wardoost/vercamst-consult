@@ -5,8 +5,8 @@ import './Layout.sass';
 export default class Layout extends Component {
   render() {
     return (
-      <div className="App">
-        <Navigation/>
+      <div className="App" id="welcome">
+        <Navigation location={this.props.location} logoScrollLink={this.props.location.pathname === "/"}/>
         {this.props.children}
       </div>
     )

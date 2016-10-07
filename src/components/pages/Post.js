@@ -4,6 +4,9 @@ import Contact from '../sections/Contact';
 import './Post.sass';
 
 export default class Posts extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.location.pathname !== nextProps.location.pathname;
+  }
   render() {
     return (
       <main className={"content-container post"}>

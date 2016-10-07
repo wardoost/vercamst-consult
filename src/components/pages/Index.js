@@ -35,6 +35,9 @@ export default class Index extends Component {
       // console.log("scrolling to " + hash, offsetY)
     }
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.location.pathname !== nextProps.location.pathname;
+  }
   render() {
     return (
       <main className="index">

@@ -5,6 +5,9 @@ import Footer from '../Footer';
 import './Error.sass';
 
 export default class Error extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.location.pathname !== nextProps.location.pathname;
+  }
   render() {
     return (
       <main className="content-container error">
