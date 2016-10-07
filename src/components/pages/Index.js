@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
 import {scroller} from 'react-scroll';
-import Intro from '../sections/Intro';
+import logo from '../../assets/logo-large.svg';
 import Who from '../sections/Who';
 import Themes from '../sections/Themes'
 import Participation from '../sections/Participation';
@@ -41,10 +41,10 @@ export default class Index extends Component {
       <main className="index">
         <div className="splash-container">
           <div className="splash">
-            <Intro />
+            <img src={logo} className="logo" alt="Vercamst Consult" />
           </div>
         </div>
-        <main className="content-container invert-sections">
+        <div className="content-container invert-sections">
           <Button onClick={this.scrollToContent} className="btn-show-content">
             <i className="fa fa-angle-double-down" />
           </Button>
@@ -55,7 +55,7 @@ export default class Index extends Component {
           <Blog />
           <Contact />
           <Footer />
-        </main>
+        </div>
       </main>
     )
   }

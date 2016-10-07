@@ -8,26 +8,42 @@ import moment from 'moment';
 import Footer from '../ui/Footer';
 import './Post.sass';
 
+moment.locale('nl');
+
 class Post extends Component {
   componentWillMount() {
     this.props.fetchPost(this.props.params.slug);
   }
   render() {
     return (
-      <main className={"content-container post"}>
-        <section className="post-content">
-          <Grid>
-            <Row>
-              <Col md={12}>
-                <h1>{this.props.post.title}</h1>
-                <p className="text-muted">{moment(this.props.post.createdAt).format("dddd D MMMM YYYY")}</p>
-                <p>{this.props.post.body}</p>
-                <p><Link to="/#blog">Back to the overview</Link></p>
-              </Col>
-            </Row>
-          </Grid>
-        </section>
-        <Footer />
+      <main className={"post"}>
+        <div className="splash-container">
+          <div className="splash">
+            <header className="post-header">
+              <Grid>
+                <Row>
+                  <Col md={12}>
+                    <h1>{this.props.post.title}</h1>
+                    <p className="text-muted">Gepost op {moment(this.props.post.createdAt).format("dddd D MMMM YYYY")}</p>
+                  </Col>
+                </Row>
+              </Grid>
+            </header>
+          </div>
+        </div>
+        <div className={"content-container"}>
+          <section className="post-content">
+            <Grid>
+              <Row>
+                <Col md={12}>
+                  <p>{this.props.post.body}</p>
+                  <p><Link to="/#blog">Back to the overview</Link></p>
+                </Col>
+              </Row>
+            </Grid>
+          </section>
+          <Footer />
+        </div>
       </main>
     )
   }

@@ -8,6 +8,8 @@ import moment from 'moment';
 import ColButton from '../ui/ColButton';
 import './Blog.sass';
 
+moment.locale('nl');
+
 class Blog extends Component {
   componentWillMount() {
     this.props.fetchPosts();
