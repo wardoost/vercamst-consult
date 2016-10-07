@@ -5,7 +5,7 @@ export const FETCH_POSTS = "FETCH_POSTS";
 export function fetchPosts() {
   // Generate random posts
   const posts = [];
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 9; i++) {
     posts.push({
       id: String(i),
       title: loremIpsum({count: 5, units: 'words'}),

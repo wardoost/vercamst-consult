@@ -28,7 +28,7 @@ class Blog extends Component {
       const humanDate = moment(post.createdAt).format("dddd D MMMM YYYY");
 
       return ([
-        <ColButton sm={6} md={4} className="article" key={post.id} to={post.slug} action="Lees meer" >
+        <ColButton sm={6} md={4} className="article" key={post.id} to={"posts/" + post.slug} action="Lees meer" >
           <h2>{post.title}</h2>
           <p className="text-muted">{humanDate}</p>
           <div className="summary">
