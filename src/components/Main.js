@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import Navigation from './Navigation';
-import './Layout.sass';
+import Navigation from './ui/Navigation';
+import './Main.sass';
 
-export default class Layout extends Component {
+export default class Main extends Component {
   render() {
     return (
-      <div className="layout" id="welcome">
+      <div className="main" id="welcome">
         <Navigation location={this.props.location} logoScrollLink={this.props.location.pathname === "/"}/>
         {this.props.children}
       </div>

@@ -7,7 +7,7 @@ import Themes from '../sections/Themes'
 import Participation from '../sections/Participation';
 import Blog from '../sections/Blog';
 import Contact from '../sections/Contact';
-import Footer from '../Footer';
+import Footer from '../ui/Footer';
 import './Index.sass';
 
 export default class Index extends Component {
