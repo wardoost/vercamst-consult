@@ -46,8 +46,10 @@ class Post extends Component {
             <Grid>
               <Row>
                 <Col md={12}>
-                  <p>{this.props.post.body}</p>
-                  <p><Link to="/#blog">Terug naar overzicht</Link></p>
+                  <div className="post-body" dangerouslySetInnerHTML={{__html: this.props.post.body}} />
+                  <Link to="/#blog" className="btn btn-primary">
+                    <i className="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;&nbsp;Terug naar overzicht
+                  </Link>
                 </Col>
               </Row>
             </Grid>

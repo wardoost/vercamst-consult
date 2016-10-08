@@ -50,6 +50,7 @@ export default class Navigation extends Component {
     this.handleSetActive = debounce(this.handleSetActive.bind(this), 50);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
+    this.shouldShowLogo = this.shouldShowLogo.bind(this);
   }
   toggleMenu() {
     this.setState({
@@ -62,7 +63,8 @@ export default class Navigation extends Component {
     });
   }
   shouldShowLogo() {
-    const atHomePage = (document.location.pathname === "/"),
+    const currentPath = this.props.location.pathname,
+          atHomePage = (currentPath === "/"),
           overSplash = (window.scrollY > window.innerHeight / 3 - 50);
 
     return !atHomePage ? true : overSplash
@@ -91,7 +93,9 @@ export default class Navigation extends Component {
     const self = this;
 
     Events.scrollEvent.register('begin', function(to, element) {
-      browserHistory.replace(document.location.pathname + "#" + to);
+      const currentPath = self.props.location.pathname;
+
+      browserHistory.replace(currentPath + "#" + to);
 
       self.setState({
         goto: to,
@@ -120,8 +124,9 @@ export default class Navigation extends Component {
   getMenu() {
     return menu.map((item, i) => {
       const {path, activePaths, to, title} = item,
-            pathMatched = (path === document.location.pathname),
-            activePathsMatched = activePaths ? activePaths.includes(document.location.pathname) : false,
+            currentPath = this.props.location.pathname,
+            pathMatched = (path === currentPath),
+            activePathsMatched = activePaths ? activePaths.includes(currentPath) : false,
             activeScrollLinkMatched = ((this.state.goto ? this.state.goto : this.state.activeScrollLink) === to),
             url = to ? path + "#" + to : path,
             lastItemActive = this.atScrollEnd();

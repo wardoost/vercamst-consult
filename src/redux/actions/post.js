@@ -6,8 +6,8 @@ export function fetchPost(slug) {
   // Generate random posts
   const post = {
     id: String(slug),
-    title: loremIpsum({count: 5, units: 'words'}),
-    body: loremIpsum({count: 200}),
+    title: loremIpsum({count: 5, units: "words"}),
+    body: loremIpsum({count: 10, units: "paragraphs", format: "html"}),
     slug: String(slug),
     createdAt : new Date()
   }
