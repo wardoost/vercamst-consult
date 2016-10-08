@@ -1,17 +1,63 @@
+@mixin linear-gradient($fromColor, $toColor)
+  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor))
+  background-image: -webkit-linear-gradient(top, $fromColor, $toColor)
+  background-image:    -moz-linear-gradient(top, $fromColor, $toColor)
+  background-image:     -ms-linear-gradient(top, $fromColor, $toColor)
+  background-image:      -o-linear-gradient(top, $fromColor, $toColor)
+  background-image:         linear-gradient(top, $fromColor, $toColor)
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='$fromColor', EndColorStr='$toColor')
+
 .vertical-scroller
+  overflow: hidden
   transition: background-color 0.3s ease-in-out
 
   &:hover
     background-color: #eee
 
-    .vertical-scroller-indicator
-      transform: scaleY(1)
+    .vertical-scroller-btn.down
+      top: 0
+
+    .vertical-scroller-container:before
+      opacity: 0
+
+  &.active
+
+    &:hover
+      .vertical-scroller-indicator
+        transform: scaleY(1)
+
+    .vertical-scroller-btn
+      &.up, &.down
+        top: 0
+
+    .vertical-scroller-container
+      top: 0
+      height: 200px
+      margin-bottom: 0
+
+      &:before
+        display: none
 
   .vertical-scroller-container
-    position: relative
     overflow-y: hidden
+    position: relative
+    top: -32px
     width: 100%
-    height: 200px
+    height: 232px
+    margin-bottom: -32px
+
+    &:before
+      content: ""
+      position: absolute
+      z-index: 1
+      width: 100%
+      height: 50%
+      bottom: 0
+      left: 0
+      opacity: 1
+      @include linear-gradient(rgba(#fff, 0), #fff)
+      transition: opacity 0.2s linear
+
 
   .vertical-scroller-content
     position: absolute
@@ -32,6 +78,7 @@
     width: 100%
     background-color: transparent
     color: #0083AE
+    transition: all 0.3s ease-in-out
 
     &:not([disabled]):before
       content: ""
@@ -45,11 +92,15 @@
       transform: scaleX(0)
       transition: all 0.3s ease-in-out
 
-    &.up:not([disabled]):before
-      top: 0
+    &.up
+      top: -50px
+      &:not([disabled]):before
+        top: 0
 
-    &.down:not([disabled]):before
-      bottom: 0
+    &.down
+      top: 50px
+      &:not([disabled]):before
+        bottom: 0
 
     &:hover
       background-color: #ddd

@@ -47,7 +47,7 @@ class Post extends Component {
               <Row>
                 <Col md={12}>
                   <p>{this.props.post.body}</p>
-                  <p><Link to="/#blog">Back to the overview</Link></p>
+                  <p><Link to="/#blog">Terug naar overzicht</Link></p>
                 </Col>
               </Row>
             </Grid>

@@ -14,7 +14,8 @@ export default class VerticalScroller extends Component {
       minOffset: 0,
       indicatorHeight: 0,
       indicatorOffset: 0,
-      touchEnabled: isTouchDevice()
+      touchEnabled: isTouchDevice(),
+      active: false
     }
 
     this.scrollUp = this.scrollUp.bind(this);
@@ -61,7 +62,8 @@ export default class VerticalScroller extends Component {
       scrollOffset: Math.round(scrollOffset),
       btnUpDisabled: newOffset > this.state.minOffset ? false: true,
       btnDownDisabled: newOffset < this.state.maxOffset ? false : true,
-      indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset))
+      indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset)),
+      active: true
     })
   }
   scrollDown() {
@@ -72,12 +74,13 @@ export default class VerticalScroller extends Component {
       scrollOffset: Math.round(scrollOffset),
       btnUpDisabled: newOffset > this.state.minOffset ? false: true,
       btnDownDisabled: newOffset < this.state.maxOffset ? false : true,
-      indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset))
+      indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset)),
+      active: true
     })
   }
   render() {
     return (
-      <div className={"vertical-scroller" + (this.state.scrollable ? " scrollable" : "") + (this.state.touchEnabled ? " touchEnabled" : "")}>
+      <div className={"vertical-scroller" + (this.state.active ? " active" : "") + (this.state.touchEnabled ? " touchEnabled" : "")}>
         <Button className={"vertical-scroller-btn up"} onClick={this.scrollUp} disabled={this.state.btnUpDisabled}>
           <i className="fa fa-angle-double-up" />
         </Button>
@@ -88,7 +91,7 @@ export default class VerticalScroller extends Component {
           <span className="vertical-scroller-indicator" ref="vertical-scroller-indicator" style={{height: this.state.indicatorHeight, top: this.state.indicatorOffset}} />
         </div>
         <Button className="vertical-scroller-btn down" onClick={this.scrollDown} disabled={this.state.btnDownDisabled}>
-          <i className="fa fa-angle-double-down" />
+          {!this.state.active && this.props.label ? this.props.label : <i className="fa fa-angle-double-down" />}
         </Button>
       </div>
     )

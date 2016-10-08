@@ -60,7 +60,7 @@ export default class Who extends Component {
             </Col>
             <Col sm={7}>
               <h2 className="text-center">Verstreken functies of mandaten</h2>
-              <VerticalScroller>
+              <VerticalScroller label="Toon meer mandaten">
                 <ul className="list-group text-center">
                   <li className="list-group-item">
                     <p className="list-group-item-heading">Belgische Vereniging voor Arbeidsverhoudingen (BVVA) </p>
