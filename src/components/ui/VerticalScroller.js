@@ -8,8 +8,8 @@ export default class VerticalScroller extends Component {
     super(props);
 
     this.state = {
-      btnUpDisabled: true,
-      btnDownDisabled: false,
+      topReached: true,
+      bottomReached: false,
       scrollOffset: 0,
       minOffset: 0,
       indicatorHeight: 0,
@@ -41,7 +41,7 @@ export default class VerticalScroller extends Component {
   }
   handleResize(e) {
     const contentHeight = this.refs.verticalScrollerContent.offsetHeight,
-          containerHeight = this.refs.verticalScrollerContainer.offsetHeight,
+          containerHeight = isNaN(e) ? this.refs.verticalScrollerContainer.offsetHeight : e,
           maxOffset = contentHeight - containerHeight,
           newOffset = this.state.scrollOffset / this.state.maxOffset * maxOffset,
           indicatorHeight = Math.round(containerHeight / (contentHeight / containerHeight));
@@ -60,8 +60,8 @@ export default class VerticalScroller extends Component {
 
     this.setState({
       scrollOffset: Math.round(scrollOffset),
-      btnUpDisabled: newOffset > this.state.minOffset ? false: true,
-      btnDownDisabled: newOffset < this.state.maxOffset ? false : true,
+      topReached: newOffset > this.state.minOffset ? false: true,
+      bottomReached: newOffset < this.state.maxOffset ? false : true,
       indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset)),
       active: true
     })
@@ -70,10 +70,14 @@ export default class VerticalScroller extends Component {
     const newOffset = this.state.scrollOffset + this.state.containerHeight,
           scrollOffset = newOffset < this.state.maxOffset ? newOffset : this.state.maxOffset;
 
+    if (!this.state.active) {
+      this.handleResize(200);
+    }
+
     this.setState({
       scrollOffset: Math.round(scrollOffset),
-      btnUpDisabled: newOffset > this.state.minOffset ? false: true,
-      btnDownDisabled: newOffset < this.state.maxOffset ? false : true,
+      topReached: newOffset > this.state.minOffset ? false: true,
+      bottomReached: newOffset < this.state.maxOffset ? false : true,
       indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset)),
       active: true
     })
@@ -81,16 +85,16 @@ export default class VerticalScroller extends Component {
   render() {
     return (
       <div className={"vertical-scroller" + (this.state.active ? " active" : "") + (this.state.touchEnabled ? " touchEnabled" : "")}>
-        <Button className={"vertical-scroller-btn up"} onClick={this.scrollUp} disabled={this.state.btnUpDisabled}>
+        <Button className={"vertical-scroller-btn up"} onClick={this.scrollUp} disabled={this.state.topReached}>
           <i className="fa fa-angle-double-up" />
         </Button>
-        <div className="vertical-scroller-container" ref="verticalScrollerContainer">
+        <div className={"vertical-scroller-container" + (this.state.bottomReached ? " bottomReached" : "") + (this.state.topReached ? " topReached" : "")} ref="verticalScrollerContainer">
           <div className="vertical-scroller-content" ref="verticalScrollerContent" style={{top: -this.state.scrollOffset}}>
             {this.props.children}
           </div>
           <span className="vertical-scroller-indicator" ref="vertical-scroller-indicator" style={{height: this.state.indicatorHeight, top: this.state.indicatorOffset}} />
         </div>
-        <Button className="vertical-scroller-btn down" onClick={this.scrollDown} disabled={this.state.btnDownDisabled}>
+        <Button className="vertical-scroller-btn down" onClick={this.scrollDown} disabled={this.state.bottomReached}>
           {!this.state.active && this.props.label ? this.props.label : <i className="fa fa-angle-double-down" />}
         </Button>
       </div>

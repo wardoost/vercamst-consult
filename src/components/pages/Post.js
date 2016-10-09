@@ -13,7 +13,7 @@ moment.locale('nl');
 
 class Post extends Component {
   scrollToContent() {
-    scroller.scrollTo("begin", {
+    scroller.scrollTo("post-top", {
       smooth: true,
       duration: 500
     });
@@ -38,7 +38,7 @@ class Post extends Component {
             </header>
           </div>
         </div>
-        <div className="content-container invert-sections" id="begin">
+        <div className="content-container invert-sections" id="post-top">
           <Button onClick={this.scrollToContent} className="btn-show-content">
             <i className="fa fa-angle-double-down" />
           </Button>

@@ -50,7 +50,6 @@ export default class Navigation extends Component {
     this.handleSetActive = debounce(this.handleSetActive.bind(this), 50);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
-    this.shouldShowLogo = this.shouldShowLogo.bind(this);
   }
   toggleMenu() {
     this.setState({
@@ -63,7 +62,7 @@ export default class Navigation extends Component {
     });
   }
   shouldShowLogo() {
-    const currentPath = this.props.location.pathname,
+    const currentPath = document.location.pathname,
           atHomePage = (currentPath === "/"),
           overSplash = (window.scrollY > window.innerHeight / 3 - 50);
 
@@ -72,9 +71,9 @@ export default class Navigation extends Component {
   atScrollEnd() {
     const body = document.body,
           html = document.documentElement,
-          maxScrollY = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) - window.innerHeight;
+          maxScrollY = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) - window.innerHeight
 
-    return (window.scrollY >= maxScrollY - window.innerHeight / 4);
+    return window.scrollY > 0 && (window.scrollY >= maxScrollY - window.innerHeight / 4);
   }
   handleSetActive(to) {
     if(!this.state.goto){
@@ -95,7 +94,9 @@ export default class Navigation extends Component {
     Events.scrollEvent.register('begin', function(to, element) {
       const currentPath = self.props.location.pathname;
 
-      browserHistory.replace(currentPath + "#" + to);
+      if (to !== "top" && to !== "post-top") {
+        browserHistory.replace(currentPath + "#" + to);
+      }
 
       self.setState({
         goto: to,
@@ -163,7 +164,7 @@ export default class Navigation extends Component {
         <div className="container">
           <div className="navbar-header">
             { this.props.logoScrollLink ?
-              <ScrollLink to={"welcome"} spy={false} smooth={true} duration={this.state.scrollDuration} isDynamic={true} className={"navbar-brand" + (this.state.showLogo || this.state.menuOpen ? " show" : "")} role="button">
+              <ScrollLink to={"top"} spy={false} smooth={true} duration={this.state.scrollDuration} isDynamic={true} className={"navbar-brand" + (this.state.showLogo || this.state.menuOpen ? " show" : "")} role="button">
                 <img src={logo} alt="Vercamst Consult" />
               </ScrollLink>
               :
