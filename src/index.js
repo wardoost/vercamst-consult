@@ -1,12 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Router from './components/core/Router';
-import {Provider} from 'react-redux';
-import store from './redux/store';
+import Main from './components/Main'
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router />
-  </Provider>,
+  <Main />,
   document.getElementById('root')
 );

@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {fetchPosts} from '../../redux/actions/posts';
 import moment from 'moment';
 import ColButton from '../ui/ColButton';
+import mapObject from '../../utils/mapObject';
 import './Blog.sass';
 
 moment.locale('nl');
@@ -26,20 +27,27 @@ class Blog extends Component {
     }
   }
   createPosts() {
-    return this.props.posts.map((post, i) => {
-      const humanDate = moment(post.createdAt).format("dddd D MMMM YYYY");
+    if (this.props.fetched) {
+      let counter = 0;
 
-      return ([
-        <ColButton sm={6} md={4} className="article" key={post.id} to={"posts/" + post.slug} action="Lees meer" >
-          <h2>{post.title}</h2>
-          <p className="text-muted">{humanDate}</p>
-          <div className="summary">
-            <p>{post.body}</p>
-          </div>
-        </ColButton>,
-        this.checkCreateClearfix(i + 1)
-      ])
-    })
+      return mapObject(this.props.posts, (key, post) => {
+        const humanDate = moment(post.createdAt).format("dddd D MMMM YYYY");
+        counter++;
+
+        return ([
+          <ColButton sm={6} md={4} className="article" key={key} to={"posts/" + key} action="Lees meer" >
+            <h2>{post.title}</h2>
+            <p className="text-muted">{humanDate}</p>
+            <div className="summary">
+              <p>{post.body}</p>
+            </div>
+          </ColButton>,
+          this.checkCreateClearfix(counter)
+        ])
+      })
+    } else if (this.props.fetching) {
+      return <p>Loading posts...</p>
+    }
   }
   render() {
     return (

@@ -1,20 +1,14 @@
-import loremIpsum from 'lorem-ipsum';
+import { database } from '../../utils/firebase';
 
 export const FETCH_POST = "FETCH_POST";
 
-export function fetchPost(slug) {
-  // Generate random posts
-  const post = {
-    id: String(slug),
-    title: loremIpsum({count: 5, units: "words"}),
-    body: loremIpsum({count: 10, units: "paragraphs", format: "html"}),
-    slug: String(slug),
-    createdAt : new Date()
-  }
+export function fetchPost(id) {
+  const request = database.ref('posts/' + id).once('value').then((snapshot) => {
+    return snapshot.val();
+  });
 
-  // Skipping async loading with dummy data for now
   return {
-    type: FETCH_POST + "_FULFILLED",
-    payload: post
+    type: FETCH_POST,
+    payload: request
   }
 }

@@ -19,7 +19,7 @@ class Post extends Component {
     });
   }
   componentWillMount() {
-    this.props.fetchPost(this.props.params.slug);
+    this.props.fetchPost(this.props.params.id);
   }
   render() {
     return (
@@ -47,7 +47,7 @@ class Post extends Component {
               <Row>
                 <Col md={12}>
                   <div className="post-body" dangerouslySetInnerHTML={{__html: this.props.post.body}} />
-                  <Link to="/#blog" className="btn btn-primary">
+                  <Link to="/posts" className="btn btn-primary">
                     <i className="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;&nbsp;Terug naar overzicht
                   </Link>
                 </Col>
