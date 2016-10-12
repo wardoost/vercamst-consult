@@ -16,7 +16,7 @@ class Posts extends Component {
     this.props.fetchPosts();
   }
   createPosts() {
-    if (this.props.fetched) {
+    if (this.props.posts) {
       return mapObject(this.props.posts, (key, post) => {
         const humanDate = moment(post.createdAt).format("dddd D MMMM YYYY");
 
@@ -35,7 +35,7 @@ class Posts extends Component {
           </section>
         )
       })
-    } else if (this.props.fetching) {
+    } else {
       return <p>Loading posts...</p>
     }
   }
@@ -49,11 +49,11 @@ class Posts extends Component {
   }
 }
 
-function mapStateToProps(store) {
+const mapStateToProps = (store) => {
   return store.posts;
 }
 
-function matchDispatchToProps(dispatch){
+const matchDispatchToProps = (dispatch) => {
   return bindActionCreators({fetchPosts: fetchPosts}, dispatch)
 }
 

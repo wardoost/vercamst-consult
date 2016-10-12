@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
-import logo from '../../assets/logo.svg';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {Link as RouterLink, browserHistory} from 'react-router';
 import {Link as ScrollLink, Events, scrollSpy} from 'react-scroll';
 import {debounce} from 'lodash';
+import {authLogout} from '../../redux/actions/auth';
+import logo from '../../assets/logo.svg';
 import './Navigation.sass';
 
 const menu = [
@@ -31,10 +34,18 @@ const menu = [
     title: "Contact",
     path: "/",
     to: "contact"
+  },
+  {
+    title: "Login",
+    path: "/login"
+  },
+  {
+    title: "Logout",
+    action: true
   }
 ]
 
-export default class Navigation extends Component {
+class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,7 +135,7 @@ export default class Navigation extends Component {
   }
   getMenu() {
     return menu.map((item, i) => {
-      const {path, activePaths, to, title} = item,
+      const {path, activePaths, to, title, action} = item,
             currentPath = this.props.location.pathname,
             pathMatched = (path === currentPath),
             activePathsMatched = activePaths ? activePaths.includes(currentPath) : false,
@@ -147,6 +158,12 @@ export default class Navigation extends Component {
           </li>
         )
 
+      } else if (action){
+        return (
+          <li key={title} role="presentation">
+            <a className="nav-link" role="button" onClick={this.props.authLogout}>{title}</a>
+          </li>
+        )
       } else {
         const isActive = pathMatched || activePathsMatched;
 
@@ -188,3 +205,9 @@ export default class Navigation extends Component {
     );
   }
 }
+
+const matchDispatchToProps = (dispatch) => {
+  return bindActionCreators({authLogout: authLogout}, dispatch)
+}
+
+export default connect(null, matchDispatchToProps)(Navigation);

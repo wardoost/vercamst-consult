@@ -22,50 +22,58 @@ class Post extends Component {
     this.props.fetchPost(this.props.params.id);
   }
   render() {
-    return (
-      <main className="post">
-        <div className="splash-container">
-          <div className="splash">
-            <header className="post-header">
+    if (this.props.post) {
+      return (
+        <main className="post">
+          <div className="splash-container">
+            <div className="splash">
+              <header className="post-header">
+                <Grid>
+                  <Row>
+                    <Col md={12}>
+                      <h1>{this.props.post.title}</h1>
+                      <p className="text-muted">Gepost op {moment(this.props.post.createdAt).format("dddd D MMMM YYYY")}</p>
+                    </Col>
+                  </Row>
+                </Grid>
+              </header>
+            </div>
+          </div>
+          <div className="content-container invert-sections" id="post-top">
+            <Button onClick={this.scrollToContent} className="btn-show-content">
+              <i className="fa fa-angle-double-down" />
+            </Button>
+            <section className="post-content">
               <Grid>
                 <Row>
                   <Col md={12}>
-                    <h1>{this.props.post.title}</h1>
-                    <p className="text-muted">Gepost op {moment(this.props.post.createdAt).format("dddd D MMMM YYYY")}</p>
+                    <div className="post-body" dangerouslySetInnerHTML={{__html: this.props.post.body}} />
+                    <Link to="/posts" className="btn btn-primary">
+                      <i className="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;&nbsp;Terug naar overzicht
+                    </Link>
                   </Col>
                 </Row>
               </Grid>
-            </header>
+            </section>
+            <Footer />
           </div>
-        </div>
-        <div className="content-container invert-sections" id="post-top">
-          <Button onClick={this.scrollToContent} className="btn-show-content">
-            <i className="fa fa-angle-double-down" />
-          </Button>
-          <section className="post-content">
-            <Grid>
-              <Row>
-                <Col md={12}>
-                  <div className="post-body" dangerouslySetInnerHTML={{__html: this.props.post.body}} />
-                  <Link to="/posts" className="btn btn-primary">
-                    <i className="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;&nbsp;Terug naar overzicht
-                  </Link>
-                </Col>
-              </Row>
-            </Grid>
-          </section>
-          <Footer />
-        </div>
-      </main>
-    )
+        </main>
+      )
+    } else {
+      return (
+        <main className="content-container post-loading">
+          <p>Loading post...</p>
+        </main>
+      )
+    }
   }
 }
 
-function mapStateToProps(store) {
+const mapStateToProps = (store) => {
   return store.post;
 }
 
-function matchDispatchToProps(dispatch){
+const matchDispatchToProps = (dispatch) => {
   return bindActionCreators({fetchPost: fetchPost}, dispatch)
 }
 

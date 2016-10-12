@@ -1,25 +1,17 @@
 import C from '../../constants';
 
 const initialState = {
-  posts: [],
-  fetching: false,
-  fetched: false,
-  error: null
+  posts: null,
+  error: null,
 }
 
-export default function reducer(state = initialState, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
-    case C.FETCH_POSTS_PENDING:
-      state = {...state, fetching: true};
-      break;
-    case C.FETCH_POSTS_REJECTED:
-      state = {...state, fetching: false, error: action.payload};
-      break;
-    case C.FETCH_POSTS_FULFILLED:
-      state = {...state, fetching: false, fetched: true, posts: action.payload};
-      break;
+    case C.FETCH_POSTS_ERROR:
+      return {...state, posts: null, error: action.payload};
+    case C.FETCH_POSTS_SUCCESS:
+      return {...state, posts: action.payload, error: null};
     default:
-      break;
+      return state;
   }
-  return state;
 }

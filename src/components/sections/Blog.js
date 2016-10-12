@@ -27,7 +27,7 @@ class Blog extends Component {
     }
   }
   createPosts() {
-    if (this.props.fetched) {
+    if (this.props.posts) {
       let counter = 0;
 
       return mapObject(this.props.posts, (key, post) => {
@@ -45,7 +45,7 @@ class Blog extends Component {
           this.checkCreateClearfix(counter)
         ])
       })
-    } else if (this.props.fetching) {
+    } else {
       return <p>Loading posts...</p>
     }
   }
@@ -72,11 +72,11 @@ class Blog extends Component {
   }
 }
 
-function mapStateToProps(store) {
+const mapStateToProps = (store) => {
   return store.posts;
 }
 
-function matchDispatchToProps(dispatch){
+const matchDispatchToProps = (dispatch) =>{
   return bindActionCreators({fetchPosts: fetchPosts}, dispatch)
 }
 

@@ -1,10 +1,29 @@
 import React, {Component} from 'react';
 import {Router as ReactRouter, Route, IndexRoute, browserHistory} from 'react-router';
+import store from '../../redux/store';
 import Layout from '../core/Layout';
 import Index from '../pages/Index';
 import Posts from '../pages/Posts';
 import Post from '../pages/Post';
+import Login from '../pages/Login';
+import PostsList from '../pages/PostsList';
 import Error from '../pages/Error';
+
+const requireAuth = (nextState, replace, cb) => {
+  const {auth: {uid}} = store.getState();
+  if(!uid){
+    replace({pathname: '/login'});
+  }
+  cb();
+}
+
+const noAuth = (nextState, replace, cb) => {
+  const {auth: {uid}} = store.getState();
+  if(uid){
+    replace({pathname: '/'});
+  }
+  cb();
+}
 
 export default class Router extends Component {
   render() {
@@ -14,6 +33,8 @@ export default class Router extends Component {
           <IndexRoute component={Index}/>
           <Route path="posts" component={Posts}/>
           <Route path="posts/:id" component={Post}/>
+          <Route path="login" component={Login} onEnter={noAuth}/>
+          <Route path="posts-list" component={PostsList} onEnter={requireAuth}/>
         </Route>
         <Route path="*" component={Layout}>
           <IndexRoute component={Error}/>
