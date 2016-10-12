@@ -1,4 +1,4 @@
-import {FETCH_POST} from '../actions/post';
+import C from '../../constants';
 
 const initialState = {
   post: {},
@@ -9,13 +9,13 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_POST + "_PENDING":
+    case C.FETCH_POST_PENDING:
       state = {...state, fetching: true};
       break;
-    case FETCH_POST + "_REJECTED":
+    case C.FETCH_POST_REJECTED:
       state = {...state, fetching: false, error: action.payload};
       break;
-    case FETCH_POST + "_FULFILLED":
+    case C.FETCH_POST_FULFILLED:
       state = {...state, fetching: false, fetched: true, post: action.payload};
       break;
     default:
