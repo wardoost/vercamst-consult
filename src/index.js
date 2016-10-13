@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import store from './redux/store';
-import {auth} from './utils/firebase';
-import {authInit} from './redux/actions/auth';
-import Main from './components/Main';
+import store from './core/store';
+import {auth} from './core/firebase';
+import {authInit} from './core/auth/actions';
+import Main from './views/Main';
 
 const render = (Main) => {
   ReactDOM.render(
