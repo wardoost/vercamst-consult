@@ -6,12 +6,18 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {authLogin} from '../../core/auth/actions';
 import Footer from '../components/Footer';
+import './Login.sass';
 
 class Login extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      showAlert: true
+    }
+
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -21,7 +27,17 @@ class Login extends Component {
 
     this.props.authLogin(email, password);
   }
+  handleAlertDismiss() {
+    this.setState({
+      showAlert: false
+    })
+  }
   componentWillReceiveProps(nextProps) {
+    if (nextProps.error) {
+      this.setState({
+        showAlert: true
+      })
+    }
     if (nextProps.uid) {
       browserHistory.push('posts-list')
     }
@@ -29,19 +45,15 @@ class Login extends Component {
   render() {
     return (
       <main className="content-container login">
+        { this.props.error && this.state.showAlert ?
+          <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+            <p>{this.props.error.message}</p>
+          </Alert>
+        : null }
         <Grid>
-          { this.props.error ?
-            <Row>
-              <Col md={12}>
-                <Alert bsStyle="danger">
-                  <p>{this.props.error.message}</p>
-                </Alert>
-              </Col>
-            </Row>
-          : null }
           <Row>
             <Col smOffset={3} sm={6}>
-              <Form onSubmit={this.handleSubmit}>
+              <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormGroup>
                   <FormControl type="email" placeholder="Email" ref="email" />
                 </FormGroup>
