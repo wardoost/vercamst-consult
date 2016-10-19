@@ -37,7 +37,7 @@ class Blog extends Component {
         return ([
           <ColButton sm={6} md={4} className="article" key={key} to={"posts/" + key} action="Lees meer" >
             <h2>{post.title}</h2>
-            <p className="text-muted">{humanDate}</p>
+            {post.createdAt ? <p className="text-muted">{humanDate}</p> : null}
             <div className="summary">
               <p>{post.body}</p>
             </div>

@@ -5,9 +5,10 @@ import Layout from './components/Layout';
 import Index from './pages/Index';
 import Posts from './pages/Posts';
 import Post from './pages/Post';
+import AddPost from './pages/AddPost';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
-import PostsList from './pages/PostsList';
+import Management from './pages/Management';
 import Error from './pages/Error';
 
 const requireAuth = (nextState, replace, cb) => {
@@ -30,11 +31,12 @@ export default class Router extends Component {
       <ReactRouter history={browserHistory} onUpdate={() => window.scrollTo(0, 0)}>
         <Route path="/" component={Layout}>
           <IndexRoute component={Index}/>
-          <Route path="posts" component={Posts}/>
-          <Route path="posts/:id" component={Post}/>
-          <Route path="login" component={Login} onEnter={noAuth}/>
-          <Route path="logout" component={Logout} onEnter={requireAuth}/>
-          <Route path="posts-list" component={PostsList} onEnter={requireAuth}/>
+          <Route path="/posts" component={Posts}/>
+          <Route path="/posts/add" component={AddPost}/>
+          <Route path="/posts/:id" component={Post}/>
+          <Route path="/login" component={Login} onEnter={noAuth}/>
+          <Route path="/logout" component={Logout} onEnter={requireAuth}/>
+          <Route path="/management" component={Management} onEnter={requireAuth}/>
         </Route>
         <Route path="*" component={Layout}>
           <IndexRoute component={Error}/>

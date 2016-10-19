@@ -184,14 +184,12 @@ class Navigation extends Component {
           <ul className={"nav navbar-nav" + (this.state.menuOpen ? " open" : "") + (!this.state.showLogo ? " center" : "")}>
             {this.getMenu()}
             {this.props.uid ?
-              <li role="presentation" className={this.props.location.pathname === "/logout" ? "active" : ""}>
-                <RouterLink to="logout" className="nav-link" role="button">Logout</RouterLink>
+              <li role="presentation" className={this.props.location.pathname === "/management" ? "active" : ""}>
+                <RouterLink to="/management" title="Beheer" className="nav-link" role="button">
+                  <i className="fa fa-cog"/>
+                </RouterLink>
               </li>
-            :
-              <li role="presentation" className={this.props.location.pathname === "/login" ? "active" : ""}>
-                <RouterLink to="login" className="nav-link" role="button">Login</RouterLink>
-              </li>
-            }
+            : null}
           </ul>
         </div>
       </nav>
