@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
+import classNames from 'classnames';
 import isTouchDevice from '../../core/utils/isTouchDevice';
 import './VerticalScroller.sass';
 
@@ -84,11 +85,11 @@ export default class VerticalScroller extends Component {
   }
   render() {
     return (
-      <div className={"vertical-scroller" + (this.state.active ? " active" : "") + (this.state.touchEnabled ? " touchEnabled" : "")}>
+      <div className={classNames("vertical-scroller", {"active": this.state.active, "touchEnabled": this.state.touchEnabled})}>
         <Button className={"vertical-scroller-btn up"} onClick={this.scrollUp} disabled={this.state.topReached}>
           <i className="fa fa-angle-double-up" />
         </Button>
-        <div className={"vertical-scroller-container" + (this.state.bottomReached ? " bottomReached" : "") + (this.state.topReached ? " topReached" : "")} ref="verticalScrollerContainer">
+        <div className={classNames("vertical-scroller-container", {"bottomReached": this.state.bottomReached, "topReached": this.state.topReached})} ref="verticalScrollerContainer">
           <div className="vertical-scroller-content" ref="verticalScrollerContent" style={{top: -this.state.scrollOffset}}>
             {this.props.children}
           </div>

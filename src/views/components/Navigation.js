@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link as RouterLink, browserHistory} from 'react-router';
 import {Link as ScrollLink, Events, scrollSpy} from 'react-scroll';
+import classNames from 'classnames';
 import {debounce} from 'lodash';
 import logo from '../../assets/logo.svg';
 import './Navigation.sass';
@@ -143,7 +144,7 @@ class Navigation extends Component {
         }
 
         return(
-          <li key={url} role="presentation" className={isActive ? "active" : ""}>
+          <li key={url} role="presentation" className={classNames({"active": isActive})}>
             <ScrollLink to={to} spy={true} smooth={true} duration={this.state.scrollDuration} offset={-50} isDynamic={true} onSetActive={this.handleSetActive} className="nav-link" role="button">{title}</ScrollLink>
           </li>
         )
@@ -152,7 +153,7 @@ class Navigation extends Component {
         const isActive = pathMatched || activePathsMatched;
 
         return(
-          <li key={url} role="presentation" className={isActive ? "active" : ""}>
+          <li key={url} role="presentation" className={classNames({"active": isActive})}>
             <RouterLink to={url} className="nav-link" role="button">{title}</RouterLink>
           </li>
         )
@@ -165,15 +166,27 @@ class Navigation extends Component {
         <div className="container">
           <div className="navbar-header">
             { this.props.logoScrollLink ?
-              <ScrollLink to={"top"} spy={false} smooth={true} duration={this.state.scrollDuration} isDynamic={true} className={"navbar-brand" + (this.state.showLogo || this.state.menuOpen ? " show" : "")} role="button">
+              <ScrollLink
+                to={"top"}
+                spy={false}
+                smooth={true}
+                duration={this.state.scrollDuration}
+                isDynamic={true}
+                className={classNames("navbar-brand", {"show": this.state.showLogo || this.state.menuOpen})}
+                role="button">
                 <img src={logo} alt="Vercamst Consult" />
               </ScrollLink>
               :
-              <RouterLink to="/" className={"navbar-brand" + (this.state.showLogo || this.state.menuOpen ? " show" : "")}>
+              <RouterLink
+                to="/"
+                className={classNames("navbar-brand", {"show": this.state.showLogo || this.state.menuOpen })}>
                 <img src={logo} alt="Vercamst Consult" />
               </RouterLink>
             }
-            <button type="button" className={"navbar-toggle" + (this.state.menuOpen ? " open" : "")} onClick={this.toggleMenu}>
+            <button
+              type="button"
+              className={classNames("navbar-toggle", {"open": this.state.menuOpen})}
+              onClick={this.toggleMenu}>
               <div className="icon-hamburger">
                 <span />
                 <span />
@@ -181,10 +194,10 @@ class Navigation extends Component {
               </div>
             </button>
           </div>
-          <ul className={"nav navbar-nav" + (this.state.menuOpen ? " open" : "") + (!this.state.showLogo ? " center" : "")}>
+          <ul className={classNames("nav", "navbar-nav", {"open": this.state.menuOpen, "center": !this.state.showLogo})}>
             {this.getMenu()}
             {this.props.uid ?
-              <li role="presentation" className={this.props.location.pathname === "/management" ? "active" : ""}>
+              <li role="presentation" className={classNames({"active": this.props.location.pathname === "/management"})}>
                 <RouterLink to="/management" title="Beheer" className="nav-link" role="button">
                   <i className="fa fa-cog"/>
                 </RouterLink>

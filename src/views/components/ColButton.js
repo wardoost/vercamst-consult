@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
 import {Button, Col} from 'react-bootstrap';
+import classNames from 'classnames';
 import isTouchDevice from '../../core/utils/isTouchDevice';
 import './ColButton.sass';
 
@@ -13,7 +14,7 @@ export default class ColButton extends Component {
     delete colProps.href;
     delete colProps.bsStyle;
     delete colProps.bsSize;
-    colProps.className += " col-btn" + (isTouchDevice() ? " touchEnabled" : "");
+    colProps.className = classNames(colProps.className, "col-btn", {"touchEnabled": isTouchDevice()});
 
     this.state = {
       colProps: colProps
