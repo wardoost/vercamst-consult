@@ -7,6 +7,7 @@ export const actionTypes = {
   CREATE_POST_SUCCESS: "CREATE_POST_SUCCESS",
   DELETE_POST_ERROR: "DELETE_POST_ERROR",
   DELETE_POST_SUCCESS: "DELETE_POST_SUCCESS",
+  FETCH_POSTS_SUCCESS: "FETCH_POSTS_SUCCESS",
 }
 
 function fetchPostError(error) {
@@ -74,5 +75,20 @@ export function deletePost(id) {
     database.ref('posts/' + id).remove()
       .then(() => dispatch(deletePostSuccess(id)))
       .catch((error) => dispatch(deletePostError(error)));
+  };
+}
+
+function fetchPostsSuccess(result) {
+  return {
+    type: actionTypes.FETCH_POSTS_SUCCESS,
+    payload: result
+  };
+}
+
+export function fetchPosts(id) {
+  return dispatch => {
+    database.ref('posts').on('value', (snapshot) => {
+      dispatch(fetchPostsSuccess(snapshot.val()))
+    });
   };
 }

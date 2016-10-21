@@ -3,7 +3,7 @@ import {Grid, Row, Col, Clearfix, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {fetchPosts} from '../../core/posts/actions';
+import {fetchPosts} from '../../core/post/actions';
 import ColButton from '../components/ColButton';
 import mapObject from '../../core/utils/mapObject';
 import './Blog.sass';
@@ -47,7 +47,7 @@ class Blog extends Component {
     } else {
       return (
         <p className="text-center">
-          <i className="fa fa-circle-o-notch fa-spin" />
+          <i className="fa fa-circle-o-notch fa-3x fa-spin" />
         </p>
       )
     }
@@ -76,7 +76,7 @@ class Blog extends Component {
 }
 
 const mapStateToProps = (store) => {
-  return store.posts;
+  return store.post;
 }
 
 const matchDispatchToProps = (dispatch) =>{

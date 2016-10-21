@@ -3,8 +3,7 @@ import {Grid, Row, Col, Table} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {fetchPosts} from '../../core/posts/actions';
-import {deletePost} from '../../core/post/actions';
+import {fetchPosts, deletePost} from '../../core/post/actions';
 import mapObject from '../../core/utils/mapObject';
 import SplashPage from '../components/SplashPage';
 import PostItem from '../components/PostItem';
@@ -51,7 +50,7 @@ class Management extends Component {
                   </Table>
                 :
                   <p className="text-center">
-                    <i className="fa fa-circle-o-notch fa-spin" />
+                    <i className="fa fa-circle-o-notch fa-3x fa-spin" />
                   </p>
                 }
               </Col>
@@ -78,7 +77,7 @@ class Management extends Component {
 }
 
 const mapStateToProps = (store) => {
-  return store.posts;
+  return store.post;
 }
 
 const matchDispatchToProps = (dispatch) => {

@@ -39,7 +39,7 @@ class Post extends Component {
       return (
         <main className="content-container loading">
           <p className="text-center">
-            <i className="fa fa-circle-o-notch fa-spin" />
+            <i className="fa fa-circle-o-notch fa-3x fa-spin" />
           </p>
         </main>
       )

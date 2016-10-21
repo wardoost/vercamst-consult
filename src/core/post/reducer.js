@@ -2,6 +2,7 @@ import {actionTypes} from './actions';
 
 const initialState = {
   post: null,
+  posts: null,
   error: null,
 }
 
@@ -15,6 +16,10 @@ export default (state = initialState, action) => {
     case actionTypes.CREATE_POST_SUCCESS:
     case actionTypes.DELETE_POST_SUCCESS:
       return {...state, post: action.payload, error: null};
+    case actionTypes.FETCH_POSTS_ERROR:
+      return {...state, posts: null, error: action.payload};
+    case actionTypes.FETCH_POSTS_SUCCESS:
+      return {...state, posts: action.payload, error: null};
     default:
       return state;
   }
