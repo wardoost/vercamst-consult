@@ -45,7 +45,11 @@ class Blog extends Component {
         ])
       })
     } else {
-      return <p>Loading posts...</p>
+      return (
+        <p className="text-center">
+          <i className="fa fa-circle-o-notch fa-spin" />
+        </p>
+      )
     }
   }
   render() {

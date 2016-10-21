@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {fetchPosts} from '../../core/posts/actions';
 import {deletePost} from '../../core/post/actions';
 import mapObject from '../../core/utils/mapObject';
-import Footer from '../components/Footer';
+import SplashPage from '../components/SplashPage';
 import PostItem from '../components/PostItem';
 import './Management.sass';
 
@@ -15,51 +15,64 @@ class Management extends Component {
     this.props.fetchPosts();
   }
   createPosts() {
-    if (this.props.posts) {
-      return mapObject(this.props.posts, (key, post) => {
-        return (
-          <PostItem
-            key={key}
-            id={key}
-            post={post}
-            deletePost={this.props.deletePost}
-          />
-        );
-      })
-    } else {
-      return <p>Loading posts...</p>
-    }
+    return mapObject(this.props.posts, (key, post) => {
+      return (
+        <PostItem
+          key={key}
+          id={key}
+          post={post}
+          deletePost={this.props.deletePost}
+        />
+      );
+    })
   }
   render() {
     return (
-      <main className="content-container management">
-        <Grid>
-          <Row>
-            <Col>
-              <h1>Post Management</h1>
-              {this.props.posts ?
-                <Table striped hover>
-                  <thead>
-                    <tr>
-                      <th>Titel</th>
-                      <th>Gemaakt op</th>
-                      <th>Acties</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.createPosts()}
-                  </tbody>
-                </Table>
-              :
-                <p>Loading posts...</p>
-              }
-              <Link to="/posts/add" className="btn btn-primary">Nieuwe post aanmaken</Link>
-              <Link to="/logout" className="btn btn-primary pull-right">Log uit</Link>
-            </Col>
-          </Row>
-        </Grid>
-        <Footer />
-      </main>
+      <SplashPage
+        className="management"
+        title="Blog beheer"
+        splashHeight={0.3}>
+        <section className="management-content">
+          <Grid>
+            <Row>
+              <Col md={12}>
+                {this.props.posts ?
+                  <Table striped hover responsive>
+                    <thead>
+                      <tr>
+                        <th>Titel</th>
+                        <th>Gemaakt op</th>
+                        <th>Acties</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.createPosts()}
+                    </tbody>
+                  </Table>
+                :
+                  <p className="text-center">
+                    <i className="fa fa-circle-o-notch fa-spin" />
+                  </p>
+                }
+              </Col>
+            </Row>
+          </Grid>
+        </section>
+        <section className="management-actions">
+          <Grid>
+            <Row>
+              <Col md={12}>
+                <Link to="/posts/add" className="btn btn-primary">
+                  <i className="fa fa-plus" /> Nieuwe post aanmaken
+                </Link>
+                <Link to="/logout" className="btn btn-primary pull-right">
+                  <i className="fa fa-sign-out" /> Log uit
+                </Link>
+              </Col>
+            </Row>
+          </Grid>
+        </section>
+      </SplashPage>
     )
   }
 }

@@ -1,0 +1,45 @@
+.splash-page
+  .splash-container
+    z-index: 1
+    overflow: hidden
+    height: 30%
+    width: 100%
+    top: 0
+    left: 0
+    position: fixed
+
+  .splash
+    margin: auto
+    position: absolute
+    top: 50px
+    left: 0
+    bottom: 0
+    right: 0
+    background-color: #eee
+
+    .splash-header
+      position: absolute
+      top: 50%
+      left: 50%
+      width: 100%
+      transform: translate(-50%, -50%)
+      animation: splash-slide-in 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.3s backwards
+
+  .content-container
+    position: absolute
+    top: 30%
+    width: 100%
+    min-height: 70%
+    z-index: 2
+    background: white
+
+    >.btn-show-content
+      width: 100%
+
+@keyframes splash-slide-in
+  from
+    top: 100%
+    transform: translate(-50%, 0)
+  to
+    top: 50%
+    transform: translate(-50%, -50%)
