@@ -30,15 +30,20 @@ class Blog extends Component {
       let counter = 0;
 
       return mapObject(this.props.posts, (key, post) => {
-        const humanDate = moment(post.createdAt).format("dddd D MMMM YYYY");
+        const {title, body, createdAt} = post,
+              humanDate = moment(createdAt).format("dddd D MMMM YYYY"),
+              summaryLength = 300,
+              strippedBody = body.replace(/\\n/gm, ' ble ').replace(/<(?:.|\n)*?>/gm, ''),
+              summary = strippedBody.length > summaryLength ? strippedBody.substring(0, summaryLength) + "..." : strippedBody;
+
         counter++;
 
         return ([
           <ColButton sm={6} md={4} className="article" key={key} to={"posts/" + key} action="Lees meer" >
-            <h2>{post.title}</h2>
-            {post.createdAt ? <p className="text-muted">{humanDate}</p> : null}
+            <h2>{title}</h2>
+            {createdAt ? <p className="text-muted">{humanDate}</p> : null}
             <div className="summary">
-              <p>{post.body}</p>
+              <p>{summary}</p>
             </div>
           </ColButton>,
           this.checkCreateClearfix(counter)
