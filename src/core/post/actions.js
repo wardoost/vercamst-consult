@@ -7,6 +7,10 @@ export const actionTypes = {
   CREATE_POST_SUCCESS: "CREATE_POST_SUCCESS",
   DELETE_POST_ERROR: "DELETE_POST_ERROR",
   DELETE_POST_SUCCESS: "DELETE_POST_SUCCESS",
+  PUBLISH_POST_ERROR: "PUBLISH_POST_ERROR",
+  PUBLISH_POST_SUCCESS: "PUBLISH_POST_SUCCESS",
+  DEPUBLISH_POST_ERROR: "DEPUBLISH_POST_ERROR",
+  DEPUBLISH_POST_SUCCESS: "DEPUBLISH_POST_SUCCESS",
   FETCH_POSTS_SUCCESS: "FETCH_POSTS_SUCCESS",
 }
 
@@ -26,7 +30,7 @@ function fetchPostSuccess(result) {
 
 export function fetchPost(id) {
   return dispatch => {
-    database.ref('posts/' + id).once('value')
+    database.ref("posts/" + id).once("value")
       .then(snapshot => dispatch(fetchPostSuccess(snapshot.val())))
       .catch(error => dispatch(fetchPostError(error)));
   };
@@ -48,9 +52,9 @@ function createPostSuccess(post) {
 
 export function createPost(post) {
   return dispatch => {
-    const newKey = database.ref('posts').push().key;
+    const newKey = database.ref("posts").push().key;
 
-    database.ref('posts/' + newKey).set(post)
+    database.ref("posts/" + newKey).set(post)
       .then(() => dispatch(createPostSuccess(post)))
       .catch(error => dispatch(createPostError(error)));
   };
@@ -72,7 +76,7 @@ function deletePostSuccess() {
 
 export function deletePost(id) {
   return dispatch => {
-    database.ref('posts/' + id).remove()
+    database.ref("posts/" + id).remove()
       .then(() => dispatch(deletePostSuccess(id)))
       .catch((error) => dispatch(deletePostError(error)));
   };
@@ -85,10 +89,60 @@ function fetchPostsSuccess(result) {
   };
 }
 
-export function fetchPosts(id) {
+export function fetchPosts(all = false) {
   return dispatch => {
-    database.ref('posts').on('value', (snapshot) => {
+    let postsRef = database.ref("posts");
+
+    if (!all) {
+      postsRef = postsRef.orderByChild("published").equalTo(true);
+    }
+
+    postsRef.on("value", (snapshot) => {
       dispatch(fetchPostsSuccess(snapshot.val()))
     });
+  };
+}
+
+function publishPostError(error) {
+  return {
+    type: actionTypes.PUBLISH_POST_ERROR,
+    payload: error
+  };
+}
+
+function publishPostSuccess(id) {
+  return {
+    type: actionTypes.PUBLISH_POST_SUCCESS,
+    payload: id
+  };
+}
+
+export function publishPost(id) {
+  return dispatch => {
+    database.ref("posts/" + id + "/published").set(true)
+      .then(() => dispatch(publishPostSuccess(id)))
+      .catch(error => dispatch(publishPostError(error)));
+  };
+}
+
+function depublishPostError(error) {
+  return {
+    type: actionTypes.DEPUBLISH_POST_ERROR,
+    payload: error
+  };
+}
+
+function depublishPostSuccess(id) {
+  return {
+    type: actionTypes.DEPUBLISH_POST_SUCCESS,
+    payload: id
+  };
+}
+
+export function depublishPost(id) {
+  return dispatch => {
+    database.ref("posts/" + id + "/published").set(false)
+      .then(() => dispatch(depublishPostSuccess(id)))
+      .catch(error => dispatch(depublishPostError(error)));
   };
 }

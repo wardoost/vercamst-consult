@@ -3,7 +3,7 @@ import {Grid, Row, Col, Table} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {fetchPosts, deletePost} from '../../core/post/actions';
+import {fetchPosts, deletePost, publishPost, depublishPost} from '../../core/post/actions';
 import mapObject from '../../core/utils/mapObject';
 import SplashPage from '../components/SplashPage';
 import PostItem from '../components/PostItem';
@@ -11,7 +11,7 @@ import './Management.sass';
 
 class Management extends Component {
   componentWillMount() {
-    this.props.fetchPosts();
+    this.props.fetchPosts(true);
   }
   createPosts() {
     return mapObject(this.props.posts, (key, post) => {
@@ -21,6 +21,8 @@ class Management extends Component {
           id={key}
           post={post}
           deletePost={this.props.deletePost}
+          publishPost={this.props.publishPost}
+          depublishPost={this.props.depublishPost}
         />
       );
     })
@@ -36,7 +38,7 @@ class Management extends Component {
             <Row>
               <Col md={12}>
                 {this.props.posts ?
-                  <Table striped hover responsive>
+                  <Table responsive>
                     <thead>
                       <tr>
                         <th>Titel</th>
@@ -81,7 +83,7 @@ const mapStateToProps = (store) => {
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({fetchPosts, deletePost}, dispatch)
+  return bindActionCreators({fetchPosts, deletePost, publishPost, depublishPost}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Management);
