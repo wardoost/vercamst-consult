@@ -5,6 +5,7 @@ import {Grid, Row, Col, Form, FormGroup, FormControl, Button} from 'react-bootst
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Footer from '../components/Footer';
+import Editor from '../components/Editor';
 import {createPost} from '../../core/post/actions';
 import './AddPost.sass';
 
@@ -12,13 +13,19 @@ class AddPost extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      body: ""
+    }
+
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.editorChange = (value) => this.setState({body: value});
   }
   handleSubmit(e) {
     e.preventDefault();
 
     const post = {
       title: ReactDOM.findDOMNode(this.refs.title).value,
+      body: this.state.body.toString("html"),
       createdAt: new Date().getTime(),
     }
 
@@ -35,14 +42,16 @@ class AddPost extends Component {
         <Grid>
           <Row>
             <Col md={12}>
-              <h1>Create new post</h1>
               <Form onSubmit={this.handleSubmit}>
                 <FormGroup>
                   <FormControl
                     type="text"
-                    placeholder="Title"
+                    placeholder="Titel"
                     ref="title"
                   />
+                </FormGroup>
+                <FormGroup>
+                  <Editor ref="editor" onChange={this.editorChange}/>
                 </FormGroup>
                 <Button type="submit" bsStyle="primary">
                   Post aanmaken
