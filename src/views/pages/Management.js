@@ -54,6 +54,7 @@ class Management extends Component {
                 <p>Loading posts...</p>
               }
               <Link to="/posts/add" className="btn btn-primary">Nieuwe post aanmaken</Link>
+              <Link to="/logout" className="btn btn-primary pull-right">Log uit</Link>
             </Col>
           </Row>
         </Grid>

@@ -26,7 +26,6 @@ const menu = [
   {
     title: "Blog",
     path: "/",
-    activePaths: "/posts/",
     to: "blog"
   },
   {
@@ -126,10 +125,9 @@ class Navigation extends Component {
   }
   getMenu() {
     return menu.map((item, i) => {
-      const {path, activePaths, to, title} = item,
+      const {path, to, title} = item,
             currentPath = this.props.location.pathname,
             pathMatched = (path === currentPath),
-            activePathsMatched = activePaths ? activePaths.includes(currentPath) : false,
             activeScrollLinkMatched = ((this.state.goto ? this.state.goto : this.state.activeScrollLink) === to),
             url = to ? path + "#" + to : path,
             lastItemActive = this.atScrollEnd();
@@ -138,9 +136,9 @@ class Navigation extends Component {
         let isActive = false;
 
         if (i < menu.length - 1) {
-          isActive = (pathMatched || activePathsMatched) && this.state.showLogo && activeScrollLinkMatched && !lastItemActive;
+          isActive = pathMatched && this.state.showLogo && activeScrollLinkMatched && !lastItemActive;
         } else {
-          isActive = (pathMatched || activePathsMatched) && this.state.showLogo && (activeScrollLinkMatched || lastItemActive);
+          isActive = pathMatched && this.state.showLogo && (activeScrollLinkMatched || lastItemActive);
         }
 
         return(
@@ -150,7 +148,7 @@ class Navigation extends Component {
         )
 
       } else {
-        const isActive = pathMatched || activePathsMatched;
+        const isActive = pathMatched;
 
         return(
           <li key={url} role="presentation" className={classNames({"active": isActive})}>

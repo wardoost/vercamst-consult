@@ -39,7 +39,7 @@ class Login extends Component {
       })
     }
     if (nextProps.uid) {
-      browserHistory.push('posts-list')
+      browserHistory.push('/management')
     }
   }
   render() {

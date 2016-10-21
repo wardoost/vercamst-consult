@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router';
 import {Grid, Row, Col, Button} from 'react-bootstrap';
 import {scroller} from 'react-scroll';
 import {bindActionCreators} from 'redux';
@@ -48,9 +47,6 @@ class Post extends Component {
                 <Row>
                   <Col md={12}>
                     <div className="post-body" dangerouslySetInnerHTML={{__html: this.props.post.body}} />
-                    <Link to="/posts" className="btn btn-primary">
-                      <i className="fa fa-angle-double-left" aria-hidden="true"></i>&nbsp;&nbsp;Terug naar overzicht
-                    </Link>
                   </Col>
                 </Row>
               </Grid>

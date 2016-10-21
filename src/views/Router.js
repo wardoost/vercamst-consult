@@ -3,7 +3,6 @@ import {Router as ReactRouter, Route, IndexRoute, browserHistory} from 'react-ro
 import {isAuthenticated} from '../core/auth/selectors';
 import Layout from './components/Layout';
 import Index from './pages/Index';
-import Posts from './pages/Posts';
 import Post from './pages/Post';
 import AddPost from './pages/AddPost';
 import Login from './pages/Login';
@@ -31,7 +30,6 @@ export default class Router extends Component {
       <ReactRouter history={browserHistory} onUpdate={() => window.scrollTo(0, 0)}>
         <Route path="/" component={Layout}>
           <IndexRoute component={Index}/>
-          <Route path="/posts" component={Posts}/>
           <Route path="/posts/add" component={AddPost}/>
           <Route path="/posts/:id" component={Post}/>
           <Route path="/login" component={Login} onEnter={noAuth}/>

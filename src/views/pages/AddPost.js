@@ -27,6 +27,7 @@ class AddPost extends Component {
       title: ReactDOM.findDOMNode(this.refs.title).value,
       body: this.state.body.toString("html"),
       createdAt: new Date().getTime(),
+      updatedAt: new Date().getTime(),
     }
 
     this.props.createPost(post);

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router';
-import {Grid, Row, Col, Clearfix} from 'react-bootstrap';
+import {Grid, Row, Col, Clearfix, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -63,7 +62,7 @@ class Blog extends Component {
           </Row>
           <Row>
             <Col md={12} className="text-center">
-              <Link to="/posts" className="show-more btn btn-primary">Toon meer</Link>
+              <Button className="show-more" bsStyle="primary">Toon meer</Button>
             </Col>
           </Row>
         </Grid>
