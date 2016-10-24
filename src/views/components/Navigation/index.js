@@ -5,7 +5,7 @@ import {Link as ScrollLink, Events, scrollSpy} from 'react-scroll';
 import classNames from 'classnames';
 import {debounce} from 'lodash';
 import logo from '../../assets/logo.svg';
-import './Navigation.sass';
+import './style.sass';
 
 const menu = [
   {

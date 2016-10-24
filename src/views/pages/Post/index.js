@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {postsActions} from '../../core/posts';
 import SplashPage from '../components/SplashPage';
-import './Post.sass';
+import './style.sass';
 
 moment.locale('nl');
 

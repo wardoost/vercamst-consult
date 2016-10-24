@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {authActions} from '../../core/auth';
 import Footer from '../components/Footer';
-import './Login.sass';
+import './style.sass';
 
 class Login extends Component {
   constructor(props) {

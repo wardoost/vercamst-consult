@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {postsActions} from '../../core/posts';
 import SplashPage from '../components/SplashPage';
 import PostItem from '../components/PostItem';
-import './Management.sass';
+import './style.sass';
 
 class Management extends Component {
 

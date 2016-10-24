@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
 import classNames from 'classnames';
 import isTouchDevice from '../../core/utils/isTouchDevice';
-import './VerticalScroller.sass';
+import './style.sass';
 
 export default class VerticalScroller extends Component {
   constructor(props) {

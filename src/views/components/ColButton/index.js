@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 import {Button, Col} from 'react-bootstrap';
 import classNames from 'classnames';
 import isTouchDevice from '../../core/utils/isTouchDevice';
-import './ColButton.sass';
+import './style.sass';
 
 export default class ColButton extends Component {
   constructor(props) {

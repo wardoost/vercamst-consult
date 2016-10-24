@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link, browserHistory} from 'react-router';
 import Footer from '../components/Footer';
-import './Error.sass';
+import './style.sass';
 
 export default class Error extends Component {
   goBack(e) {

@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import Footer from '../components/Footer';
 import Editor from '../components/Editor';
 import {postsActions} from '../../core/posts';
-import './AddPost.sass';
+import './style.sass';
 
 class AddPost extends Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import RichTextEditor from 'react-rte';
-import './Editor.sass';
+import './style.sass';
 
 export default class Editor extends Component {
   static propTypes = {

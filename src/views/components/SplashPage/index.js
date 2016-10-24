@@ -3,7 +3,7 @@ import {Grid, Row, Col, Button} from 'react-bootstrap';
 import {scroller} from 'react-scroll';
 import classNames from 'classnames';
 import Footer from './Footer';
-import './SplashPage.sass';
+import './style.sass';
 
 export default class SplashPage extends Component {
   static propTypes = {

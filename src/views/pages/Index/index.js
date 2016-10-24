@@ -2,13 +2,9 @@ import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
 import {scroller} from 'react-scroll';
 import logo from '../../assets/logo-large.svg';
-import Who from '../sections/Who';
-import Themes from '../sections/Themes'
-import Participation from '../sections/Participation';
-import Blog from '../sections/Blog';
-import Contact from '../sections/Contact';
+import {Blog, Contact, Participation, Themes, Who} from './sections';
 import Footer from '../components/Footer';
-import './Index.sass';
+import './style.sass';
 
 export default class Index extends Component {
   scrollToContent() {
@@ -26,11 +22,6 @@ export default class Index extends Component {
         offset: -50,
         dynamic: true
       });
-
-      // const el = document.getElementById(hash.substring(1)),
-      //       offsetY = el ? el.offsetTop : 0;
-      //
-      // window.scrollTo(0, offsetY);
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
