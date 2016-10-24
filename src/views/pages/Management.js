@@ -3,26 +3,31 @@ import {Grid, Row, Col, Table} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {fetchPosts, deletePost, publishPost, depublishPost} from '../../core/post/actions';
-import mapObject from '../../core/utils/mapObject';
+import {loadPosts, unloadPosts, deletePost, updatePost} from '../../core/post/actions';
 import SplashPage from '../components/SplashPage';
 import PostItem from '../components/PostItem';
 import './Management.sass';
 
 class Management extends Component {
+
   componentWillMount() {
-    this.props.fetchPosts(true);
+    this.props.loadPosts();
   }
+
+  componentWillUnmount() {
+    this.props.unloadPosts();
+  }
+
   createPosts() {
-    return mapObject(this.props.posts, (key, post) => {
+    const posts = this.props.postList;
+
+    return posts.map(post => {
       return (
         <PostItem
-          key={key}
-          id={key}
+          key={post.key}
           post={post}
           deletePost={this.props.deletePost}
-          publishPost={this.props.publishPost}
-          depublishPost={this.props.depublishPost}
+          updatePost={this.props.updatePost}
         />
       );
     })
@@ -37,13 +42,13 @@ class Management extends Component {
           <Grid>
             <Row>
               <Col md={12}>
-                {this.props.posts ?
+                {this.props.postList.length ?
                   <Table responsive>
                     <thead>
                       <tr>
                         <th>Titel</th>
                         <th>Gemaakt op</th>
-                        <th>Acties</th>
+                        <th className="actions">Acties</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -79,11 +84,11 @@ class Management extends Component {
 }
 
 const mapStateToProps = (store) => {
-  return store.post;
+  return store.posts;
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({fetchPosts, deletePost, publishPost, depublishPost}, dispatch)
+  return bindActionCreators({loadPosts, unloadPosts, deletePost, updatePost}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Management);

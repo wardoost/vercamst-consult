@@ -3,17 +3,21 @@ import {Grid, Row, Col, Clearfix, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {fetchPosts} from '../../core/post/actions';
+import {loadPosts, unloadPosts} from '../../core/post/actions';
 import ColButton from '../components/ColButton';
-import mapObject from '../../core/utils/mapObject';
 import './Blog.sass';
 
 moment.locale('nl');
 
 class Blog extends Component {
   componentWillMount() {
-    this.props.fetchPosts();
+    this.props.loadPosts();
   }
+
+  componentWillUnmount() {
+    this.props.unloadPosts();
+  }
+
   checkCreateClearfix(i) {
     if (i%2 === 0) {
       return (
@@ -25,28 +29,27 @@ class Blog extends Component {
       )
     }
   }
-  createPosts() {
-    if (this.props.posts) {
-      let counter = 0;
 
-      return mapObject(this.props.posts, (key, post) => {
+  createPosts() {
+    const posts = this.props.postList;
+
+    if (this.props.postList.length) {
+      return posts.map((post, index) => {
         const {title, body, createdAt} = post,
               humanDate = moment(createdAt).format("dddd D MMMM YYYY"),
               summaryLength = 300,
               strippedBody = body.replace(/\\n/gm, ' ble ').replace(/<(?:.|\n)*?>/gm, ''),
               summary = strippedBody.length > summaryLength ? strippedBody.substring(0, summaryLength) + "..." : strippedBody;
 
-        counter++;
-
         return ([
-          <ColButton sm={6} md={4} className="article" key={key} to={"posts/" + key} action="Lees meer" >
+          <ColButton sm={6} md={4} className="article" key={post.key} to={"posts/" + post.key} action="Lees meer" >
             <h2>{title}</h2>
             {createdAt ? <p className="text-muted">{humanDate}</p> : null}
             <div className="summary">
               <p>{summary}</p>
             </div>
           </ColButton>,
-          this.checkCreateClearfix(counter)
+          this.checkCreateClearfix(index + 1)
         ])
       })
     } else {
@@ -57,6 +60,7 @@ class Blog extends Component {
       )
     }
   }
+
   render() {
     return (
       <section id="blog">
@@ -81,11 +85,11 @@ class Blog extends Component {
 }
 
 const mapStateToProps = (store) => {
-  return store.post;
+  return store.posts;
 }
 
 const matchDispatchToProps = (dispatch) =>{
-  return bindActionCreators({fetchPosts: fetchPosts}, dispatch)
+  return bindActionCreators({loadPosts, unloadPosts}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Blog);

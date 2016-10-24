@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import store from './core/store';
-import {auth} from './core/firebase';
+import {firebaseAuth} from './core/firebase';
 import {authInit} from './core/auth/actions';
 import Main from './views/Main';
 
@@ -14,7 +14,7 @@ const render = (Main) => {
 
 const initializeAuth = (dispatch) => {
   return new Promise((resolve, reject) => {
-    const unsub = auth.onAuthStateChanged(
+    const unsub = firebaseAuth.onAuthStateChanged(
       user => {
         dispatch(authInit(user));
         unsub();

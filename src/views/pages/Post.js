@@ -3,7 +3,7 @@ import {Grid, Row, Col} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {fetchPost} from '../../core/post/actions';
+import {loadPost} from '../../core/post/actions';
 import SplashPage from '../components/SplashPage';
 import './Post.sass';
 
@@ -11,7 +11,7 @@ moment.locale('nl');
 
 class Post extends Component {
   componentWillMount() {
-    this.props.fetchPost(this.props.params.id);
+    this.props.loadPost(this.props.params.id);
   }
   render() {
     if (this.props.post) {
@@ -48,11 +48,11 @@ class Post extends Component {
 }
 
 const mapStateToProps = (store) => {
-  return store.post;
+  return store.posts;
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({fetchPost: fetchPost}, dispatch)
+  return bindActionCreators({loadPost}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Post);

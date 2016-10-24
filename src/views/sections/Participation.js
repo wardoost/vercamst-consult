@@ -8,7 +8,7 @@ export default class Participation extends Component {
       <section id="werknemersparticipatie">
         <Grid>
           <Row>
-            <Col mdOffset={3} md={6}>
+            <Col mdOffset={1} md={10} lgOffset={2} lg={8}>
               <h1>Werknemersparticipatie</h1>
               <h2>De juiste weg naar Sociale Innovatie</h2>
               <p>Prestaties van ondernemingen verbeteren indien er voldoende geïnvesteerd wordt in de talenten van mensen. Goed opgeleide en gemotiveerde werknemers zullen hun bedrijf in staat stellen om voldoende toegevoegde waarde te creëren, noodzakelijk voor stabiliteit en sociaal-economische zekerheid op middellange termijn.</p>

@@ -69,11 +69,11 @@ class AddPost extends Component {
 }
 
 const mapStateToProps = (store) => {
-  return store.post;
+  return store.posts
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({createPost: createPost}, dispatch)
+  return bindActionCreators({createPost}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(AddPost);

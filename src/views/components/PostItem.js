@@ -7,8 +7,7 @@ import moment from 'moment';
 export default class PostItem extends Component {
   static propTypes = {
     deletePost: PropTypes.func.isRequired,
-    publishPost: PropTypes.func.isRequired,
-    depublishPost: PropTypes.func.isRequired,
+    updatePost: PropTypes.func.isRequired,
     post: PropTypes.object.isRequired
   };
 
@@ -21,19 +20,19 @@ export default class PostItem extends Component {
   }
 
   deletePost() {
-    this.props.deletePost(this.props.id);
+    this.props.deletePost(this.props.post);
   }
 
   publishPost() {
-    this.props.publishPost(this.props.id);
+    this.props.updatePost(this.props.post, {published: true});
   }
 
   depublishPost() {
-    this.props.depublishPost(this.props.id);
+    this.props.updatePost(this.props.post, {published: false});
   }
 
   render() {
-    const {title, published, createdAt} = this.props.post,
+    const {key, title, published, createdAt} = this.props.post,
           calendarDate = createdAt ? moment(createdAt).calendar() : "Onbekend";
 
     return (
@@ -42,7 +41,7 @@ export default class PostItem extends Component {
         <td>{calendarDate}</td>
         <td className="actions">
           <ButtonGroup>
-            <Link to={"posts/" + this.props.id} className="btn btn-primary" title="Bekijken">
+            <Link to={"posts/" + key} className="btn btn-primary" title="Bekijken">
               <i className="fa fa-eye fa-fw" />
             </Link>
             {published ?
@@ -54,7 +53,7 @@ export default class PostItem extends Component {
                 <i className="fa fa-users fa-fw" />
               </Button>
             }
-            <Button bsStyle="danger" onClick={this.deletePost} title="Verwijderen" disabled={published}>
+            <Button bsStyle="danger" onClick={this.deletePost} title={published ? "Depubliceer dit artikel alvorens het te verwijderen" : "Verwijderen"} disabled={published}>
               <i className="fa fa-trash fa-fw" />
             </Button>
           </ButtonGroup>

@@ -1,60 +1,60 @@
-import { database } from '../firebase';
+import {firebaseDb} from '../firebase';
+import {postList} from './post-list';
 
-export const actionTypes = {
-  FETCH_POST_ERROR: "FETCH_POST_ERROR",
-  FETCH_POST_SUCCESS: "FETCH_POST_SUCCESS",
-  CREATE_POST_ERROR: "CREATE_POST_ERROR",
-  CREATE_POST_SUCCESS: "CREATE_POST_SUCCESS",
-  DELETE_POST_ERROR: "DELETE_POST_ERROR",
-  DELETE_POST_SUCCESS: "DELETE_POST_SUCCESS",
-  PUBLISH_POST_ERROR: "PUBLISH_POST_ERROR",
-  PUBLISH_POST_SUCCESS: "PUBLISH_POST_SUCCESS",
-  DEPUBLISH_POST_ERROR: "DEPUBLISH_POST_ERROR",
-  DEPUBLISH_POST_SUCCESS: "DEPUBLISH_POST_SUCCESS",
-  FETCH_POSTS_SUCCESS: "FETCH_POSTS_SUCCESS",
-}
+import {
+  LOAD_POST_ERROR,
+  LOAD_POST_SUCCESS,
+  CREATE_POST_ERROR,
+  CREATE_POST_SUCCESS,
+  UPDATE_POST_ERROR,
+  UPDATE_POST_SUCCESS,
+  DELETE_POST_ERROR,
+  DELETE_POST_SUCCESS,
+  LOAD_POSTS_SUCCESS,
+  UNLOAD_POSTS_SUCCESS
+} from './action-types';
 
-function fetchPostError(error) {
+function loadPostError(error) {
   return {
-    type: actionTypes.FETCH_POST_ERROR,
+    type: LOAD_POST_ERROR,
     payload: error
   };
 }
 
-function fetchPostSuccess(result) {
+function loadPostSuccess(post) {
   return {
-    type: actionTypes.FETCH_POST_SUCCESS,
-    payload: result
+    type: LOAD_POST_SUCCESS,
+    payload: post
   };
 }
 
-export function fetchPost(id) {
+export function loadPost(key) {
   return dispatch => {
-    database.ref("posts/" + id).once("value")
-      .then(snapshot => dispatch(fetchPostSuccess(snapshot.val())))
-      .catch(error => dispatch(fetchPostError(error)));
+    firebaseDb.ref('posts/' + key).once('value')
+      .then(snapshot => dispatch(loadPostSuccess(snapshot.val())))
+      .catch(error => dispatch(loadPostError(error)));
   };
 }
 
 function createPostError(error) {
   return {
-    type: actionTypes.CREATE_POST_ERROR,
+    type: CREATE_POST_ERROR,
     payload: error
   };
 }
 
-function createPostSuccess(post) {
+export function createPostSuccess(post) {
   return {
-    type: actionTypes.CREATE_POST_SUCCESS,
+    type: CREATE_POST_SUCCESS,
     payload: post
   };
 }
 
 export function createPost(post) {
   return dispatch => {
-    const newKey = database.ref("posts").push().key;
+    const newKey = firebaseDb.ref('posts').push().key;
 
-    database.ref("posts/" + newKey).set(post)
+    firebaseDb.ref(`posts/${newKey}`).set(post)
       .then(() => dispatch(createPostSuccess(post)))
       .catch(error => dispatch(createPostError(error)));
   };
@@ -62,87 +62,63 @@ export function createPost(post) {
 
 function deletePostError(error) {
   return {
-    type: actionTypes.DELETE_POST_ERROR,
+    type: DELETE_POST_ERROR,
     payload: error
   };
 }
 
-function deletePostSuccess() {
+export function deletePostSuccess(post) {
   return {
-    type: actionTypes.DELETE_POST_SUCCESS,
-    payload: null
+    type: DELETE_POST_SUCCESS,
+    payload: post
   };
 }
 
-export function deletePost(id) {
+export function deletePost(post) {
   return dispatch => {
-    database.ref("posts/" + id).remove()
-      .then(() => dispatch(deletePostSuccess(id)))
-      .catch((error) => dispatch(deletePostError(error)));
+    postList.remove(post.key)
+      .catch(error => dispatch(deletePostError(error)));
   };
 }
 
-function fetchPostsSuccess(result) {
+export function updatePostError(error) {
   return {
-    type: actionTypes.FETCH_POSTS_SUCCESS,
+    type: UPDATE_POST_ERROR,
+    payload: error
+  };
+}
+
+export function updatePostSuccess(post) {
+  return {
+    type: UPDATE_POST_SUCCESS,
+    payload: post
+  };
+}
+
+export function updatePost(post, changes) {
+  return dispatch => {
+    postList.update(post.key, changes)
+      .catch(error => dispatch(updatePostError(error)));
+  };
+}
+
+export function loadPostsSuccess(result) {
+  return {
+    type: LOAD_POSTS_SUCCESS,
     payload: result
   };
 }
 
-export function fetchPosts(all = false) {
+export function loadPosts() {
   return dispatch => {
-    let postsRef = database.ref("posts");
-
-    if (!all) {
-      postsRef = postsRef.orderByChild("published").equalTo(true);
-    }
-
-    postsRef.on("value", (snapshot) => {
-      dispatch(fetchPostsSuccess(snapshot.val()))
-    });
+    postList.path = 'posts';
+    postList.subscribe(dispatch);
   };
 }
 
-function publishPostError(error) {
+export function unloadPosts() {
+  postList.unsubscribe();
   return {
-    type: actionTypes.PUBLISH_POST_ERROR,
-    payload: error
-  };
-}
-
-function publishPostSuccess(id) {
-  return {
-    type: actionTypes.PUBLISH_POST_SUCCESS,
-    payload: id
-  };
-}
-
-export function publishPost(id) {
-  return dispatch => {
-    database.ref("posts/" + id + "/published").set(true)
-      .then(() => dispatch(publishPostSuccess(id)))
-      .catch(error => dispatch(publishPostError(error)));
-  };
-}
-
-function depublishPostError(error) {
-  return {
-    type: actionTypes.DEPUBLISH_POST_ERROR,
-    payload: error
-  };
-}
-
-function depublishPostSuccess(id) {
-  return {
-    type: actionTypes.DEPUBLISH_POST_SUCCESS,
-    payload: id
-  };
-}
-
-export function depublishPost(id) {
-  return dispatch => {
-    database.ref("posts/" + id + "/published").set(false)
-      .then(() => dispatch(depublishPostSuccess(id)))
-      .catch(error => dispatch(depublishPostError(error)));
+    type: UNLOAD_POSTS_SUCCESS
   };
 }

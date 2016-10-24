@@ -1,4 +1,4 @@
-import { auth } from '../firebase';
+import { firebaseAuth } from '../firebase';
 
 export const actionTypes = {
   AUTH_INIT: "AUTH_INIT",
@@ -31,7 +31,7 @@ const loginSuccess = (result) => {
 
 export const authLogin = (email, password) => {
   return dispatch => {
-    auth.signInWithEmailAndPassword(email, password)
+    firebaseAuth.signInWithEmailAndPassword(email, password)
       .then(result => dispatch(loginSuccess(result)))
       .catch(error => dispatch(loginError(error)));
   };
@@ -51,7 +51,7 @@ const logoutSuccess = () => {
 
 export const authLogout = () => {
   return (dispatch) => {
-    auth.signOut()
+    firebaseAuth.signOut()
       .then(() => dispatch(logoutSuccess()))
       .catch(error => dispatch(logoutError(error)));
   };
