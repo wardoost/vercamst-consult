@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import {Button} from 'react-bootstrap';
 import {scroller} from 'react-scroll';
-import logo from '../../assets/logo-large.svg';
-import {Blog, Contact, Participation, Themes, Who} from './sections';
-import Footer from '../components/Footer';
+import logo from '../../../assets/logo-large.svg';
+import Blog from './sections/Blog';
+import Contact from './sections/Contact';
+import Participation from './sections/Participation';
+import Themes from './sections/Themes';
+import Who from './sections/Who';
+import Footer from '../../components/Footer';
 import './style.sass';
 
 export default class Index extends Component {

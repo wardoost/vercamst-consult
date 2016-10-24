@@ -3,9 +3,9 @@ import {Grid, Row, Col, Table} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {postsActions} from '../../core/posts';
-import SplashPage from '../components/SplashPage';
-import PostItem from '../components/PostItem';
+import {postsActions} from '../../../core/posts';
+import SplashPage from '../../components/SplashPage';
+import PostItem from '../../components/PostItem';
 import './style.sass';
 
 class Management extends Component {

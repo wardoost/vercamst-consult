@@ -4,8 +4,8 @@ import {Grid, Row, Col, Form, FormGroup, FormControl, Button, Alert} from 'react
 import {browserHistory} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {authActions} from '../../core/auth';
-import Footer from '../components/Footer';
+import {authActions} from '../../../core/auth';
+import Footer from '../../components/Footer';
 import './style.sass';
 
 class Login extends Component {

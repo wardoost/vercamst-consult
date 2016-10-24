@@ -4,7 +4,7 @@ import {Link as RouterLink, browserHistory} from 'react-router';
 import {Link as ScrollLink, Events, scrollSpy} from 'react-scroll';
 import classNames from 'classnames';
 import {debounce} from 'lodash';
-import logo from '../../assets/logo.svg';
+import logo from '../../../assets/logo.svg';
 import './style.sass';
 
 const menu = [

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Grid, Row} from 'react-bootstrap';
-import ColButton from '../components/ColButton';
+import ColButton from '../../../components/ColButton';
 import './Contact.sass';
 
 export default class Contact extends Component {

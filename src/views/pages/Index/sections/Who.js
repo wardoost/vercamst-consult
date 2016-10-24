@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col} from 'react-bootstrap';
-import VerticalScroller from '../components/VerticalScroller';
-import profile from '../../assets/profile.jpg'
+import VerticalScroller from '../../../components/VerticalScroller';
+import profile from '../../../../assets/profile.jpg'
 import './Who.sass';
 
 export default class Who extends Component {

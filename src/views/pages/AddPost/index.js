@@ -4,9 +4,9 @@ import {browserHistory} from 'react-router';
 import {Grid, Row, Col, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Footer from '../components/Footer';
-import Editor from '../components/Editor';
-import {postsActions} from '../../core/posts';
+import Footer from '../../components/Footer';
+import Editor from '../../components/Editor';
+import {postsActions} from '../../../core/posts';
 import './style.sass';
 
 class AddPost extends Component {

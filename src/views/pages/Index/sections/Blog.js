@@ -3,8 +3,8 @@ import {Grid, Row, Col, Clearfix, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {postsActions} from '../../core/posts';
-import ColButton from '../components/ColButton';
+import {postsActions} from '../../../../core/posts';
+import ColButton from '../../../components/ColButton';
 import './Blog.sass';
 
 moment.locale('nl');
