@@ -4,7 +4,7 @@ import {Grid, Row, Col, Form, FormGroup, FormControl, Button, Alert} from 'react
 import {browserHistory} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {authLogin} from '../../core/auth/actions';
+import {authActions} from '../../core/auth';
 import Footer from '../components/Footer';
 import './Login.sass';
 
@@ -80,7 +80,9 @@ const mapStateToProps = (store) => {
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({authLogin: authLogin}, dispatch)
+  return bindActionCreators({
+    authLogin: authActions.authLogin
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Login);

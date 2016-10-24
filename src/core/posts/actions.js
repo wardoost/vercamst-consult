@@ -1,6 +1,5 @@
 import {firebaseDb} from '../firebase';
 import {postList} from './post-list';
-
 import {
   LOAD_POST_ERROR,
   LOAD_POST_SUCCESS,

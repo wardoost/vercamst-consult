@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Router as ReactRouter, Route, IndexRoute, browserHistory} from 'react-router';
-import {isAuthenticated} from '../core/auth/selectors';
+import {isAuthenticated} from '../core/auth';
 import Layout from './components/Layout';
 import Index from './pages/Index';
 import Post from './pages/Post';

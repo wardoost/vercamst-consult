@@ -3,7 +3,7 @@ import {Grid, Row, Col, Table} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {loadPosts, unloadPosts, deletePost, updatePost} from '../../core/post/actions';
+import {postsActions} from '../../core/posts';
 import SplashPage from '../components/SplashPage';
 import PostItem from '../components/PostItem';
 import './Management.sass';
@@ -88,7 +88,12 @@ const mapStateToProps = (store) => {
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({loadPosts, unloadPosts, deletePost, updatePost}, dispatch)
+  return bindActionCreators({
+    loadPosts: postsActions.loadPosts,
+    unloadPosts: postsActions.unloadPosts,
+    deletePost: postsActions.deletePost,
+    updatePost: postsActions.updatePost
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Management);

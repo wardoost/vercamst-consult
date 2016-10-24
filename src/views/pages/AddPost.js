@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Footer from '../components/Footer';
 import Editor from '../components/Editor';
-import {createPost} from '../../core/post/actions';
+import {postsActions} from '../../core/posts';
 import './AddPost.sass';
 
 class AddPost extends Component {
@@ -73,7 +73,9 @@ const mapStateToProps = (store) => {
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({createPost}, dispatch)
+  return bindActionCreators({
+    createPost: postsActions.createPost
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(AddPost);

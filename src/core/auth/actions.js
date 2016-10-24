@@ -1,35 +1,34 @@
 import { firebaseAuth } from '../firebase';
+import {
+  AUTH_INIT,
+  AUTH_LOGIN_ERROR,
+  AUTH_LOGIN_SUCCESS,
+  AUTH_LOGOUT_ERROR,
+  AUTH_LOGOUT_SUCCESS
+} from './action-types';
 
-export const actionTypes = {
-  AUTH_INIT: "AUTH_INIT",
-  AUTH_LOGIN_ERROR: "AUTH_LOGIN_ERROR",
-  AUTH_LOGIN_SUCCESS: "AUTH_LOGIN_SUCCESS",
-  AUTH_LOGOUT_ERROR: "AUTH_LOGOUT_ERROR",
-  AUTH_LOGOUT_SUCCESS: "AUTH_LOGOUT_SUCCESS",
-}
-
-export const authInit = (user) => {
+export function authInit(user) {
   return {
-    type: actionTypes.AUTH_INIT,
+    type: AUTH_INIT,
     payload: user
   };
 }
 
-const loginError = (error) => {
+function loginError(error) {
   return {
-    type: actionTypes.AUTH_LOGIN_ERROR,
+    type: AUTH_LOGIN_ERROR,
     payload: error
   };
 }
 
-const loginSuccess = (result) => {
+function loginSuccess(result) {
   return {
-    type: actionTypes.AUTH_LOGIN_SUCCESS,
+    type: AUTH_LOGIN_SUCCESS,
     payload: result
   };
 }
 
-export const authLogin = (email, password) => {
+export function authLogin(email, password) {
   return dispatch => {
     firebaseAuth.signInWithEmailAndPassword(email, password)
       .then(result => dispatch(loginSuccess(result)))
@@ -37,19 +36,19 @@ export const authLogin = (email, password) => {
   };
 }
 
-const logoutError = () => {
+function logoutError() {
   return {
-    type: actionTypes.AUTH_LOGOUT_ERROR
+    type: AUTH_LOGOUT_ERROR
   };
 }
 
-const logoutSuccess = () => {
+function logoutSuccess() {
   return {
-    type: actionTypes.AUTH_LOGOUT_SUCCESS
+    type: AUTH_LOGOUT_SUCCESS
   };
 }
 
-export const authLogout = () => {
+export function authLogout() {
   return (dispatch) => {
     firebaseAuth.signOut()
       .then(() => dispatch(logoutSuccess()))

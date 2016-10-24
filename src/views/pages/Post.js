@@ -3,7 +3,7 @@ import {Grid, Row, Col} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {loadPost} from '../../core/post/actions';
+import {postsActions} from '../../core/posts';
 import SplashPage from '../components/SplashPage';
 import './Post.sass';
 
@@ -52,7 +52,9 @@ const mapStateToProps = (store) => {
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({loadPost}, dispatch)
+  return bindActionCreators({
+    loadPost: postsActions.loadPost
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Post);

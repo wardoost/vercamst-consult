@@ -3,7 +3,7 @@ import {Grid, Row, Col, Clearfix, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {loadPosts, unloadPosts} from '../../core/post/actions';
+import {postsActions} from '../../core/posts';
 import ColButton from '../components/ColButton';
 import './Blog.sass';
 
@@ -89,7 +89,10 @@ const mapStateToProps = (store) => {
 }
 
 const matchDispatchToProps = (dispatch) =>{
-  return bindActionCreators({loadPosts, unloadPosts}, dispatch)
+  return bindActionCreators({
+    loadPosts: postsActions.loadPosts,
+    unloadPosts: postsActions.unloadPosts
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Blog);

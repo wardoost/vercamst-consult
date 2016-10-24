@@ -3,7 +3,7 @@ import {Grid, Row, Col} from 'react-bootstrap';
 import {browserHistory} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {authLogout} from '../../core/auth/actions';
+import {authActions} from '../../core/auth';
 import Footer from '../components/Footer';
 
 class Logout extends Component {
@@ -28,7 +28,9 @@ class Logout extends Component {
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({authLogout: authLogout}, dispatch)
+  return bindActionCreators({
+    authLogout: authActions.authLogout
+  }, dispatch)
 }
 
 export default connect(null, matchDispatchToProps)(Logout);

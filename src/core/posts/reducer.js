@@ -17,25 +17,23 @@ const initialState = {
   error: null,
 }
 
-export default (state = initialState, action) => {
-  switch (action.type) {
+export function postsReducer(state = initialState, {type, payload}) {
+  switch (type) {
     case LOAD_POST_ERROR:
     case CREATE_POST_ERROR:
     case UPDATE_POST_ERROR:
     case DELETE_POST_ERROR:
-      return {...state, error: action.payload}
+      return {...state, error: payload}
 
     case LOAD_POST_SUCCESS:
-      return {...state, post: action.payload, error: null}
-
     case CREATE_POST_SUCCESS:
-      return {...state, post: action.payload, error: null}
+      return {...state, post: payload, error: null}
 
     case UPDATE_POST_SUCCESS:
       return {
         ...state,
         postList: state.postList.map(post => {
-          return post.key === action.payload.key ? action.payload : post;
+          return post.key === payload.key ? payload : post;
         }),
         error: null
       }
@@ -43,12 +41,12 @@ export default (state = initialState, action) => {
     case DELETE_POST_SUCCESS:
       return {
         ...state,
-        postList: state.postList.filter(post => post.key !== action.payload.key),
+        postList: state.postList.filter(post => post.key !== payload.key),
         error: null
       }
 
     case LOAD_POSTS_SUCCESS:
-      return {...state, postList: action.payload, post: null, error: null}
+      return {...state, postList: payload, post: null, error: null}
 
     case UNLOAD_POSTS_SUCCESS:
       return {...state, postList: [], error: null}

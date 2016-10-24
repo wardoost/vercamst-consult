@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import store from './core/store';
-import {firebaseAuth} from './core/firebase';
-import {authInit} from './core/auth/actions';
+import {initAuth} from './core/auth';
 import Main from './views/Main';
 
 const render = (Main) => {
@@ -12,19 +11,6 @@ const render = (Main) => {
   );
 }
 
-const initializeAuth = (dispatch) => {
-  return new Promise((resolve, reject) => {
-    const unsub = firebaseAuth.onAuthStateChanged(
-      user => {
-        dispatch(authInit(user));
-        unsub();
-        resolve();
-      },
-      error => reject(error)
-    );
-  });
-}
-
-initializeAuth(store.dispatch)
+initAuth(store.dispatch)
   .then(() => render(Main))
   .catch(error => console.error(error));
