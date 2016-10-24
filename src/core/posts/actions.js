@@ -1,3 +1,4 @@
+import slug from 'slug';
 import {firebaseDb} from '../firebase';
 import {postList} from './post-list';
 import {
@@ -49,13 +50,19 @@ export function createPostSuccess(post) {
   };
 }
 
-export function createPost(post) {
+export function createPost(post, duplicateSlug = null) {
   return dispatch => {
-    const newKey = firebaseDb.ref('posts').push().key;
+    let newSlug = duplicateSlug ? duplicateSlug + '-2' : slug(post.title, {lower: true});
 
-    firebaseDb.ref(`posts/${newKey}`).set(post)
-      .then(() => dispatch(createPostSuccess(post)))
-      .catch(error => dispatch(createPostError(error)));
+    firebaseDb.ref('posts').once('value', snapshot => {
+      if (!snapshot.hasChild(newSlug)) {
+        firebaseDb.ref('posts/' + newSlug).set(post)
+          .then(() => dispatch(createPostSuccess(post)))
+          .catch(error => dispatch(createPostError(error)));
+      } else {
+        dispatch(createPost(post, newSlug))
+      }
+    })
   };
 }
 
