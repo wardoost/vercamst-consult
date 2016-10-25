@@ -9,29 +9,29 @@ import './style.sass';
 
 const menu = [
   {
-    title: "Wie",
-    path: "/",
-    to: "wie"
+    title: 'Wie',
+    path: '/',
+    to: 'wie'
   },
   {
-    title: "Thema's",
-    path: "/",
-    to: "themas"
+    title: 'Thema\'s',
+    path: '/',
+    to: 'themas'
   },
   {
-    title: "Werknemersparticipatie",
-    path: "/",
-    to: "werknemersparticipatie"
+    title: 'Werknemersparticipatie',
+    path: '/',
+    to: 'werknemersparticipatie'
   },
   {
-    title: "Blog",
-    path: "/",
-    to: "blog"
+    title: 'Blog',
+    path: '/',
+    to: 'blog'
   },
   {
-    title: "Contact",
-    path: "/",
-    to: "contact"
+    title: 'Contact',
+    path: '/',
+    to: 'contact'
   }
 ]
 
@@ -51,24 +51,29 @@ class Navigation extends Component {
     this.handleSetActive = debounce(this.handleSetActive.bind(this), 50);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
+    this.onMenuLinkClick = this.onMenuLinkClick.bind(this);
   }
+
   toggleMenu() {
     this.setState({
       menuOpen: !this.state.menuOpen
     });
   }
+
   closeMenu() {
     this.setState({
       menuOpen: false
     });
   }
+
   shouldShowLogo() {
     const currentPath = document.location.pathname,
-          atHomePage = (currentPath === "/"),
+          atHomePage = (currentPath === '/'),
           overSplash = (window.scrollY > window.innerHeight / 3 - 50);
 
     return !atHomePage ? true : overSplash
   }
+
   atScrollEnd() {
     const body = document.body,
           html = document.documentElement,
@@ -76,6 +81,13 @@ class Navigation extends Component {
 
     return window.scrollY > 0 && (window.scrollY >= maxScrollY - window.innerHeight / 4);
   }
+
+  onMenuLinkClick(url, e) {
+    e.preventDefault();
+    this.closeMenu();
+    browserHistory.push(url);
+  }
+
   handleSetActive(to) {
     if(!this.state.goto){
       this.setState({
@@ -83,20 +95,22 @@ class Navigation extends Component {
       });
     }
   }
+
   handleScroll(e) {
     this.setState({
       showLogo: this.shouldShowLogo(),
       scrollEnd: this.atScrollEnd()
     });
   }
+
   componentDidMount() {
     const self = this;
 
     Events.scrollEvent.register('begin', function(to, element) {
       const currentPath = self.props.location.pathname;
 
-      if (to !== "top" && to !== "post-top") {
-        browserHistory.replace(currentPath + "#" + to);
+      if (to !== 'top' && to !== 'post-top') {
+        browserHistory.replace(currentPath + '#' + to);
       }
 
       self.setState({
@@ -117,19 +131,21 @@ class Navigation extends Component {
 
      window.addEventListener('scroll', this.handleScroll);
   }
+
   componentWillUnmount() {
     Events.scrollEvent.remove('begin');
     Events.scrollEvent.remove('end');
 
     window.removeEventListener('scroll', this.handleScroll);
   }
+
   getMenu() {
     return menu.map((item, i) => {
       const {path, to, title} = item,
             currentPath = this.props.location.pathname,
             pathMatched = (path === currentPath),
             activeScrollLinkMatched = ((this.state.goto ? this.state.goto : this.state.activeScrollLink) === to),
-            url = to ? path + "#" + to : path,
+            url = to ? path + '#' + to : path,
             lastItemActive = this.atScrollEnd();
 
       if (pathMatched && to) {
@@ -152,12 +168,13 @@ class Navigation extends Component {
 
         return(
           <li key={url} role="presentation" className={classNames({"active": isActive})}>
-            <RouterLink to={url} className="nav-link" role="button">{title}</RouterLink>
+            <a className="nav-link" role="button" onClick={this.onMenuLinkClick.bind(null, url)}>{title}</a>
           </li>
         )
       }
     })
   }
+
   render() {
     return (
       <nav className="navbar navbar-default navbar-fixed-top">
@@ -196,9 +213,9 @@ class Navigation extends Component {
             {this.getMenu()}
             {this.props.uid ?
               <li role="presentation" className={classNames({"active": this.props.location.pathname === "/management"})}>
-                <RouterLink to="/management" title="Beheer" className="nav-link" role="button">
+                <a title="Beheer" className="nav-link"  onClick={this.onMenuLinkClick.bind(null, "/management")} role="button">
                   <i className="fa fa-cog"/>
-                </RouterLink>
+                </a>
               </li>
             : null}
           </ul>
