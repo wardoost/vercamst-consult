@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {postActions} from '../../../core/post';
 import SplashPage from '../../components/SplashPage';
+import Loading from '../../components/Loading';
 import './style.sass';
 
 moment.locale('nl');
@@ -42,11 +43,7 @@ class Post extends Component {
       )
     } else {
       return (
-        <main className="content-container loading">
-          <p className="text-center">
-            <i className="fa fa-circle-o-notch fa-3x fa-spin" />
-          </p>
-        </main>
+        <Loading fullPage={true} />
       )
     }
   }

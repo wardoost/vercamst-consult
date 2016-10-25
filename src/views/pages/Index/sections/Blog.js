@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import {blogActions} from '../../../../core/blog';
 import ColButton from '../../../components/ColButton';
+import Loading from '../../../components/Loading';
 import './Blog.sass';
 
 moment.locale('nl');
@@ -64,9 +65,7 @@ class Blog extends Component {
             {this.props.posts.length ?
               this.createPosts()
             :
-              <p className="text-center">
-                <i className="fa fa-circle-o-notch fa-3x fa-spin" />
-              </p>
+              <Loading />
             }
           </Row>
           <Row>

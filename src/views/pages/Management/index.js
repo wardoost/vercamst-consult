@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {managementActions} from '../../../core/management';
 import SplashPage from '../../components/SplashPage';
+import Loading from '../../components/Loading';
 import PostItem from '../../components/PostItem';
 import './style.sass';
 
@@ -45,7 +46,7 @@ class Management extends Component {
       );
     })
   }
-  
+
   render() {
     return (
       <SplashPage
@@ -75,9 +76,7 @@ class Management extends Component {
                     </tbody>
                   </Table>
                 :
-                  <p className="text-center">
-                    <i className="fa fa-circle-o-notch fa-3x fa-spin" />
-                  </p>
+                  <Loading />
                 }
               </Col>
             </Row>
