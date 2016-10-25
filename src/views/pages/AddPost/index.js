@@ -20,6 +20,7 @@ class AddPost extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.editorChange = (value) => this.setState({body: value});
   }
+
   handleSubmit(e) {
     e.preventDefault();
 
@@ -33,11 +34,17 @@ class AddPost extends Component {
 
     this.props.createPost(post);
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.post) {
       browserHistory.push('/management')
     }
   }
+
+  componentWillUnmount() {
+    this.props.unloadPost();
+  }
+
   render() {
     return (
       <main className="content-container add-post">

@@ -5,6 +5,7 @@ import {
   LOAD_POST_SUCCESS,
   CREATE_POST_ERROR,
   CREATE_POST_SUCCESS,
+  UNLOAD_POST_SUCCESS,
 } from './action-types';
 
 function loadPostError(error) {
@@ -56,5 +57,11 @@ export function createPost(post, duplicateSlug = null) {
         dispatch(createPost(post, newSlug))
       }
     })
+  };
+}
+
+export function unloadPost() {
+  return {
+    type: UNLOAD_POST_SUCCESS
   };
 }

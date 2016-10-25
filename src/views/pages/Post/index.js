@@ -10,11 +10,14 @@ import './style.sass';
 moment.locale('nl');
 
 class Post extends Component {
-
   componentWillMount() {
     this.props.loadPost(this.props.params.id);
   }
-  
+
+  componentWillUnmount() {
+    this.props.unloadPost();
+  }
+
   render() {
     if (this.props.post) {
       const {title, createdAt, body} = this.props.post;
