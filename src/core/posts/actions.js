@@ -1,6 +1,7 @@
 import slug from 'slug';
 import {firebaseDb} from '../firebase';
-import {postList} from './post-list';
+import {postsList} from './posts-list';
+import {publishedPostsList} from './published-posts-list';
 import {
   LOAD_POST_ERROR,
   LOAD_POST_SUCCESS,
@@ -11,7 +12,9 @@ import {
   DELETE_POST_ERROR,
   DELETE_POST_SUCCESS,
   LOAD_POSTS_SUCCESS,
-  UNLOAD_POSTS_SUCCESS
+  UNLOAD_POSTS_SUCCESS,
+  LOAD_PUBLISHED_POSTS_SUCCESS,
+  UNLOAD_PUBLISHED_POSTS_SUCCESS,
 } from './action-types';
 
 function loadPostError(error) {
@@ -82,7 +85,7 @@ export function deletePostSuccess(post) {
 
 export function deletePost(post) {
   return dispatch => {
-    postList.remove(post.key)
+    postsList.remove(post.key)
       .catch(error => dispatch(deletePostError(error)));
   };
 }
@@ -103,7 +106,7 @@ export function updatePostSuccess(post) {
 
 export function updatePost(post, changes) {
   return dispatch => {
-    postList.update(post.key, changes)
+    postsList.update(post.key, changes)
       .catch(error => dispatch(updatePostError(error)));
   };
 }
@@ -117,14 +120,37 @@ export function loadPostsSuccess(result) {
 
 export function loadPosts() {
   return dispatch => {
-    postList.path = 'posts';
-    postList.subscribe(dispatch);
+    postsList.subscribe(dispatch);
   };
 }
 
 export function unloadPosts() {
-  postList.unsubscribe();
+  postsList.unsubscribe();
   return {
     type: UNLOAD_POSTS_SUCCESS
+  };
+}
+
+export function loadPublishedPostsSuccess(result) {
+  return {
+    type: LOAD_PUBLISHED_POSTS_SUCCESS,
+    payload: result
+  };
+}
+
+export function loadPublishedPosts() {
+  return dispatch => {
+    publishedPostsList.filter = {
+      attribute: "published",
+      value: true
+    }
+    publishedPostsList.subscribe(dispatch);
+  };
+}
+
+export function unloadPublishedPosts() {
+  publishedPostsList.unsubscribe();
+  return {
+    type: UNLOAD_PUBLISHED_POSTS_SUCCESS
   };
 }

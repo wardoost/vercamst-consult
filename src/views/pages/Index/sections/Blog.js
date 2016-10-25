@@ -11,11 +11,11 @@ moment.locale('nl');
 
 class Blog extends Component {
   componentWillMount() {
-    this.props.loadPosts();
+    this.props.loadPublishedPosts();
   }
 
   componentWillUnmount() {
-    this.props.unloadPosts();
+    this.props.unloadPublishedPosts();
   }
 
   checkCreateClearfix(i) {
@@ -90,8 +90,8 @@ const mapStateToProps = (store) => {
 
 const matchDispatchToProps = (dispatch) =>{
   return bindActionCreators({
-    loadPosts: postsActions.loadPosts,
-    unloadPosts: postsActions.unloadPosts
+    loadPublishedPosts: postsActions.loadPublishedPosts,
+    unloadPublishedPosts: postsActions.unloadPublishedPosts
   }, dispatch)
 }
 

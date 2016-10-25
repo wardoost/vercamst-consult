@@ -1,9 +1,10 @@
 import { firebaseDb } from './firebase';
 
 export class FirebaseList {
-  constructor(actions, path = null) {
+  constructor(actions, path = null, filter = null) {
     this._actions = actions;
     this._path = path;
+    this._filter = filter;
   }
 
   get path() {
@@ -12,6 +13,14 @@ export class FirebaseList {
 
   set path(value) {
     this._path = value;
+  }
+
+  get filter() {
+    return this._filter;
+  }
+
+  set filter(value) {
+    this._filter = value;
   }
 
   push(value) {
@@ -46,6 +55,10 @@ export class FirebaseList {
     let ref = firebaseDb.ref(this._path);
     let initialized = false;
     let list = [];
+
+    if (this._filter) {
+      ref = ref.orderByChild(this._filter.attribute).equalTo(this._filter.value);
+    }
 
     ref.once('value', () => {
       initialized = true;

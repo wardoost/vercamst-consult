@@ -8,7 +8,9 @@ import {
   DELETE_POST_ERROR,
   DELETE_POST_SUCCESS,
   LOAD_POSTS_SUCCESS,
-  UNLOAD_POSTS_SUCCESS
+  UNLOAD_POSTS_SUCCESS,
+  LOAD_PUBLISHED_POSTS_SUCCESS,
+  UNLOAD_PUBLISHED_POSTS_SUCCESS,
 } from './action-types';
 
 const initialState = {
@@ -46,9 +48,11 @@ export function postsReducer(state = initialState, {type, payload}) {
       }
 
     case LOAD_POSTS_SUCCESS:
+    case LOAD_PUBLISHED_POSTS_SUCCESS:
       return {...state, postList: payload, post: null, error: null}
 
     case UNLOAD_POSTS_SUCCESS:
+    case UNLOAD_PUBLISHED_POSTS_SUCCESS:
       return {...state, postList: [], error: null}
 
     default:
