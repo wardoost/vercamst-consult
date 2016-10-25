@@ -46,7 +46,7 @@ function createPostError(error) {
   };
 }
 
-export function createPostSuccess(post) {
+function createPostSuccess(post) {
   return {
     type: CREATE_POST_SUCCESS,
     payload: post
@@ -90,7 +90,7 @@ export function deletePost(post) {
   };
 }
 
-export function updatePostError(error) {
+function updatePostError(error) {
   return {
     type: UPDATE_POST_ERROR,
     payload: error

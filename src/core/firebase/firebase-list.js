@@ -1,71 +1,54 @@
-import { firebaseDb } from './firebase';
-
 export class FirebaseList {
-  constructor(actions, path = null, filter = null) {
+  constructor(actions, ref) {
     this._actions = actions;
-    this._path = path;
-    this._filter = filter;
+    this._ref = ref;
   }
 
-  get path() {
-    return this._path;
+  get ref() {
+    return this._ref;
   }
 
-  set path(value) {
-    this._path = value;
-  }
-
-  get filter() {
-    return this._filter;
-  }
-
-  set filter(value) {
-    this._filter = value;
+  set ref(value) {
+    this._ref = value;
   }
 
   push(value) {
     return new Promise((resolve, reject) => {
-      firebaseDb.ref(this._path)
-        .push(value, error => error ? reject(error) : resolve());
+      this._ref.push(value, error => error ? reject(error) : resolve());
     });
   }
 
   remove(key) {
     return new Promise((resolve, reject) => {
-      firebaseDb.ref(`${this._path}/${key}`)
+      this._ref.child(key)
         .remove(error => error ? reject(error) : resolve());
     });
   }
 
   set(key, value) {
     return new Promise((resolve, reject) => {
-      firebaseDb.ref(`${this._path}/${key}`)
+      this._ref.child(key)
         .set(value, error => error ? reject(error) : resolve());
     });
   }
 
   update(key, value) {
     return new Promise((resolve, reject) => {
-      firebaseDb.ref(`${this._path}/${key}`)
+      this._ref.child(key)
         .update(value, error => error ? reject(error) : resolve());
     });
   }
 
   subscribe(emit) {
-    let ref = firebaseDb.ref(this._path);
     let initialized = false;
     let list = [];
 
-    if (this._filter) {
-      ref = ref.orderByChild(this._filter.attribute).equalTo(this._filter.value);
-    }
-
-    ref.once('value', () => {
+    this._ref.once('value', () => {
       initialized = true;
       emit(this._actions.onLoad(list));
     });
 
-    ref.on('child_added', snapshot => {
+    this._ref.on('child_added', snapshot => {
       if (initialized) {
         emit(this._actions.onAdd(this.unwrapSnapshot(snapshot)));
       }
@@ -74,15 +57,15 @@ export class FirebaseList {
       }
     });
 
-    ref.on('child_changed', snapshot => {
+    this._ref.on('child_changed', snapshot => {
       emit(this._actions.onChange(this.unwrapSnapshot(snapshot)));
     });
 
-    ref.on('child_removed', snapshot => {
+    this._ref.on('child_removed', snapshot => {
       emit(this._actions.onRemove(this.unwrapSnapshot(snapshot)));
     });
 
-    this._unsubscribe = () => ref.off();
+    this._unsubscribe = () => this._ref.off();
   }
 
   unsubscribe() {
