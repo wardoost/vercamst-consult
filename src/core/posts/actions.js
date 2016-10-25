@@ -140,10 +140,6 @@ export function loadPublishedPostsSuccess(result) {
 
 export function loadPublishedPosts() {
   return dispatch => {
-    publishedPostsList.filter = {
-      attribute: "published",
-      value: true
-    }
     publishedPostsList.subscribe(dispatch);
   };
 }

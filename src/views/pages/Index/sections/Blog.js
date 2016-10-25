@@ -36,9 +36,9 @@ class Blog extends Component {
     if (this.props.postList.length) {
       return posts.map((post, index) => {
         const {title, body, createdAt} = post,
-              humanDate = moment(createdAt).format("dddd D MMMM YYYY"),
+              humanDate = moment(createdAt).format('dddd D MMMM YYYY'),
               summaryLength = 300,
-              strippedBody = body.replace(/\\n/gm, ' ble ').replace(/<(?:.|\n)*?>/gm, ''),
+              strippedBody = body.replace(/\n/gm, ' ').replace(/<(?:.|\n)*?>/gm, ''),
               summary = strippedBody.length > summaryLength ? strippedBody.substring(0, summaryLength) + "..." : strippedBody;
 
         return ([

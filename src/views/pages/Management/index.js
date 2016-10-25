@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Grid, Row, Col, Table} from 'react-bootstrap';
+import {Grid, Row, Col, Table, Alert} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -9,6 +9,21 @@ import PostItem from '../../components/PostItem';
 import './style.sass';
 
 class Management extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showAlert: true
+    }
+
+    this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
+  }
+
+  handleAlertDismiss() {
+    this.setState({
+      showAlert: false
+    })
+  }
 
   componentWillMount() {
     this.props.loadPosts();
@@ -39,6 +54,11 @@ class Management extends Component {
         title="Blog beheer"
         splashHeight={0.3}>
         <section className="management-content">
+          { this.props.error && this.state.showAlert ?
+            <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+              <p>{this.props.error.message}</p>
+            </Alert>
+          : null }
           <Grid>
             <Row>
               <Col md={12}>
