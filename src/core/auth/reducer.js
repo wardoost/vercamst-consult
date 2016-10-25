@@ -11,7 +11,7 @@ const initialState = {
   error: null
 };
 
-export function authReducer(state = initialState, {type, payload}) {
+export default function(state = initialState, {type, payload}) {
   switch (type) {
     case AUTH_INIT:
       return {...state, uid: payload ? payload.uid : null};

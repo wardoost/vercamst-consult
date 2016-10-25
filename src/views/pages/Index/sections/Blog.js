@@ -3,7 +3,7 @@ import {Grid, Row, Col, Clearfix, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {postsActions} from '../../../../core/posts';
+import {blogActions} from '../../../../core/blog';
 import ColButton from '../../../components/ColButton';
 import './Blog.sass';
 
@@ -31,34 +31,24 @@ class Blog extends Component {
   }
 
   createPosts() {
-    const posts = this.props.postList;
+    return this.props.posts.map((post, index) => {
+      const {title, body, createdAt} = post,
+            humanDate = moment(createdAt).format('dddd D MMMM YYYY'),
+            summaryLength = 300,
+            strippedBody = body.replace(/\n/gm, ' ').replace(/<(?:.|\n)*?>/gm, ''),
+            summary = strippedBody.length > summaryLength ? strippedBody.substring(0, summaryLength) + "..." : strippedBody;
 
-    if (this.props.postList.length) {
-      return posts.map((post, index) => {
-        const {title, body, createdAt} = post,
-              humanDate = moment(createdAt).format('dddd D MMMM YYYY'),
-              summaryLength = 300,
-              strippedBody = body.replace(/\n/gm, ' ').replace(/<(?:.|\n)*?>/gm, ''),
-              summary = strippedBody.length > summaryLength ? strippedBody.substring(0, summaryLength) + "..." : strippedBody;
-
-        return ([
-          <ColButton sm={6} md={4} className="article" key={post.key} to={"posts/" + post.key} action="Lees meer" >
-            <h2>{title}</h2>
-            {createdAt ? <p className="text-muted">{humanDate}</p> : null}
-            <div className="summary">
-              <p>{summary}</p>
-            </div>
-          </ColButton>,
-          this.checkCreateClearfix(index + 1)
-        ])
-      })
-    } else {
-      return (
-        <p className="text-center">
-          <i className="fa fa-circle-o-notch fa-3x fa-spin" />
-        </p>
-      )
-    }
+      return ([
+        <ColButton sm={6} md={4} className="article" key={post.key} to={"posts/" + post.key} action="Lees meer" >
+          <h2>{title}</h2>
+          {createdAt ? <p className="text-muted">{humanDate}</p> : null}
+          <div className="summary">
+            <p>{summary}</p>
+          </div>
+        </ColButton>,
+        this.checkCreateClearfix(index + 1)
+      ])
+    })
   }
 
   render() {
@@ -71,7 +61,13 @@ class Blog extends Component {
             </Col>
           </Row>
           <Row>
-            {this.createPosts()}
+            {this.props.posts.length ?
+              this.createPosts()
+            :
+              <p className="text-center">
+                <i className="fa fa-circle-o-notch fa-3x fa-spin" />
+              </p>
+            }
           </Row>
           <Row>
             <Col md={12} className="text-center">
@@ -85,14 +81,11 @@ class Blog extends Component {
 }
 
 const mapStateToProps = (store) => {
-  return store.posts;
+  return store.blog;
 }
 
-const matchDispatchToProps = (dispatch) =>{
-  return bindActionCreators({
-    loadPublishedPosts: postsActions.loadPublishedPosts,
-    unloadPublishedPosts: postsActions.unloadPublishedPosts
-  }, dispatch)
+const matchDispatchToProps = (dispatch) => {
+  return bindActionCreators({...blogActions}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Blog);

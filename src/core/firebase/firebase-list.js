@@ -56,7 +56,6 @@ export class FirebaseList {
     let initialized = false;
     let list = [];
 
-    console.log(this._filter);
     if (this._filter) {
       const {orderByChild, equalTo} = this._filter;
       ref = ref.orderByChild(orderByChild).equalTo(equalTo);

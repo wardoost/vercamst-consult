@@ -1,8 +1,8 @@
 import {firebaseAuth} from '../firebase';
 import * as authActions from './actions';
+import authReducer from './reducer';
 
-export {authActions};
-export {authReducer} from './reducer';
+export {authActions, authReducer};
 export {isAuthenticated} from './selectors';
 
 export function initAuth(dispatch) {

@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import Footer from '../../components/Footer';
 import Editor from '../../components/Editor';
-import {postsActions} from '../../../core/posts';
+import {postActions} from '../../../core/post';
 import './style.sass';
 
 class AddPost extends Component {
@@ -69,13 +69,11 @@ class AddPost extends Component {
 }
 
 const mapStateToProps = (store) => {
-  return store.posts
+  return store.post
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    createPost: postsActions.createPost
-  }, dispatch)
+  return bindActionCreators({...postActions}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(AddPost);

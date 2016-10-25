@@ -3,7 +3,7 @@ import {Grid, Row, Col, Table, Alert} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {postsActions} from '../../../core/posts';
+import {managementActions} from '../../../core/management';
 import SplashPage from '../../components/SplashPage';
 import PostItem from '../../components/PostItem';
 import './style.sass';
@@ -34,9 +34,7 @@ class Management extends Component {
   }
 
   createPosts() {
-    const posts = this.props.postList;
-
-    return posts.map(post => {
+    return this.props.posts.map(post => {
       return (
         <PostItem
           key={post.key}
@@ -47,6 +45,7 @@ class Management extends Component {
       );
     })
   }
+  
   render() {
     return (
       <SplashPage
@@ -62,7 +61,7 @@ class Management extends Component {
           <Grid>
             <Row>
               <Col md={12}>
-                {this.props.postList.length ?
+                {this.props.posts.length ?
                   <Table responsive>
                     <thead>
                       <tr>
@@ -104,16 +103,11 @@ class Management extends Component {
 }
 
 const mapStateToProps = (store) => {
-  return store.posts;
+  return store.management;
 }
 
 const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    loadPosts: postsActions.loadPosts,
-    unloadPosts: postsActions.unloadPosts,
-    deletePost: postsActions.deletePost,
-    updatePost: postsActions.updatePost
-  }, dispatch)
+  return bindActionCreators({...managementActions}, dispatch)
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(Management);
