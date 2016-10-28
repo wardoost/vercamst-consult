@@ -1,4 +1,4 @@
-import { firebaseDb } from './firebase';
+import {firebaseDb} from './firebase';
 
 export class FirebaseList {
   constructor(actions, path = null, filter = null) {

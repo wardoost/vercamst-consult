@@ -68,11 +68,15 @@ class Blog extends Component {
               <Loading />
             }
           </Row>
-          <Row>
-            <Col md={12} className="text-center">
-              <Button className="show-more" bsStyle="primary">Toon meer</Button>
-            </Col>
-          </Row>
+          {!this.props.onLastPage ?
+            <Row>
+              <Col md={12} className="text-center">
+                <Button className="show-more" bsStyle="primary" onClick={this.props.loadMorePublishedPosts}>Toon meer</Button>
+              </Col>
+            </Row>
+          :
+            null
+          }
         </Grid>
       </section>
     )

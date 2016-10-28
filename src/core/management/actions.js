@@ -1,5 +1,7 @@
 import {postList} from './post-list';
 import {
+  CREATE_POST_ERROR,
+  CREATE_POST_SUCCESS,
   UPDATE_POST_ERROR,
   UPDATE_POST_SUCCESS,
   DELETE_POST_ERROR,
@@ -8,7 +10,26 @@ import {
   UNLOAD_POSTS_SUCCESS,
 } from './action-types';
 
+function createPostError(error) {
+  return {
+    type: CREATE_POST_ERROR,
+    payload: error
+  };
+}
 
+export function createPostSuccess(result) {
+  return {
+    type: CREATE_POST_SUCCESS,
+    payload: result
+  }
+}
+
+export function createPost(post) {
+  return dispatch => {
+    postList.push(post)
+      .catch(error => dispatch(createPostError(error)));
+  };
+}
 
 function deletePostError(error) {
   return {
