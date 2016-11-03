@@ -9,35 +9,15 @@ export default class Who extends Component {
     return (
       <section id="wie">
         <Grid>
-          <Row>
-            <Col md={12}>
-              <h1>Aangename kennismaking!</h1>
-            </Col>
-          </Row>
           <Row className="row-profile">
             <Col sm={4} className="profile-pic">
               <img src={profile} alt="Jan Vercamst" />
             </Col>
             <Col sm={8} className="profile-txt">
-              <ul>
-                <li>Jan Vercamst geboren op 23 mei 1954</li>
-                <li>Zaakvoerder van BVBA Vercamst Consult, opgericht op 2 juni 2016</li>
-                <li>
-                  Loopbaan:
-                  <ul>
-                    <li>RVA : 1975 – 1978</li>
-                    <li>
-                      ACLVB: vanaf 25/07/1978
-                      <ul>
-                        <li>Juridische dienst : 1978-1986</li>
-                        <li>Bestendig Secretaris West-Vlaanderen : 1986 – 1989</li>
-                        <li>Vlaams Gewestsecretaris : 1989 – 2007</li>
-                        <li>Nationaal Voorzitter : 13.01.2007 – 24.10.2015</li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+              <h1>Over Jan Vercamst</h1>
+              <p>
+                Jan heeft een 38-jarige carrière achter de rug bij de ACLVB waarbij hij de meest uiteenlopende functies verrichtte; juridische dienst, propagandist, Vlaams Gewestsecretaris en Nationaal Voorzitter. Hij zetelde in diverse overlegorganen (Groep van 10, NAR, CRB, ...). Thans is Jan nog beheerder Universiteit Gent, Censor NBB en Raadsheer Arbeidshof Brussel. Op 2/6/2016 richtte Jan een BVBA Vercamst Consult op die zich vooral toespitst op onderwerpen zoals werknemersparticipatie, samenwerkingsmodellen en businessmodellen in disruptieve omgevingen.
+              </p>
             </Col>
           </Row>
           <Row className="row-mandates">
