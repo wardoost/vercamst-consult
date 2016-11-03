@@ -9,20 +9,21 @@ import {
 
 const initialState = {
   posts: [],
+  loading: true,
   error: null,
 }
 
 export default function(state = initialState, {type, payload}) {
   switch (type) {
     case LOAD_POSTS_SUCCESS:
-      return {...state, posts: payload, error: null}
+      return {...state, posts: payload, error: null, loading: false}
 
     case UNLOAD_POSTS_SUCCESS:
-      return {...state, posts: [], error: null}
+      return {...state, posts: [], error: null, loading: true}
 
     case UPDATE_POST_ERROR:
     case DELETE_POST_ERROR:
-      return {...state, error: payload}
+      return {...state, error: payload, loading: false}
 
     case UPDATE_POST_SUCCESS:
       return {

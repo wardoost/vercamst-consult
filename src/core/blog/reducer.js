@@ -8,16 +8,17 @@ import {
 
 const initialState = {
   posts: [],
+  loading: true,
   onLastPage: false,
 }
 
 export default function(state = initialState, {type, payload}) {
   switch (type) {
     case LOAD_PUBLISHED_POSTS_SUCCESS:
-      return {...state, posts: payload}
+      return {...state, posts: payload, loading: false}
 
     case LOAD_MORE_PUBLISHED_POSTS_SUCCESS:
-      return {...state, posts: state.posts.concat(payload)}
+      return {...state, posts: state.posts.concat(payload), loading: false}
 
     case LAST_PAGE_PUBLISHED_POSTS:
       return {...state, onLastPage: true}
@@ -26,7 +27,7 @@ export default function(state = initialState, {type, payload}) {
       return {...state, posts: payload, onLastPage: false}
 
     case UNLOAD_PUBLISHED_POSTS_SUCCESS:
-      return {...state, posts: []}
+      return {...state, posts: [], loading: true}
 
     default:
       return state;

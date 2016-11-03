@@ -6,4 +6,4 @@ export const postList = new FirebasePaginatedList({
   onMore: postActions.loadMorePublishedPostsSuccess,
   onLastPage: postActions.lastPagePublishedPosts,
   onReset: postActions.resetPublishedPosts,
-}, 'posts', {orderByChild: 'published', equalTo: true});
+}, 'posts', {pageSize: 2});

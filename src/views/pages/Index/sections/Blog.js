@@ -40,7 +40,7 @@ class Blog extends Component {
             summary = strippedBody.length > summaryLength ? strippedBody.substring(0, summaryLength) + "..." : strippedBody;
 
       return ([
-        <ColButton sm={6} md={4} className="article" key={post.key} to={"posts/" + post.key} action="Lees meer" >
+        <ColButton sm={6} md={4} className="article" key={post.key} to={"/posts/" + post.key} action="Lees meer" >
           <h2>{title}</h2>
           {createdAt ? <p className="text-muted">{humanDate}</p> : null}
           <div className="summary">
@@ -56,16 +56,22 @@ class Blog extends Component {
     return (
       <section id="blog">
         <Grid>
-          <Row>
-            <Col md={12}>
-              <h1>Blog</h1>
-            </Col>
-          </Row>
-          <Row>
-            {this.props.posts.length ?
-              this.createPosts()
+          {!this.props.loading && !this.props.posts.length ?
+            null
             :
-              <Loading />
+            <Row>
+              <Col md={12}>
+                <h1>Blog</h1>
+              </Col>
+            </Row>
+          }
+          <Row>
+            {this.props.loading ?
+              <Col md={12}>
+                <Loading />
+              </Col>
+            :
+              this.createPosts()
             }
           </Row>
           {!this.props.onLastPage ?

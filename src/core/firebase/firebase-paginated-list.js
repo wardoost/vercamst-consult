@@ -1,7 +1,7 @@
 import { firebaseDb } from './firebase';
 
 const defaultOptions = {
-  pageSize: 6
+  pageSize: 10
 }
 
 export class FirebasePaginatedList {
@@ -19,10 +19,10 @@ export class FirebasePaginatedList {
 
   set path(value) {
     this._path = value;
-    this._ref = firebaseDb.ref(this._path).orderByKey();
+    this._ref = firebaseDb.ref(this._path);
   }
 
-  setPage(cursor) {
+  setPage(emit, cursor) {
     const {pageSize} = this._options;
     const paginator = this;
     let ref = this._ref.orderByKey();
@@ -48,7 +48,7 @@ export class FirebasePaginatedList {
         if (list.length === pageSize + 1) {
           list.shift();
         } else {
-          paginator._emit(paginator._actions.onLastPage());
+          emit(paginator._actions.onLastPage());
         }
 
         paginator.isLastPage = true;
@@ -58,7 +58,7 @@ export class FirebasePaginatedList {
       .then(() => {
         if(!paginator._initialized) {
           paginator._initialized = true;
-          paginator._emit(paginator._actions.onReady(paginator.list));
+          emit(paginator._actions.onReady(paginator.list));
         }
       });
   }
@@ -66,7 +66,7 @@ export class FirebasePaginatedList {
   reset(emit) {
     const paginator = this;
 
-    return this.setPage()
+    return this.setPage(emit)
       .then(() => {
         emit(this._actions.onReset(paginator.list));
       })
@@ -75,15 +75,14 @@ export class FirebasePaginatedList {
   loadMore(emit) {
     const paginator = this;
 
-    return this.setPage(this.cursor)
+    return this.setPage(emit, this.cursor)
       .then(() => {
         emit(this._actions.onMore(paginator.list));
       });
   }
 
   subscribe(emit) {
-    this._emit = emit;
-    this.setPage()
+    this.setPage(emit)
     this._unsubscribe = () => this._ref.off();
   }
 

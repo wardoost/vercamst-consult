@@ -62,21 +62,24 @@ class Management extends Component {
           <Grid>
             <Row>
               <Col md={12}>
-                {this.props.posts.length ?
-                  <Table responsive>
-                    <thead>
-                      <tr>
-                        <th>Titel</th>
-                        <th>Gemaakt op</th>
-                        <th className="actions">Acties</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.createPosts()}
-                    </tbody>
-                  </Table>
-                :
+                {this.props.loading ?
                   <Loading />
+                :
+                  this.props.posts.length ?
+                    <Table responsive>
+                      <thead>
+                        <tr>
+                          <th>Titel</th>
+                          <th>Gemaakt op</th>
+                          <th className="actions">Acties</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.createPosts()}
+                      </tbody>
+                    </Table>
+                  :
+                    <p>Geen posts beschikbaar.</p>
                 }
               </Col>
             </Row>

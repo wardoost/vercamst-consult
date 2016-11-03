@@ -41,7 +41,7 @@ export default class PostItem extends Component {
         <td>{calendarDate}</td>
         <td className="actions">
           <ButtonGroup>
-            <Link to={"posts/" + key} className="btn btn-primary" title="Bekijken">
+            <Link to={"/posts/" + key} className="btn btn-primary" title="Bekijken">
               <i className="fa fa-eye fa-fw" />
             </Link>
             {published ?
