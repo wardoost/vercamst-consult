@@ -57,7 +57,11 @@ class Blog extends Component {
       <section id="blog">
         <Grid>
           {!this.props.loading && !this.props.posts.length ?
-            null
+            <Row>
+              <Col md={12}>
+                <h1 className="text-center">Blog binnenkort online!</h1>
+              </Col>
+            </Row>
             :
             <Row>
               <Col md={12}>
