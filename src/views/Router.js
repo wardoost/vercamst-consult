@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Router as ReactRouter, Route, IndexRoute, browserHistory} from 'react-router';
+import ReactGA from 'react-ga';
 import {isAuthenticated} from '../core/auth';
 import Layout from './components/Layout';
 import Index from './pages/Index';
@@ -25,9 +26,17 @@ const noAuth = (nextState, replace, cb) => {
 }
 
 export default class Router extends Component {
+  componentWillMount(){
+    ReactGA.initialize('UA-79882435-1');
+  }
+  logPageView() {
+    window.scrollTo(0, 0)
+    ReactGA.set({ page: window.location.pathname });
+    ReactGA.pageview(window.location.pathname);
+  }
   render() {
     return (
-      <ReactRouter history={browserHistory} onUpdate={() => window.scrollTo(0, 0)}>
+      <ReactRouter history={browserHistory} onUpdate={this.logPageView}>
         <Route path="/" component={Layout}>
           <IndexRoute component={Index}/>
           <Route path="/posts/add" component={AddPost}/>
