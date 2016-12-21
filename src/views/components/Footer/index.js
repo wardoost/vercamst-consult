@@ -8,7 +8,7 @@ export default class Footer extends Component {
         <div className="container">
           <p>
             <a href="https://wardoost.online" target="_blank" title="Website made by Ward Oosterlijnck">
-              <i className="fa fa-code" /> by Ward
+              <i className="icon-code" /> by Ward
             </a>
           </p>
         </div>

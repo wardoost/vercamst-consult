@@ -42,19 +42,19 @@ export default class PostItem extends Component {
         <td className="actions">
           <ButtonGroup>
             <Link to={"/posts/" + key} className="btn btn-primary" title="Bekijken">
-              <i className="fa fa-eye fa-fw" />
+              <i className="icon-eye" />
             </Link>
             {published ?
               <Button bsStyle="warning" onClick={this.depublishPost} title="Depubliceren">
-                <i className="fa fa-user-times fa-fw" />
+                <i className="icon-user-times" />
               </Button>
             :
               <Button bsStyle="success" onClick={this.publishPost} title="Publiceren">
-                <i className="fa fa-users fa-fw" />
+                <i className="icon-users" />
               </Button>
             }
             <Button bsStyle="danger" onClick={this.deletePost} title={published ? "Depubliceer dit artikel alvorens het te verwijderen" : "Verwijderen"} disabled={published}>
-              <i className="fa fa-trash fa-fw" />
+              <i className="icon-trash" />
             </Button>
           </ButtonGroup>
         </td>

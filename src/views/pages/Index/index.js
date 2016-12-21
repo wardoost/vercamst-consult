@@ -41,7 +41,7 @@ export default class Index extends Component {
         </div>
         <div className="content-container invert-sections">
           <Button onClick={this.scrollToContent} className="btn-show-content">
-            <i className="fa fa-angle-double-down" />
+            <i className="icon-angle-double-down" />
           </Button>
           <Who />
           <div className="section-spacer" />

@@ -16,7 +16,7 @@ export default class Loading extends Component {
       return(
         <main className="content-container loading">
           <div className="loading-animation">
-            <i className="fa fa-circle-o-notch fa-3x fa-spin" />
+            <i className="icon-circle-notch icon-spin" />
           </div>
           <Footer />
         </main>
@@ -25,7 +25,7 @@ export default class Loading extends Component {
       return(
         <div className="loading">
           <div className="loading-animation">
-            <i className="fa fa-circle-o-notch fa-3x fa-spin" />
+            <i className="icon-circle-notch icon-spin" />
           </div>
         </div>
       )

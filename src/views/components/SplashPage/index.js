@@ -60,7 +60,7 @@ export default class SplashPage extends Component {
           id="page-top">
           { this.props.scrollToContent ?
             <Button onClick={this.scrollToContent} className="btn-show-content">
-              <i className="fa fa-angle-double-down" />
+              <i className="icon-angle-double-down" />
             </Button>
             :
             null

@@ -90,10 +90,10 @@ class Management extends Component {
             <Row>
               <Col md={12}>
                 <Link to="/posts/add" className="btn btn-primary">
-                  <i className="fa fa-plus" /> Nieuwe post aanmaken
+                  <i className="icon-plus" /> Nieuwe post aanmaken
                 </Link>
                 <Link to="/logout" className="btn btn-primary pull-right">
-                  <i className="fa fa-sign-out" /> Log uit
+                  <i className="icon-sign-out" /> Log uit
                 </Link>
               </Col>
             </Row>

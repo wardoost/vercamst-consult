@@ -87,7 +87,7 @@ export default class VerticalScroller extends Component {
     return (
       <div className={classNames("vertical-scroller", {"active": this.state.active, "touchEnabled": this.state.touchEnabled})}>
         <Button className={"vertical-scroller-btn up"} onClick={this.scrollUp} disabled={this.state.topReached}>
-          <i className="fa fa-angle-double-up" />
+          <i className="icon-angle-double-up" />
         </Button>
         <div className={classNames("vertical-scroller-container", {"bottomReached": this.state.bottomReached, "topReached": this.state.topReached})} ref="verticalScrollerContainer">
           <div className="vertical-scroller-content" ref="verticalScrollerContent" style={{top: -this.state.scrollOffset}}>
@@ -96,7 +96,7 @@ export default class VerticalScroller extends Component {
           <span className="vertical-scroller-indicator" ref="vertical-scroller-indicator" style={{height: this.state.indicatorHeight, top: this.state.indicatorOffset}} />
         </div>
         <Button className="vertical-scroller-btn down" onClick={this.scrollDown} disabled={this.state.bottomReached}>
-          {!this.state.active && this.props.label ? this.props.label : <i className="fa fa-angle-double-down" />}
+          {!this.state.active && this.props.label ? this.props.label : <i className="icon-angle-double-down" />}
         </Button>
       </div>
     )

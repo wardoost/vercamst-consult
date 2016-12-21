@@ -213,8 +213,8 @@ class Navigation extends Component {
             {this.getMenu()}
             {this.props.uid ?
               <li role="presentation" className={classNames({"active": this.props.location.pathname === "/management"})}>
-                <a title="Beheer" className="nav-link"  onClick={this.onMenuLinkClick.bind(null, "/management")} role="button">
-                  <i className="fa fa-cog"/>
+                <a title="Beheer" className="nav-link nav-link-management" onClick={this.onMenuLinkClick.bind(null, "/management")} role="button">
+                  <i className="icon-cog"/>
                 </a>
               </li>
             : null}
