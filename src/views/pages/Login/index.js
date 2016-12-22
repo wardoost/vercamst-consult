@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import Helmet from "react-helmet";
 import ReactDOM from 'react-dom';
 import {Grid, Row, Col, Form, FormGroup, FormControl, Button, Alert} from 'react-bootstrap';
 import {browserHistory} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import SplashPage from '../../components/SplashPage';
 import {authActions} from '../../../core/auth';
 import Footer from '../../components/Footer';
 import './style.sass';
@@ -45,34 +45,40 @@ class Login extends Component {
   }
   render() {
     return (
-      <main className="content-container login">
-        <Helmet title="Login" />
-        { this.props.error && this.state.showAlert ?
-          <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
-            <p>{this.props.error.message}</p>
-          </Alert>
-        : null }
-        <Grid>
-          <Row>
-            <Col smOffset={3} sm={6}>
-              <Form onSubmit={this.handleSubmit} className="login-form">
-                <FormGroup>
-                  <FormControl type="email" placeholder="Email" ref="email" />
-                </FormGroup>
-                <FormGroup>
-                  <FormControl type="password" placeholder="Password" ref="password" />
-                </FormGroup>
-                <FormGroup>
-                  <Button type="submit" bsStyle="primary">
-                    Sign in
-                  </Button>
-                </FormGroup>
-              </Form>
-            </Col>
-          </Row>
-        </Grid>
-        <Footer />
-      </main>
+      <SplashPage
+        className="login"
+        title="Login"
+        splashHeight={0.3}>
+        <main className="login-content">
+          { this.props.error && this.state.showAlert ?
+            <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+              <div className="container">
+                {this.props.error.message}
+              </div>
+            </Alert>
+          : null }
+          <Grid>
+            <Row>
+              <Col sm={6} md={4}>
+                <Form onSubmit={this.handleSubmit} className="login-form">
+                  <FormGroup>
+                    <FormControl type="email" placeholder="Email" ref="email" />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControl type="password" placeholder="Password" ref="password" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Button type="submit" bsStyle="primary">
+                      Log in
+                    </Button>
+                  </FormGroup>
+                </Form>
+              </Col>
+            </Row>
+          </Grid>
+          <Footer />
+        </main>
+      </SplashPage>
     )
   }
 }

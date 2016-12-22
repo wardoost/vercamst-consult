@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import Helmet from "react-helmet";
 import ReactDOM from 'react-dom';
 import {browserHistory} from 'react-router';
 import {Grid, Row, Col, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import SplashPage from '../../components/SplashPage';
 import Footer from '../../components/Footer';
 import Editor from '../../components/Editor';
 import {postActions} from '../../../core/post';
@@ -48,31 +48,35 @@ class AddPost extends Component {
 
   render() {
     return (
-      <main className="content-container add-post">
-        <Helmet title="Post aanmaken" />
-        <Grid>
-          <Row>
-            <Col md={12}>
-              <Form onSubmit={this.handleSubmit}>
-                <FormGroup>
-                  <FormControl
-                    type="text"
-                    placeholder="Titel"
-                    ref="title"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Editor ref="editor" onChange={this.editorChange}/>
-                </FormGroup>
-                <Button type="submit" bsStyle="primary">
-                  Post aanmaken
-                </Button>
-              </Form>
-            </Col>
-          </Row>
-        </Grid>
-        <Footer />
-      </main>
+      <SplashPage
+        className="add-post"
+        title="Een nieuwe post aanmaken"
+        splashHeight={0.3}>
+        <main className="add-post-content">
+          <Grid>
+            <Row>
+              <Col md={12}>
+                <Form onSubmit={this.handleSubmit}>
+                  <FormGroup>
+                    <FormControl
+                      type="text"
+                      placeholder="Titel"
+                      ref="title"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Editor ref="editor" onChange={this.editorChange}/>
+                  </FormGroup>
+                  <Button type="submit" bsStyle="primary">
+                    Post aanmaken
+                  </Button>
+                </Form>
+              </Col>
+            </Row>
+          </Grid>
+          <Footer />
+        </main>
+      </SplashPage>
     )
   }
 }

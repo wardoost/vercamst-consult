@@ -11,7 +11,7 @@ const requireAuth = (nextState, replace, cb) => {
 
 const noAuth = (nextState, replace, cb) => {
   if(isAuthenticated()){
-    replace({pathname: '/'});
+    replace({pathname: '/management'});
   }
   cb();
 }

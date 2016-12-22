@@ -56,7 +56,9 @@ class Management extends Component {
         <section className="management-content">
           { this.props.error && this.state.showAlert ?
             <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
-              <p>{this.props.error.message}</p>
+              <div className="container">
+                {this.props.error.message}
+              </div>
             </Alert>
           : null }
           <Grid>
