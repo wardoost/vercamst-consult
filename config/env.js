@@ -22,10 +22,10 @@ function getClientEnvironment(publicUrl) {
       // images into the `src` and `import` them in code to get their paths.
       'process.env.PUBLIC_URL': JSON.stringify(publicUrl),
       // Firebase configuration
-      'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.NODE_ENV === 'development' ? process.env.FIREBASE_API_KEY_DEV : process.env.FIREBASE_API_KEY_PROD),
-      'process.env.FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.NODE_ENV === 'development' ? process.env.FIREBASE_AUTH_DOMAIN_DEV : process.env.FIREBASE_AUTH_DOMAIN_PROD),
-      'process.env.FIREBASE_DATABASE_URL': JSON.stringify(process.env.NODE_ENV === 'development' ? process.env.FIREBASE_DATABASE_URL_DEV : process.env.FIREBASE_DATABASE_URL_PROD),
-      'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.NODE_ENV === 'development' ? process.env.FIREBASE_STORAGE_BUCKET_DEV : process.env.FIREBASE_STORAGE_BUCKET_PROD)
+      'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.NODE_ENV === 'development' ? process.env.FIREBASE_API_KEY_DEV || process.env.FIREBASE_API_KEY : process.env.FIREBASE_API_KEY),
+      'process.env.FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.NODE_ENV === 'development' ? process.env.FIREBASE_AUTH_DOMAIN_DEV || process.env.FIREBASE_AUTH_DOMAIN : process.env.FIREBASE_AUTH_DOMAIN),
+      'process.env.FIREBASE_DATABASE_URL': JSON.stringify(process.env.NODE_ENV === 'development' ? process.env.FIREBASE_DATABASE_URL_DEV || process.env.FIREBASE_DATABASE_URL : process.env.FIREBASE_DATABASE_URL),
+      'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.NODE_ENV === 'development' ? process.env.FIREBASE_STORAGE_BUCKET_DEV || process.env.FIREBASE_STORAGE_BUCKET : process.env.FIREBASE_STORAGE_BUCKET)
     });
 }
 
