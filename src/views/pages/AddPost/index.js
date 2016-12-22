@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Helmet from "react-helmet";
 import ReactDOM from 'react-dom';
 import {browserHistory} from 'react-router';
 import {Grid, Row, Col, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
@@ -48,6 +49,7 @@ class AddPost extends Component {
   render() {
     return (
       <main className="content-container add-post">
+        <Helmet title="Post aanmaken" />
         <Grid>
           <Row>
             <Col md={12}>

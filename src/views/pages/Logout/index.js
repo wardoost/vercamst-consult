@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Helmet from "react-helmet";
 import {Grid, Row, Col} from 'react-bootstrap';
 import {browserHistory} from 'react-router';
 import {bindActionCreators} from 'redux';
@@ -14,6 +15,7 @@ class Logout extends Component {
   render() {
     return (
       <main className="content-container logout">
+        <Helmet title="Logout" />
         <Grid>
           <Row>
             <Col smOffset={3} sm={6}>

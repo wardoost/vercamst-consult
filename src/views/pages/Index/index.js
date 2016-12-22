@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Helmet from "react-helmet";
 import {Button} from 'react-bootstrap';
 import {scroller} from 'react-scroll';
 import logo from '../../../assets/logo-large.svg';
@@ -34,6 +35,7 @@ export default class Index extends Component {
   render() {
     return (
       <main className="index">
+        <Helmet title={"Home"} />
         <div className="splash-container">
           <div className="splash">
             <img src={logo} className="logo" alt="Vercamst Consult" />

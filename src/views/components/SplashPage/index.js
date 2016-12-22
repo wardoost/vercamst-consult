@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import Helmet from "react-helmet";
 import {Grid, Row, Col, Button} from 'react-bootstrap';
 import {scroller} from 'react-scroll';
 import classNames from 'classnames';
@@ -40,6 +41,7 @@ export default class SplashPage extends Component {
 
     return(
       <main className={classNames("splash-page", this.props.className)}>
+        <Helmet title={this.props.title} />
         <div className="splash-container" style={styles.container}>
           <div className="splash">
             <header className="splash-header">

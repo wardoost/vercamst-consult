@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Helmet from "react-helmet";
 import ReactDOM from 'react-dom';
 import {Grid, Row, Col, Form, FormGroup, FormControl, Button, Alert} from 'react-bootstrap';
 import {browserHistory} from 'react-router';
@@ -45,6 +46,7 @@ class Login extends Component {
   render() {
     return (
       <main className="content-container login">
+        <Helmet title="Login" />
         { this.props.error && this.state.showAlert ?
           <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
             <p>{this.props.error.message}</p>
