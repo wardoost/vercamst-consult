@@ -1,7 +1,7 @@
 import { firebaseDb } from './firebase';
 
 const defaultOptions = {
-  pageSize: 10
+  pageSize: 12
 }
 
 export class FirebasePaginatedList {
@@ -87,6 +87,7 @@ export class FirebasePaginatedList {
   }
 
   unsubscribe() {
+    this._initialized = false;
     this._unsubscribe();
   }
 

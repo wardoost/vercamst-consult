@@ -3,7 +3,6 @@ import {
   LOAD_PUBLISHED_POSTS_SUCCESS,
   LOAD_MORE_PUBLISHED_POSTS_SUCCESS,
   LAST_PAGE_PUBLISHED_POSTS,
-  RESET_PUBLISHED_POSTS,
   UNLOAD_PUBLISHED_POSTS_SUCCESS,
 } from './action-types';
 
@@ -44,11 +43,4 @@ export function lastPagePublishedPosts(){
   return {
     type: LAST_PAGE_PUBLISHED_POSTS
   };
-}
-
-export function resetPublishedPosts(result){
-  return {
-    type: RESET_PUBLISHED_POSTS,
-    payload: result
-  }
 }
