@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'vc-icons';
-  src: url('/fonts/vc-icons.eot?11991160');
-  src: url('/fonts/vc-icons.eot?11991160#iefix') format('embedded-opentype'),
-       url('/fonts/vc-icons.woff2?11991160') format('woff2'),
-       url('/fonts/vc-icons.woff?11991160') format('woff'),
-       url('/fonts/vc-icons.ttf?11991160') format('truetype'),
-       url('/fonts/vc-icons.svg?11991160#vc-icons') format('svg');
+  src: url('../../../assets/fonts/vc-icons.eot?11991160');
+  src: url('../../../assets/fonts/vc-icons.eot?11991160#iefix') format('embedded-opentype'),
+       url('../../../assets/fonts/vc-icons.woff2?11991160') format('woff2'),
+       url('../../../assets/fonts/vc-icons.woff?11991160') format('woff'),
+       url('../../../assets/fonts/vc-icons.ttf?11991160') format('truetype'),
+       url('../../../assets/fonts/vc-icons.svg?11991160#vc-icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }

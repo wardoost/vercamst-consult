@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import {browserHistory} from 'react-router';
 import {Grid, Row, Col, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
 import {bindActionCreators} from 'redux';
@@ -15,10 +14,12 @@ class AddPost extends Component {
     super(props);
 
     this.state = {
+      title: "",
       body: ""
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.titleChange = (evt) => this.setState({title: evt.target.value});
     this.editorChange = (value) => this.setState({body: value});
   }
 
@@ -26,7 +27,7 @@ class AddPost extends Component {
     e.preventDefault();
 
     const post = {
-      title: ReactDOM.findDOMNode(this.refs.title).value,
+      title: this.state.title,
       body: this.state.body.toString("html"),
       published: false,
       createdAt: new Date().getTime(),
@@ -62,6 +63,7 @@ class AddPost extends Component {
                       type="text"
                       placeholder="Titel"
                       ref="title"
+                      onChange={this.titleChange}
                     />
                   </FormGroup>
                   <FormGroup>

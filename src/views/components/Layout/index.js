@@ -3,7 +3,7 @@ import Helmet from "react-helmet";
 import Navigation from '../Navigation';
 import 'bootstrap/dist/css/bootstrap.css';
 import './style.sass';
-import './fonts.css';
+import './icons.css';
 
 export default class Layout extends Component {
   render() {

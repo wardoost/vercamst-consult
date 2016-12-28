@@ -6,20 +6,21 @@
     font-size: 1.2em
 
 .navbar-brand
-  padding: 9px
+  padding: 9px !important
   position: relative
   top: 50px
-  transition: top 0.3s ease-in-out
+  transition: top .3s cubic-bezier(0.6, -0.28, 0.735, 0.045)
 
   &.show
     top: 0
+    transition: top .3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
 
   > img
     height: 32px
 
 .navbar-default
-  background-color: rgba(#fff, 0.9)
-  border: none
+  background-color: rgba(#fff, 0.9) !important
+  border: none !important
 
   .navbar-nav
     padding: 0

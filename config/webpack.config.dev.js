@@ -42,7 +42,8 @@ module.exports = {
     // the line below with these two lines if you prefer the stock client:
     // require.resolve('webpack-dev-server/client') + '?/',
     // require.resolve('webpack/hot/dev-server'),
-    require.resolve('react-dev-utils/webpackHotDevClient'),
+    require.resolve('webpack-dev-server/client') + '?http://localhost:3000',
+    require.resolve('webpack/hot/only-dev-server'),
     // We ship a few polyfills by default:
     require.resolve('./polyfills'),
     // Finally, this is your app's code:
@@ -93,6 +94,12 @@ module.exports = {
       }
     ],
     loaders: [
+      // HMR
+      {
+        test: /\.(js|jsx)$/,
+        include: paths.appSrc,
+        loader: 'react-hot',
+      },
       // Process JS with Babel.
       {
         test: /\.(js|jsx)$/,
@@ -109,20 +116,15 @@ module.exports = {
           })
         }
       },
+      // "sass" loader adds support for sass files
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
       // "style" loader turns CSS into JS modules that inject <style> tags.
       // In production, we use a plugin to extract that CSS to a file, but
       // in development "style" loader enables hot editing of CSS.
       {
-        test: /\.css$/,
-        loader: 'style!css!postcss'
-      },
-      // Add support for sass files
-      {
-        test: /\.sass$/,
-        include: paths.appSrc,
-        loaders: ["style", "css", "sass"]
+        test: /\.(css|sass)$/,
+        loader: 'style!css!postcss!sass'
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
       // allow it implicitly so we also enable it.

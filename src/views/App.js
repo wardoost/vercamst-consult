@@ -5,7 +5,7 @@ import ReactGA from 'react-ga';
 import routes from './pages/routes';
 import store from '../core/store';
 
-export default class Main extends Component {
+export default class App extends Component {
   componentWillMount(){
     ReactGA.initialize('UA-79882435-1');
   }
