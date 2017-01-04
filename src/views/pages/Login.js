@@ -1,10 +1,10 @@
 import React from 'react';
 import { Component, Actions } from 'jumpsuit'
 import { Grid, Row, Col, Form, FormGroup, FormControl, Button, Alert } from 'react-bootstrap'
-import loginState from '../../../state/login'
-import SplashPage from '../../components/SplashPage'
-import Footer from '../../components/Footer'
-import './style.sass'
+import loginState from '../../state/login'
+import SplashPage from '../components/SplashPage'
+import Footer from '../components/Footer'
+import './Login.sass'
 
 export default Component({
   handleSubmit(e) {

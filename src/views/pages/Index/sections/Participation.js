@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import {Grid, Row, Col} from 'react-bootstrap';
-import './Participation.sass';
+import React from 'react'
+import { Component } from 'jumpsuit'
+import { Grid, Row, Col } from 'react-bootstrap'
+import './Participation.sass'
 
-export default class Participation extends Component {
+export default Component({
   render() {
     return (
       <section id="werknemersparticipatie">

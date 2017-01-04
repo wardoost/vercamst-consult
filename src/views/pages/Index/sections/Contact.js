@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import {Grid, Row} from 'react-bootstrap';
-import ColButton from '../../../components/ColButton';
-import './Contact.sass';
+import React from 'react'
+import { Component } from 'jumpsuit'
+import { Grid, Row } from 'react-bootstrap'
+import ColButton from '../../../components/ColButton'
+import './Contact.sass'
 
-export default class Contact extends Component {
+export default Component({
   render() {
     return (
       <section id="contact">
@@ -36,4 +37,4 @@ export default class Contact extends Component {
       </section>
     )
   }
-}
+})

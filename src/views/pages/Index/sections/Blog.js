@@ -1,6 +1,6 @@
 import React from 'react'
 import { Component } from 'jumpsuit'
-import {Grid, Row, Col, Clearfix, Button} from 'react-bootstrap';
+import { Grid, Row, Col, Clearfix, Button } from 'react-bootstrap'
 import moment from 'moment';
 import blogState, { loadPosts, loadMorePosts } from '../../../../state/blog'
 import ColButton from '../../../components/ColButton';
@@ -55,21 +55,17 @@ export default Component({
     return (
       <section id="blog">
         <Grid>
-          {!this.props.loading && !this.props.posts.length ?
-            <Row>
-              <Col md={12}>
-                <h1 className="text-center">Blog binnenkort online!</h1>
-              </Col>
-            </Row>
-            :
-            <Row>
-              <Col md={12}>
-                <h1>Blog</h1>
-              </Col>
-            </Row>
-          }
           <Row>
-            {this.props.loading ?
+            <Col md={12}>
+              {!this.props.loading && !this.props.posts.length ?
+                <h1 className="text-center">Blog binnenkort online!</h1>
+              :
+                <h1>Blog</h1>
+              }
+            </Col>
+          </Row>
+          <Row>
+            {this.props.loading && !this.props.posts.length ?
               <Col md={12}>
                 <Loading />
               </Col>
@@ -77,10 +73,13 @@ export default Component({
               this.createPosts()
             }
           </Row>
-          {!this.props.onLastPage ?
+          {!this.props.onLastPage && this.props.posts.length ?
             <Row>
               <Col md={12} className="text-center">
-                <Button className="show-more" bsStyle="primary" onClick={loadMorePosts}>Toon meer</Button>
+                <Button className="show-more" bsStyle="primary" onClick={loadMorePosts} disabled={this.props.loading}>
+                  Toon meer
+                  {this.props.loading ? <i className="icon-circle-notch icon-spin" /> : null }
+                </Button>
               </Col>
             </Row>
           :

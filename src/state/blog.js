@@ -14,6 +14,10 @@ const blogState = State('blog', {
     error: payload
   }),
 
+  loading: (state, payload) => ({
+    loading: payload ? true : false
+  }),
+
   loadPostsSuccess: (state, payload) => ({
     posts: payload,
     error: null,
@@ -49,14 +53,16 @@ export const publishedPostList = new FirebasePaginatedList({
   onReady: blogState.loadPostsSuccess,
   onMore: blogState.loadMorePostsSuccess,
   onLastPage: blogState.lastPagePosts,
-}, 'posts', {pageSize: 6});
+}, 'posts', {pageSize: 2});
 
 
 export function loadPosts() {
+  blogState.loading(true);
   publishedPostList.subscribe();
 }
 
 export function loadMorePosts() {
+  blogState.loading(true);
   publishedPostList.loadMore();
 }
 

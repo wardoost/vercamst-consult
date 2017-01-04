@@ -1,11 +1,11 @@
 import React from 'react'
 import { Component, Goto } from 'jumpsuit'
-import {Grid, Row, Col, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
-import addPostState, { createPost } from '../../../state/addPost'
-import SplashPage from '../../components/SplashPage';
-import Footer from '../../components/Footer';
-import Editor from '../../components/Editor';
-import './style.sass';
+import { Grid, Row, Col, Form, FormGroup, FormControl, Button } from 'react-bootstrap'
+import addPostState, { createPost } from '../../state/addPost'
+import SplashPage from '../components/SplashPage'
+import Footer from '../components/Footer'
+import Editor from '../components/Editor'
+import './AddPost.sass'
 
 export default Component({
   handleSubmit(e) {

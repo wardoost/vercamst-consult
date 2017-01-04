@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
-import {Grid, Row, Col} from 'react-bootstrap';
-import VerticalScroller from '../../../components/VerticalScroller';
+import React from 'react'
+import { Component } from 'jumpsuit'
+import { Grid, Row, Col } from 'react-bootstrap'
+import VerticalScroller from '../../../components/VerticalScroller'
 import profile from '../../../../assets/profile.jpg'
 import './Who.sass';
 
-export default class Who extends Component {
+export default Component({
   render() {
     return (
       <section id="wie">
@@ -135,4 +136,4 @@ export default class Who extends Component {
       </section>
     )
   }
-}
+})

@@ -1,12 +1,12 @@
 import React from 'react'
-import {Grid, Row, Col, Table, Alert, Button} from 'react-bootstrap';
+import { Grid, Row, Col, Table, Alert, Button } from 'react-bootstrap'
 import { Component, Link } from 'jumpsuit'
-import managementState, { loadPosts, deletePost, updatePost } from '../../../state/management'
-import { authLogout } from '../../../state/auth'
-import SplashPage from '../../components/SplashPage';
-import Loading from '../../components/Loading';
-import PostItem from '../../components/PostItem';
-import './style.sass';
+import managementState, { loadPosts, deletePost, updatePost } from '../../state/management'
+import { authLogout } from '../../state/auth'
+import SplashPage from '../components/SplashPage'
+import Loading from '../components/Loading'
+import PostItem from '../components/PostItem'
+import './Management.sass'
 
 export default Component({
   componentWillMount() {

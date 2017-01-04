@@ -1,15 +1,16 @@
-import React, {Component} from 'react';
-import Helmet from "react-helmet";
-import {Link, Goto} from 'jumpsuit';
-import Footer from '../../components/Footer';
-import './style.sass';
+import React from 'react'
+import Helmet from "react-helmet"
+import { Component, Link, Goto } from 'jumpsuit'
+import Footer from '../components/Footer'
+import './Error.sass'
 
-export default class Error extends Component {
+export default Component({
   goBack(e) {
     e.preventDefault();
 
     Goto.back();
-  }
+  },
+
   render() {
     return (
       <main className="content-container error">
@@ -24,4 +25,4 @@ export default class Error extends Component {
       </main>
     )
   }
-}
+})

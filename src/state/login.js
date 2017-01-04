@@ -43,7 +43,6 @@ const loginState = State('login', {
 })
 
 Effect('submitLogin', (payload) => {
-  // You can do anything here, but async actions are a great use case:
   loginState.loading(true)
   authLogin(payload.email, payload.password)
     .then(() => {

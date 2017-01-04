@@ -1,11 +1,11 @@
-import React from 'react';
-import {Grid, Row, Col, Alert} from 'react-bootstrap';
+import React from 'react'
+import { Grid, Row, Col, Alert } from 'react-bootstrap'
 import { Component } from 'jumpsuit'
-import moment from 'moment';
-import postState, { loadPost } from '../../../state/post'
-import SplashPage from '../../components/SplashPage';
-import Loading from '../../components/Loading';
-import './style.sass';
+import moment from 'moment'
+import postState, { loadPost } from '../../state/post'
+import SplashPage from '../components/SplashPage'
+import Loading from '../components/Loading'
+import './Post.sass'
 
 moment.locale('nl');
 

@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import {Grid, Row, Col} from 'react-bootstrap';
-import './Themes.sass';
+import React from 'react'
+import { Component } from 'jumpsuit'
+import {Grid, Row, Col} from 'react-bootstrap'
+import './Themes.sass'
 
-export default class Themes extends Component {
+export default Component({
   render() {
     return (
       <section id="themas">
@@ -23,4 +24,4 @@ export default class Themes extends Component {
       </section>
     )
   }
-}
+})
