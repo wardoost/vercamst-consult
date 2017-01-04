@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router';
+import { Link } from 'jumpsuit'
 import {Button, Col} from 'react-bootstrap';
 import classNames from 'classnames';
 import isTouchDevice from '../../../core/utils/isTouchDevice';

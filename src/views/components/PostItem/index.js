@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {ButtonGroup, Button} from 'react-bootstrap';
-import {Link} from 'react-router';
+import { Link } from 'jumpsuit'
 import classNames from 'classnames';
 import moment from 'moment';
 

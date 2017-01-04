@@ -1,23 +1,22 @@
-import React, {Component} from 'react';
-import {Grid, Row, Col} from 'react-bootstrap';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React from 'react';
+import {Grid, Row, Col, Alert} from 'react-bootstrap';
+import { Component } from 'jumpsuit'
 import moment from 'moment';
-import {postActions} from '../../../core/post';
+import postState, { loadPost } from '../../../state/post'
 import SplashPage from '../../components/SplashPage';
 import Loading from '../../components/Loading';
 import './style.sass';
 
 moment.locale('nl');
 
-class Post extends Component {
+export default Component({
   componentWillMount() {
-    this.props.loadPost(this.props.params.id);
-  }
+    loadPost(this.props.params.id);
+  },
 
   componentWillUnmount() {
-    this.props.unloadPost();
-  }
+    postState.unload();
+  },
 
   render() {
     if (this.props.post) {
@@ -31,6 +30,13 @@ class Post extends Component {
           splashHeight={0.4}
           scrollToContent={true}>
           <section className="post-content">
+            { this.props.error && this.props.showAlert ?
+              <Alert bsStyle="danger" onDismiss={postState.dismissAlert}>
+                <div className="container">
+                  {this.props.error.message}
+                </div>
+              </Alert>
+            : null }
             <Grid>
               <Row>
                 <Col md={12}>
@@ -47,14 +53,8 @@ class Post extends Component {
       )
     }
   }
-}
-
-const mapStateToProps = (store) => {
-  return store.post;
-}
-
-const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({...postActions}, dispatch)
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(Post);
+}, state => {
+  return {
+    ...state.post
+  }
+})

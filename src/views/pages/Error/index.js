@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Helmet from "react-helmet";
-import {Link, browserHistory} from 'react-router';
+import {Link, Goto} from 'jumpsuit';
 import Footer from '../../components/Footer';
 import './style.sass';
 
@@ -8,12 +8,12 @@ export default class Error extends Component {
   goBack(e) {
     e.preventDefault();
 
-    browserHistory.goBack();
+    Goto.back();
   }
   render() {
     return (
       <main className="content-container error">
-        <Helmet title="Error" />
+        <Helmet title="Page not found" />
         <div className="content-error">
           <div>
             <h1>Page not found...</h1>

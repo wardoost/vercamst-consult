@@ -51,7 +51,7 @@ export class FirebaseList {
     });
   }
 
-  subscribe(emit) {
+  subscribe() {
     let ref = firebaseDb.ref(this._path);
     let initialized = false;
     let list = [];
@@ -63,12 +63,12 @@ export class FirebaseList {
 
     ref.once('value', () => {
       initialized = true;
-      emit(this._actions.onLoad(list));
+      this._actions.onLoad(list);
     });
 
     ref.on('child_added', snapshot => {
       if (initialized) {
-        emit(this._actions.onAdd(this.unwrapSnapshot(snapshot)));
+        this._actions.onAdd(this.unwrapSnapshot(snapshot));
       }
       else {
         list.push(this.unwrapSnapshot(snapshot));
@@ -76,11 +76,11 @@ export class FirebaseList {
     });
 
     ref.on('child_changed', snapshot => {
-      emit(this._actions.onChange(this.unwrapSnapshot(snapshot)));
+      this._actions.onChange(this.unwrapSnapshot(snapshot));
     });
 
     ref.on('child_removed', snapshot => {
-      emit(this._actions.onRemove(this.unwrapSnapshot(snapshot)));
+      this._actions.onRemove(this.unwrapSnapshot(snapshot));
     });
 
     this._unsubscribe = () => ref.off();

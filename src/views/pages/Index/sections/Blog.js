@@ -1,23 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react'
+import { Component } from 'jumpsuit'
 import {Grid, Row, Col, Clearfix, Button} from 'react-bootstrap';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
 import moment from 'moment';
-import {blogActions} from '../../../../core/blog';
+import blogState, { loadPosts, loadMorePosts } from '../../../../state/blog'
 import ColButton from '../../../components/ColButton';
 import Loading from '../../../components/Loading';
 import './Blog.sass';
 
 moment.locale('nl');
 
-class Blog extends Component {
+export default Component({
   componentWillMount() {
-    this.props.loadPublishedPosts();
-  }
+    loadPosts();
+  },
 
   componentWillUnmount() {
-    this.props.unloadPublishedPosts();
-  }
+    blogState.unload();
+  },
 
   checkCreateClearfix(i) {
     if (i%2 === 0) {
@@ -29,7 +28,7 @@ class Blog extends Component {
         <Clearfix visibleMdBlock visibleLgBlock key={"cf-" + i}/>
       )
     }
-  }
+  },
 
   createPosts() {
     return this.props.posts.map((post, index) => {
@@ -50,7 +49,7 @@ class Blog extends Component {
         this.checkCreateClearfix(index + 1)
       ])
     })
-  }
+  },
 
   render() {
     return (
@@ -81,7 +80,7 @@ class Blog extends Component {
           {!this.props.onLastPage ?
             <Row>
               <Col md={12} className="text-center">
-                <Button className="show-more" bsStyle="primary" onClick={this.props.loadMorePublishedPosts}>Toon meer</Button>
+                <Button className="show-more" bsStyle="primary" onClick={loadMorePosts}>Toon meer</Button>
               </Col>
             </Row>
           :
@@ -91,14 +90,8 @@ class Blog extends Component {
       </section>
     )
   }
-}
-
-const mapStateToProps = (store) => {
-  return store.blog;
-}
-
-const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({...blogActions}, dispatch)
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(Blog);
+}, state => {
+  return {
+    ...state.blog
+  }
+})

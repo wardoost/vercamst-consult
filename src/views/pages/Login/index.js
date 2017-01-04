@@ -1,48 +1,21 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import {Grid, Row, Col, Form, FormGroup, FormControl, Button, Alert} from 'react-bootstrap';
-import {browserHistory} from 'react-router';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import SplashPage from '../../components/SplashPage';
-import {authActions} from '../../../core/auth';
-import Footer from '../../components/Footer';
-import './style.sass';
+import React from 'react';
+import { Component, Actions } from 'jumpsuit'
+import { Grid, Row, Col, Form, FormGroup, FormControl, Button, Alert } from 'react-bootstrap'
+import loginState from '../../../state/login'
+import SplashPage from '../../components/SplashPage'
+import Footer from '../../components/Footer'
+import './style.sass'
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showAlert: true
-    }
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
-  }
+export default Component({
   handleSubmit(e) {
     e.preventDefault();
 
-    const email = ReactDOM.findDOMNode(this.refs.email).value;
-    const password = ReactDOM.findDOMNode(this.refs.password).value;
+    Actions.submitLogin({
+      email: this.props.email,
+      password: this.props.password
+    });
+  },
 
-    this.props.authLogin(email, password);
-  }
-  handleAlertDismiss() {
-    this.setState({
-      showAlert: false
-    })
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.error) {
-      this.setState({
-        showAlert: true
-      })
-    }
-    if (nextProps.uid) {
-      browserHistory.push('/management')
-    }
-  }
   render() {
     return (
       <SplashPage
@@ -50,8 +23,8 @@ class Login extends Component {
         title="Login"
         splashHeight={0.3}>
         <main className="login-content">
-          { this.props.error && this.state.showAlert ?
-            <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+          { this.props.error && this.props.showAlert ?
+            <Alert bsStyle="danger" onDismiss={loginState.dismissAlert}>
               <div className="container">
                 {this.props.error.message}
               </div>
@@ -62,14 +35,25 @@ class Login extends Component {
               <Col sm={6} md={4}>
                 <Form onSubmit={this.handleSubmit} className="login-form">
                   <FormGroup>
-                    <FormControl type="email" placeholder="Email" ref="email" />
+                    <FormControl
+                      type="email"
+                      placeholder="Email"
+                      value={this.props.email}
+                      onChange={(e) => loginState.updateEmail(e.target.value)}
+                    />
                   </FormGroup>
                   <FormGroup>
-                    <FormControl type="password" placeholder="Password" ref="password" />
+                    <FormControl
+                      type="password"
+                      placeholder="Password"
+                      value={this.props.password}
+                      onChange={(e) => loginState.updatePassword(e.target.value)}
+                    />
                   </FormGroup>
                   <FormGroup>
-                    <Button type="submit" bsStyle="primary">
+                    <Button type="submit" bsStyle="primary" disabled={this.props.loading}>
                       Log in
+                      {this.props.loading ? <i className="icon-circle-notch icon-spin" /> : null }
                     </Button>
                   </FormGroup>
                 </Form>
@@ -81,16 +65,8 @@ class Login extends Component {
       </SplashPage>
     )
   }
-}
-
-const mapStateToProps = (store) => {
-  return store.auth;
-}
-
-const matchDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    authLogin: authActions.authLogin
-  }, dispatch)
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(Login);
+}, state => {
+  return {
+    ...state.login
+  }
+})
