@@ -1,15 +1,15 @@
 import React from 'react'
 import { Render } from 'jumpsuit'
 import state from './state'
-import App from './views/App'
+import App from './core/App'
 
 Render(state, (
   <App />
 ))
 
 if (module.hot) {
-  module.hot.accept('./views/App', () => {
-    const NextApp = require('./views/App').default;
+  module.hot.accept('./core/App', () => {
+    const NextApp = require('./core/App').default;
     Render(state, (
       <NextApp />
     ))
