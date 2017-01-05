@@ -21,14 +21,14 @@ const managementState = State('management', {
 
   createPostSuccess: (state, payload) => ({
     posts: state.posts.map(post => {
-      return post.key === payload.key ? payload : post;
+      return post.key === payload.key ? payload : post
     }),
     error: null
   }),
 
   updatePostSuccess: (state, payload) => ({
     posts: state.posts.map(post => {
-      return post.key === payload.key ? payload : post;
+      return post.key === payload.key ? payload : post
     }),
     error: null
   }),
@@ -57,34 +57,31 @@ const postList = new FirebaseList({
   onLoad: managementState.loadPostsSuccess,
   onChange: managementState.updatePostSuccess,
   onRemove: managementState.deletePostSuccess
-}, 'posts');
+}, 'posts')
 
-export function loadPosts() {
-  postList.subscribe();
+export function loadPosts () {
+  postList.subscribe()
 }
 
-export function createPost(post) {
+export function createPost (post) {
   postList.push(post)
-    .catch(error => managementState.error(error));
+    .catch(error => managementState.error(error))
 }
 
-export function deletePost(post) {
+export function deletePost (post) {
   postList.remove(post.key)
-    .catch(error => managementState.error(error));
+    .catch(error => managementState.error(error))
 }
 
-export function updatePost(post, changes) {
+export function updatePost (post, changes) {
   postList.update(post.key, changes)
-    .catch(error => managementState.error(error));
+    .catch(error => managementState.error(error))
 }
 
 Hook((action, getState) => {
   switch (action.type) {
     case 'management_unload':
-      postList.unsubscribe();
-      break;
-
-    default:
-      break;
+      postList.unsubscribe()
+      break
   }
 })

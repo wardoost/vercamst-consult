@@ -18,7 +18,7 @@ const loginState = State('login', {
   }),
 
   loading: (state, payload) => ({
-    loading: payload ? true : false
+    loading: Boolean(payload)
   }),
 
   updateEmail: (state, payload) => ({
@@ -46,7 +46,7 @@ Effect('submitLogin', (payload) => {
   loginState.loading(true)
   authLogin(payload.email, payload.password)
     .then(() => {
-      Goto('/management');
+      Goto('/management')
       loginState.unload()
     })
     .catch(error => loginState.error(error))

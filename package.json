@@ -9,7 +9,10 @@
     "babel-eslint": "6.1.2",
     "babel-jest": "15.0.0",
     "babel-loader": "6.2.5",
-    "babel-preset-react-app": "^0.2.1",
+    "babel-plugin-transform-runtime": "6.15.0",
+    "babel-preset-es2015": "6.14.0",
+    "babel-preset-react": "6.11.1",
+    "babel-preset-stage-2": "6.13.0",
     "case-sensitive-paths-webpack-plugin": "1.1.4",
     "chalk": "1.1.3",
     "connect-history-api-fallback": "1.3.0",
@@ -17,13 +20,12 @@
     "css-loader": "0.24.0",
     "detect-port": "1.0.0",
     "dotenv": "2.0.0",
-    "eslint": "3.5.0",
-    "eslint-config-react-app": "^0.2.1",
+    "eslint": "3.8.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-config-standard-jsx": "^3.2.0",
     "eslint-loader": "1.5.0",
-    "eslint-plugin-flowtype": "2.18.1",
-    "eslint-plugin-import": "1.12.0",
-    "eslint-plugin-jsx-a11y": "2.2.2",
-    "eslint-plugin-react": "6.3.0",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
     "extract-text-webpack-plugin": "1.0.1",
     "file-loader": "0.9.0",
     "filesize": "3.3.0",
@@ -45,6 +47,7 @@
     "recursive-readdir": "2.1.0",
     "rimraf": "2.5.4",
     "sass-loader": "^4.0.2",
+    "standard": "^8.6.0",
     "strip-ansi": "3.0.1",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
@@ -59,7 +62,6 @@
     "jumpsuit": "^1.3.5",
     "lodash": "^4.16.4",
     "moment": "^2.17.1",
-    "react": "^15.3.2",
     "react-bootstrap": "^0.30.3",
     "react-ga": "^2.1.2",
     "react-helmet": "^3.2.3",
@@ -93,10 +95,28 @@
   },
   "babel": {
     "presets": [
-      "react-app"
+      "es2015",
+      "stage-2",
+      "react"
+    ],
+    "plugins": [
+      [
+        "transform-runtime",
+        {
+          "polyfill": false,
+          "regenerator": true
+        }
+      ]
     ]
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "standard",
+      "standard-jsx"
+    ],
+    "plugins": [
+      "standard",
+      "promise"
+    ]
   }
 }

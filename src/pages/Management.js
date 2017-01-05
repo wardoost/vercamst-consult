@@ -1,4 +1,3 @@
-import React from 'react'
 import { Grid, Row, Col, Table, Alert, Button } from 'react-bootstrap'
 import { Component, Link } from 'jumpsuit'
 import managementState, { loadPosts, deletePost, updatePost } from '../state/management'
@@ -9,15 +8,15 @@ import PostItem from '../components/PostItem'
 import './Management.sass'
 
 export default Component({
-  componentWillMount() {
-    loadPosts();
+  componentWillMount () {
+    loadPosts()
   },
 
-  componentWillUnmount() {
-    managementState.unload();
+  componentWillUnmount () {
+    managementState.unload()
   },
 
-  createPosts() {
+  createPosts () {
     return this.props.posts.map(post => {
       return (
         <PostItem
@@ -26,59 +25,57 @@ export default Component({
           deletePost={deletePost}
           updatePost={updatePost}
         />
-      );
+      )
     })
   },
 
-  render() {
+  render () {
     return (
       <SplashPage
-        className="management"
-        title="Blog beheer"
+        className='management'
+        title='Blog beheer'
         splashHeight={0.3}>
-        <section className="management-content">
-          { this.props.error && this.props.showAlert ?
-            <Alert bsStyle="danger" onDismiss={managementState.dismissAlert}>
-              <div className="container">
-                {this.props.error.message}
-              </div>
-            </Alert>
+        <section className='management-content'>
+          { this.props.error && this.props.showAlert
+          ? <Alert bsStyle='danger' onDismiss={managementState.dismissAlert}>
+            <div className='container'>
+              {this.props.error.message}
+            </div>
+          </Alert>
           : null }
           <Grid>
             <Row>
               <Col md={12}>
-                {this.props.loading ?
-                  <Loading />
-                :
-                  this.props.posts.length ?
-                    <Table responsive>
-                      <thead>
-                        <tr>
-                          <th>Titel</th>
-                          <th>Gemaakt op</th>
-                          <th className="actions">Acties</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {this.createPosts()}
-                      </tbody>
-                    </Table>
-                  :
-                    <p>Geen posts beschikbaar.</p>
+                {this.props.loading
+                ? <Loading />
+                : this.props.posts.length
+                ? <Table responsive>
+                  <thead>
+                    <tr>
+                      <th>Titel</th>
+                      <th>Gemaakt op</th>
+                      <th className='actions'>Acties</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.createPosts()}
+                  </tbody>
+                </Table>
+                : <p>Geen posts beschikbaar.</p>
                 }
               </Col>
             </Row>
           </Grid>
         </section>
-        <section className="management-actions">
+        <section className='management-actions'>
           <Grid>
             <Row>
               <Col md={12}>
-                <Link to="/posts/add" className="btn btn-primary">
-                  <i className="icon-plus" /> Nieuwe post aanmaken
+                <Link to='/posts/add' className='btn btn-primary'>
+                  <i className='icon-plus' /> Nieuwe post aanmaken
                 </Link>
-                <Button bsStyle="primary" className="pull-right" onClick={authLogout}>
-                  <i className="icon-sign-out" /> Log uit
+                <Button bsStyle='primary' className='pull-right' onClick={authLogout}>
+                  <i className='icon-sign-out' /> Log uit
                 </Button>
               </Col>
             </Row>

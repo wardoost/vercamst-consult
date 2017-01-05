@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import { PropTypes } from 'react'
 import { Component } from 'jumpsuit'
 import Footer from '../Footer'
 import './style.sass'
@@ -12,21 +12,21 @@ export default Component({
     fullPage: false
   },
 
-  render() {
+  render () {
     if (this.props.fullPage) {
-      return(
-        <main className="content-container loading">
-          <div className="loading-animation">
-            <i className="icon-circle-notch icon-spin" />
+      return (
+        <main className='content-container loading'>
+          <div className='loading-animation'>
+            <i className='icon-circle-notch icon-spin' />
           </div>
           <Footer />
         </main>
       )
     } else {
-      return(
-        <div className="loading">
-          <div className="loading-animation">
-            <i className="icon-circle-notch icon-spin" />
+      return (
+        <div className='loading'>
+          <div className='loading-animation'>
+            <i className='icon-circle-notch icon-spin' />
           </div>
         </div>
       )

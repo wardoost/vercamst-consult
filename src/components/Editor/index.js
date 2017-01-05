@@ -1,22 +1,22 @@
-import React, { PropTypes } from 'react'
+import { PropTypes } from 'react'
 import { Component } from 'jumpsuit'
 import RichTextEditor from 'react-rte'
-import './style.sass';
+import './style.sass'
 
 export default Component({
   propTypes: {
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired
   },
 
-  getInitialState() {
+  getInitialState () {
     return {
       value: RichTextEditor.createEmptyValue()
-    };
+    }
   },
 
-  onChange(value) {
-    this.setState({value: value});
-    this.props.onChange(value);
+  onChange (value) {
+    this.setState({value: value})
+    this.props.onChange(value)
   },
 
   render () {
@@ -37,14 +37,14 @@ export default Component({
         {label: 'UL', style: 'unordered-list-item'},
         {label: 'OL', style: 'ordered-list-item'}
       ]
-    };
+    }
     return (
       <RichTextEditor
         toolbarConfig={toolbarConfig}
         value={this.state.value}
         onChange={this.onChange}
-        ref="editor"
+        ref='editor'
       />
-    );
+    )
   }
 })

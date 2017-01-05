@@ -15,7 +15,7 @@ const blogState = State('blog', {
   }),
 
   loading: (state, payload) => ({
-    loading: payload ? true : false
+    loading: Boolean(payload)
   }),
 
   loadPostsSuccess: (state, payload) => ({
@@ -52,27 +52,23 @@ export default blogState
 export const publishedPostList = new FirebasePaginatedList({
   onReady: blogState.loadPostsSuccess,
   onMore: blogState.loadMorePostsSuccess,
-  onLastPage: blogState.lastPagePosts,
-}, 'posts', {pageSize: 2});
+  onLastPage: blogState.lastPagePosts
+}, 'posts', {pageSize: 2})
 
-
-export function loadPosts() {
-  blogState.loading(true);
-  publishedPostList.subscribe();
+export function loadPosts () {
+  blogState.loading(true)
+  publishedPostList.subscribe()
 }
 
-export function loadMorePosts() {
-  blogState.loading(true);
-  publishedPostList.loadMore();
+export function loadMorePosts () {
+  blogState.loading(true)
+  publishedPostList.loadMore()
 }
 
 Hook((action, getState) => {
   switch (action.type) {
     case 'blog_unload':
-      publishedPostList.unsubscribe();
-      break;
-
-    default:
-      break;
+      publishedPostList.unsubscribe()
+      break
   }
 })

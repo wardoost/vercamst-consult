@@ -194,6 +194,8 @@ module.exports = {
     // makes the discovery automatic so you don't have to restart.
     // See https://github.com/facebookincubator/create-react-app/issues/186
     new WatchMissingNodeModulesPlugin(paths.appNodeModules),
+    // Make React global variable
+    new webpack.ProvidePlugin({React: 'react' }),
     // Only load specific moment.js locales
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/)
   ],

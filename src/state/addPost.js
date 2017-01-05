@@ -19,7 +19,7 @@ const addPostState = State('addPost', {
   }),
 
   loading: (state, payload) => ({
-    loading: payload ? true : false
+    loading: Boolean(payload)
   }),
 
   updateTitle: (state, payload) => ({
@@ -52,14 +52,14 @@ const addPostState = State('addPost', {
 
 export default addPostState
 
-export function createPost(post, duplicateSlug = null) {
-  let newSlug = duplicateSlug ? duplicateSlug + '-2' : slug(post.title, {lower: true});
+export function createPost (post, duplicateSlug = null) {
+  let newSlug = duplicateSlug ? duplicateSlug + '-2' : slug(post.title, {lower: true})
 
   firebaseDb.ref('posts').once('value', snapshot => {
     if (!snapshot.hasChild(newSlug)) {
       firebaseDb.ref('posts/' + newSlug).set(post)
         .then(() => addPostState.createPostSuccess(post))
-        .catch(error => addPostState.error(error));
+        .catch(error => addPostState.error(error))
     } else {
       createPost(post, newSlug)
     }

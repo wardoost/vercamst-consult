@@ -6,7 +6,7 @@ const navigationState = State('navigation', {
     menuOpen: false,
     activeScrollLink: null,
     goto: null,
-    scrollEnd : false,
+    scrollEnd: false,
     showLogo: shouldShowLogo(),
     scrollDuration: 1000
   },
@@ -36,36 +36,25 @@ const navigationState = State('navigation', {
   scrollEnd: (state, payload) => ({
     goto: null,
     activeScrollLink: payload
-  }),
-
-  error: (state, payload) => ({
-    password: '',
-    showAlert: true,
-    error: payload,
-    loading: false
-  }),
-
-  loading: (state, payload) => ({
-    loading: payload ? true : false
-  }),
+  })
 })
 
 export default navigationState
 
-export function shouldShowLogo() {
-  const currentPath = document.location.pathname,
-        atHomePage = (currentPath === '/'),
-        overSplash = (window.scrollY > window.innerHeight / 3 - 50);
+export function shouldShowLogo () {
+  const currentPath = document.location.pathname
+  const atHomePage = (currentPath === '/')
+  const overSplash = (window.scrollY > window.innerHeight / 3 - 50)
 
   return !atHomePage ? true : overSplash
 }
 
-export function atScrollEnd() {
-  const body = document.body,
-        html = document.documentElement,
-        maxScrollY = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) - window.innerHeight
+export function atScrollEnd () {
+  const body = document.body
+  const html = document.documentElement
+  const maxScrollY = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) - window.innerHeight
 
-  return window.scrollY > 0 && (window.scrollY >= maxScrollY - window.innerHeight / 4);
+  return window.scrollY > 0 && (window.scrollY >= maxScrollY - window.innerHeight / 4)
 }
 
 const setActiveDebounced = debounce((to) => {

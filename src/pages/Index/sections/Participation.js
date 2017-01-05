@@ -1,12 +1,11 @@
-import React from 'react'
 import { Component } from 'jumpsuit'
 import { Grid, Row, Col } from 'react-bootstrap'
 import './Participation.sass'
 
 export default Component({
-  render() {
+  render () {
     return (
-      <section id="werknemersparticipatie">
+      <section id='werknemersparticipatie'>
         <Grid>
           <Row>
             <Col mdOffset={1} md={10} lgOffset={2} lg={8}>

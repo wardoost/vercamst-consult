@@ -30,48 +30,48 @@ const authState = State('auth', {
 
 export default authState
 
-export function authInit() {
+export function authInit () {
   return new Promise((resolve, reject) => {
     const unsub = firebaseAuth.onAuthStateChanged(
       user => {
-        authState.initSuccess(user);
-        unsub();
-        resolve();
+        authState.initSuccess(user)
+        unsub()
+        resolve()
       },
       error => {
-        authState.error(error);
-        reject(error);
+        authState.error(error)
+        reject(error)
       }
-    );
-  });
+    )
+  })
 }
 
-export function authLogin(email, password) {
+export function authLogin (email, password) {
   return new Promise((resolve, reject) => {
     firebaseAuth.signInWithEmailAndPassword(email, password)
       .then(user => {
         authState.loginSuccess(user)
-        resolve();
+        resolve()
       })
-      .catch(error => reject(error));
-  });
+      .catch(error => reject(error))
+  })
 }
 
-export function authLogout() {
+export function authLogout () {
   return new Promise((resolve, reject) => {
     firebaseAuth.signOut()
       .then(() => {
         authState.logoutSuccess()
-        Goto('/');
-        resolve();
+        Goto('/')
+        resolve()
       })
       .catch(error => {
-        authState.error(error);
-        reject(error);
+        authState.error(error)
+        reject(error)
       })
-  });
+  })
 }
 
-export function isAuthenticated() {
-  return authState.getState().uid ? true : false;
+export function isAuthenticated () {
+  return Boolean(authState.getState().uid)
 }

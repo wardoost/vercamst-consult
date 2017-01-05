@@ -16,7 +16,7 @@ const postState = State('post', {
   }),
 
   loading: (state, payload) => ({
-    loading: payload ? true : false
+    loading: Boolean(payload)
   }),
 
   loadPostSuccess: (state, payload) => ({
@@ -39,13 +39,13 @@ const postState = State('post', {
 
 export default postState
 
-export function loadPost(key) {
-  postState.loading(true);
+export function loadPost (key) {
+  postState.loading(true)
 
   firebaseDb.ref('posts/' + key).once('value')
     .then(snapshot => {
       postState.loadPostSuccess(snapshot.val())
-      postState.loading(false);
+      postState.loading(false)
     })
-    .catch(error => postState.error(error));
+    .catch(error => postState.error(error))
 }

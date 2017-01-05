@@ -1,4 +1,3 @@
-import React from 'react'
 import { Component, Goto } from 'jumpsuit'
 import { Grid, Row, Col, Form, FormGroup, FormControl, Button } from 'react-bootstrap'
 import addPostState, { createPost } from '../state/addPost'
@@ -8,57 +7,57 @@ import Editor from '../components/Editor'
 import './AddPost.sass'
 
 export default Component({
-  handleSubmit(e) {
-    e.preventDefault();
+  handleSubmit (e) {
+    e.preventDefault()
 
     const post = {
       title: this.props.title,
-      body: this.props.body.toString("html"),
+      body: this.props.body.toString('html'),
       published: false,
       createdAt: new Date().getTime(),
-      updatedAt: new Date().getTime(),
+      updatedAt: new Date().getTime()
     }
 
-    createPost(post);
+    createPost(post)
   },
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.post) {
-      Goto('/management');
+      Goto('/management')
     }
   },
 
-  componentWillUnmount() {
-    addPostState.unload();
+  componentWillUnmount () {
+    addPostState.unload()
   },
 
-  render() {
+  render () {
     return (
       <SplashPage
-        className="add-post"
-        title="Een nieuwe post aanmaken"
+        className='add-post'
+        title='Een nieuwe post aanmaken'
         splashHeight={0.3}>
-        <main className="add-post-content">
+        <main className='add-post-content'>
           <Grid>
             <Row>
               <Col md={12}>
                 <Form onSubmit={this.handleSubmit}>
                   <FormGroup>
                     <FormControl
-                      type="text"
-                      placeholder="Titel"
+                      type='text'
+                      placeholder='Titel'
                       value={this.props.title}
                       onChange={(e) => addPostState.updateTitle(e.target.value)}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Editor
-                      ref="editor"
+                      ref='editor'
                       value={this.props.body}
                       onChange={(e) => addPostState.updateBody(e)}
                     />
                   </FormGroup>
-                  <Button type="submit" bsStyle="primary">
+                  <Button type='submit' bsStyle='primary'>
                     Post aanmaken
                   </Button>
                 </Form>
@@ -72,6 +71,6 @@ export default Component({
   }
 }, state => {
   return {
-    ...state.addPost,
+    ...state.addPost
   }
 })
