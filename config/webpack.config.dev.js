@@ -54,13 +54,9 @@ module.exports = {
       // changing JS code would still trigger a refresh.
     ],
     vendor: [
-      'jumpsuit',
       'react',
-      'firebase',
-      'react-bootstrap',
-      'react-ga',
-      'react-helmet',
-      'moment'
+      'jumpsuit',
+      'firebase'
     ]
   },
   output: {
@@ -209,8 +205,12 @@ module.exports = {
     new webpack.ProvidePlugin({React: 'react' }),
     // Only load specific moment.js locales
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/),
-    // Bundle vendor modules in seperate js file
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'static/js/[name].js')
+    // Bundle vendor and common modules in seperate js file
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['common', 'vendor'],
+      filename: 'static/js/[name].js',
+      minChunks: 2
+    })
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

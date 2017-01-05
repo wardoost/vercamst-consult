@@ -1,5 +1,5 @@
 import { State } from 'jumpsuit'
-import { debounce } from 'lodash'
+import _ from 'lodash'
 
 const navigationState = State('navigation', {
   initial: {
@@ -57,13 +57,13 @@ export function atScrollEnd () {
   return window.scrollY > 0 && (window.scrollY >= maxScrollY - window.innerHeight / 4)
 }
 
-const setActiveDebounced = debounce((to) => {
+const setActiveDebounced = _.debounce((to) => {
   navigationState.setActive(to)
 }, 100)
 
 export { setActiveDebounced as setActive }
 
-const handleScrollDebounced = debounce(() => {
+const handleScrollDebounced = _.debounce(() => {
   navigationState.handleScroll()
 }, 100)
 

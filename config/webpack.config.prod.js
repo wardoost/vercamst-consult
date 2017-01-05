@@ -59,13 +59,9 @@ module.exports = {
       paths.appIndexJs
     ],
     vendor: [
-      'jumpsuit',
       'react',
-      'firebase',
-      'react-bootstrap',
-      'react-ga',
-      'react-helmet',
-      'moment'
+      'jumpsuit',
+      'firebase'
     ]
   },
   output: {
@@ -168,7 +164,6 @@ module.exports = {
       }
     ]
   },
-
   // We use PostCSS for autoprefixing only.
   postcss: function() {
     return [
@@ -236,10 +231,24 @@ module.exports = {
     new webpack.ProvidePlugin({React: 'react' }),
     // Only load specific moment.js locales
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/),
-    // Bundle vendor modules in seperate js file
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'static/js/[name].[hash:8].js'),
+    // Bundle vendor and common modules in seperate js file
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['common', 'vendor'],
+      filename: 'static/js/[name].[hash:8].js',
+      minChunks: 2
+    }),
     // Visualize and analyze bundle sizes
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin({
+      // Can be `server`, `static` or `disabled`.
+      // In `server` mode analyzer will start HTTP server to show bundle report.
+      // In `static` mode single HTML file with bundle report will be generated.
+      // In `disabled` mode you can use this plugin to just generate Webpack Stats JSON file by setting `generateStatsFile` to `true`.
+      analyzerMode: 'server',
+      // Port that will be used in `server` mode to start HTTP server.
+      analyzerPort: 3001,
+      // Automatically open report in default browser
+      openAnalyzer: false,
+    })
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
