@@ -51,11 +51,21 @@ module.exports = {
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
   devtool: 'source-map',
-  // In production, we only want to load the polyfills and the app code.
-  entry: [
-    require.resolve('./polyfills'),
-    paths.appIndexJs
-  ],
+  entry: {
+    app: [
+      // In production, we only want to load the polyfills and the app code.
+      require.resolve('./polyfills'),
+      paths.appIndexJs
+    ],
+    vendor: [
+      'jumpsuit',
+      'react',
+      'firebase',
+      'react-bootstrap',
+      'react-ga',
+      'react-helmet'
+    ]
+  },
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -223,7 +233,9 @@ module.exports = {
     // Make React global variable
     new webpack.ProvidePlugin({React: 'react' }),
     // Only load specific moment.js locales
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/)
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/),
+    // Bundle vendor modules in seperate js file
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'static/js/[name].[hash:8].js')
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
