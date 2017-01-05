@@ -59,7 +59,8 @@ module.exports = {
       'firebase',
       'react-bootstrap',
       'react-ga',
-      'react-helmet'
+      'react-helmet',
+      'moment'
     ]
   },
   output: {

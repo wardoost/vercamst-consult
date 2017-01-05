@@ -4,6 +4,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var url = require('url');
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
@@ -63,7 +64,8 @@ module.exports = {
       'firebase',
       'react-bootstrap',
       'react-ga',
-      'react-helmet'
+      'react-helmet',
+      'moment'
     ]
   },
   output: {
@@ -235,7 +237,9 @@ module.exports = {
     // Only load specific moment.js locales
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/),
     // Bundle vendor modules in seperate js file
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'static/js/[name].[hash:8].js')
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'static/js/[name].[hash:8].js'),
+    // Visualize and analyze bundle sizes
+    new BundleAnalyzerPlugin()
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
