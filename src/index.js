@@ -6,11 +6,13 @@ Render(state, (
   <App />
 ))
 
-if (module.hot) {
-  module.hot.accept('./core/App', () => {
-    const NextApp = require('./core/App').default
-    Render(state, (
-      <NextApp />
-    ))
-  })
+if (process.env.NODE_ENV === 'development') {
+  if (module.hot) {
+    module.hot.accept('./core/App', () => {
+      const NextApp = require('./core/App').default
+      Render(state, (
+        <NextApp />
+      ))
+    })
+  }
 }

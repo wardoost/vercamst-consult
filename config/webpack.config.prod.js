@@ -52,7 +52,7 @@ module.exports = {
   // Use --deploy flag to disable source-maps for deployment.
   devtool: process.env.npm_config_deploy ? 'eval' : 'source-map',
   entry: {
-    app: [
+    main: [
       // In production, we only want to load the polyfills and the app code.
       require.resolve('./polyfills'),
       paths.appIndexJs
