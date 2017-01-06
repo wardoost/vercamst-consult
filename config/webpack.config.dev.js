@@ -113,7 +113,6 @@ module.exports = {
         include: paths.appSrc,
         loader: 'babel',
         query: {
-
           // This is a feature of `babel-loader` for webpack (not Babel itself).
           // It enables caching results in ./node_modules/.cache/react-scripts/
           // directory for faster rebuilds. We use findCacheDir() because of:
@@ -202,7 +201,7 @@ module.exports = {
     // See https://github.com/facebookincubator/create-react-app/issues/186
     new WatchMissingNodeModulesPlugin(paths.appNodeModules),
     // Make React global variable
-    new webpack.ProvidePlugin({React: 'react' }),
+    new webpack.ProvidePlugin({React: 'react'}),
     // Only load specific moment.js locales
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/),
     // Bundle vendor and common modules in seperate js file

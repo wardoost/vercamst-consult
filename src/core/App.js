@@ -31,19 +31,11 @@ Hook((action, getState) => {
       const currentPath = getState().routing.locationBeforeTransitions.pathname
       switch (currentPath) {
         case '/login':
-          if (isAuthenticated()) {
-            Goto('/management')
-          } else {
-            Goto(currentPath)
-          }
+          Goto(isAuthenticated() ? '/management' : currentPath)
           break
         case '/management':
         case '/posts/add':
-          if (!isAuthenticated()) {
-            Goto('/login')
-          } else {
-            Goto(currentPath)
-          }
+          Goto(!isAuthenticated() ? '/login' : currentPath)
           break
       }
       break
@@ -62,66 +54,30 @@ export default Component({
       <Router>
         <Route path='/' component={Layout}>
           <IndexRoute
-            getComponent={(location, cb) => {
-              require.ensure([], require => {
-                cb(null, require('../pages/Index').default)
-              })
-            }}
+            getComponent={(loc, cb) => require.ensure([], require => cb(null, require('../pages/Index').default))}
           />
           <Route
             path='/posts/add'
             onEnter={requireAuth}
-            getComponent={(location, cb) => {
-              if (!getState().auth.initialized) {
-                cb(null, Loading)
-              } else {
-                require.ensure([], require => {
-                  cb(null, require('../pages/AddPost').default)
-                })
-              }
-            }}
+            getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/AddPost').default))}
           />
           <Route
             path='/posts/:id'
-            getComponent={(location, cb) => {
-              require.ensure([], require => {
-                cb(null, require('../pages/Post').default)
-              })
-            }}
+            getComponent={(loc, cb) => require.ensure([], require => cb(null, require('../pages/Post').default))}
           />
           <Route
             path='/login'
             onEnter={noAuth}
-            getComponent={(location, cb) => {
-              if (!getState().auth.initialized) {
-                cb(null, Loading)
-              } else {
-                require.ensure([], require => {
-                  cb(null, require('../pages/Login').default)
-                })
-              }
-            }}
+            getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/Login').default))}
           />
           <Route
             path='/management'
             onEnter={requireAuth}
-            getComponent={(location, cb) => {
-              if (!getState().auth.initialized) {
-                cb(null, Loading)
-              } else {
-                require.ensure([], require => {
-                  cb(null, require('../pages/Management').default)
-                })
-              }
-            }}
+            getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/Management').default))}
           />
           <Route
             path='/*'
-            getComponent={(location, cb) => {
-              require.ensure([], require => {
-                cb(null, require('../pages/Error').default)
-              })
-            }}
+            getComponent={(loc, cb) => require.ensure([], require => cb(null, require('../pages/Error').default))}
           />
         </Route>
       </Router>

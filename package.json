@@ -103,13 +103,10 @@
     ],
     "plugins": [
       "lodash",
-      [
-        "transform-runtime",
-        {
-          "polyfill": false,
-          "regenerator": true
-        }
-      ]
+      ["transform-runtime", {
+        "polyfill": false,
+        "regenerator": true
+      }]
     ]
   },
   "eslintConfig": {

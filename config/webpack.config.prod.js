@@ -228,7 +228,7 @@ module.exports = {
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin('static/css/[name].[contenthash:8].css'),
     // Make React global variable
-    new webpack.ProvidePlugin({React: 'react' }),
+    new webpack.ProvidePlugin({React: 'react'}),
     // Only load specific moment.js locales
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/),
     // Bundle vendor and common modules in seperate js file
