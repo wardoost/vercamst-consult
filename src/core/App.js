@@ -24,8 +24,10 @@ Hook((action, getState) => {
     case '@@router/LOCATION_CHANGE':
       const { pathname } = action.payload
       window.scrollTo(0, 0)
-      ReactGA.set({ page: pathname })
-      ReactGA.pageview(pathname)
+      if (process.env.NODE_ENV === 'production') {
+        ReactGA.set({ page: pathname })
+        ReactGA.pageview(pathname)
+      }
       break
     case 'auth_initSuccess':
       const currentPath = getState().routing.locationBeforeTransitions.pathname
@@ -46,7 +48,7 @@ export default Component({
   componentWillMount () {
     authInit()
 
-    ReactGA.initialize('UA-79882435-1')
+    if (process.env.NODE_ENV === 'production') ReactGA.initialize(process.env.GOOGLE_ANALYTICS_TRACKING_ID)
   },
 
   render () {
