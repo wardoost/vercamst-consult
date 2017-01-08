@@ -1,7 +1,7 @@
 import { PropTypes } from 'react'
 import { Component } from 'jumpsuit'
-import Footer from '../Footer'
-import './style.sass'
+import Footer from './Footer'
+import './Loading.sass'
 
 export default Component({
   propTypes: {

@@ -1,7 +1,7 @@
 import { PropTypes } from 'react'
 import { Component } from 'jumpsuit'
 import RichTextEditor from 'react-rte'
-import './style.sass'
+import './Editor.sass'
 
 export default Component({
   propTypes: {

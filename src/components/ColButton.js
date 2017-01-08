@@ -1,8 +1,8 @@
 import { Component, Link } from 'jumpsuit'
 import { Button, Col } from 'react-bootstrap'
 import classNames from 'classnames'
-import isTouchDevice from '../../core/utils/isTouchDevice'
-import './style.sass'
+import isTouchDevice from '../core/utils/isTouchDevice'
+import './ColButton.sass'
 
 export default Component({
   render () {

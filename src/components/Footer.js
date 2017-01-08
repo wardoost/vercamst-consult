@@ -1,5 +1,5 @@
 import { Component } from 'jumpsuit'
-import './style.sass'
+import './Footer.sass'
 
 export default Component({
   render () {

@@ -1,9 +1,9 @@
 import { Component, Link as RouterLink, Goto, getState } from 'jumpsuit'
 import { Link as ScrollLink, Events, scrollSpy } from 'react-scroll'
 import classNames from 'classnames'
-import navigationState, { atScrollEnd, setActive, handleScroll } from '../../state/navigation.js'
-import logo from '../../assets/logo.svg'
-import './style.sass'
+import navigationState, { atScrollEnd, setActive, handleScroll } from '../state/navigation.js'
+import logo from '../assets/logo.svg'
+import './Navigation.sass'
 
 const menu = [
   {

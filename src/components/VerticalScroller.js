@@ -1,8 +1,8 @@
 import { Component } from 'jumpsuit'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
-import isTouchDevice from '../../core/utils/isTouchDevice'
-import './style.sass'
+import isTouchDevice from '../core/utils/isTouchDevice'
+import './VerticalScroller.sass'
 
 export default Component({
   getInitialState () {

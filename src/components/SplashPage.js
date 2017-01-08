@@ -4,8 +4,8 @@ import Helmet from 'react-helmet'
 import { Grid, Row, Col, Button } from 'react-bootstrap'
 import { scroller } from 'react-scroll'
 import classNames from 'classnames'
-import Footer from '../Footer'
-import './style.sass'
+import Footer from './Footer'
+import './SplashPage.sass'
 
 export default Component({
   propTypes: {
