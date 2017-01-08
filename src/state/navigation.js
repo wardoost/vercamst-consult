@@ -19,6 +19,10 @@ const navigationState = State('navigation', {
     menuOpen: false
   }),
 
+  updateLogo: (state, payload) => ({
+    showLogo: shouldShowLogo()
+  }),
+
   setActive: (state, payload) => ({
     activeScrollLink: !state.goto ? payload : state.activeScrollLink
   }),

@@ -51,8 +51,7 @@ export default Component({
                   </FormGroup>
                   <FormGroup>
                     <Button type='submit' bsStyle='primary' disabled={this.props.loading}>
-                      Log in
-                      {this.props.loading ? <i className='icon-circle-notch icon-spin' /> : null }
+                      Log in {this.props.loading ? <i className='icon-circle-notch icon-spin' /> : null }
                     </Button>
                   </FormGroup>
                 </Form>

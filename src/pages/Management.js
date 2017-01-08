@@ -75,7 +75,7 @@ export default Component({
                   <i className='icon-plus' /> Nieuwe post aanmaken
                 </Link>
                 <Button bsStyle='primary' className='pull-right' onClick={authLogout}>
-                  <i className='icon-sign-out' /> Log uit
+                  <i className='icon-logout' /> Log uit
                 </Button>
               </Col>
             </Row>

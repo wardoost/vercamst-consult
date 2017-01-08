@@ -74,8 +74,7 @@ export default Component({
           ? <Row>
             <Col md={12} className='text-center'>
               <Button className='show-more' bsStyle='primary' onClick={loadMorePosts} disabled={this.props.loading}>
-                Toon meer
-                {this.props.loading ? <i className='icon-circle-notch icon-spin' /> : null }
+                Toon meer {this.props.loading ? <i className='icon-circle-notch icon-spin' /> : null }
               </Button>
             </Col>
           </Row>

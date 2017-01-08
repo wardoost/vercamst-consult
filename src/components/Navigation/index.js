@@ -38,6 +38,7 @@ export default Component({
     e.preventDefault()
     navigationState.closeMenu()
     Goto(url)
+    navigationState.updateLogo()
   },
 
   componentDidMount () {
