@@ -36,7 +36,7 @@ export function authInit () {
       user => {
         authState.initSuccess(user)
         unsub()
-        resolve()
+        resolve(user)
       },
       error => {
         authState.error(error)
@@ -51,7 +51,7 @@ export function authLogin (email, password) {
     firebaseAuth.signInWithEmailAndPassword(email, password)
       .then(user => {
         authState.loginSuccess(user)
-        resolve()
+        resolve(user)
       })
       .catch(error => reject(error))
   })

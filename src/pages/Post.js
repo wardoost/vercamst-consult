@@ -48,7 +48,7 @@ export default Component({
       )
     } else {
       return (
-        <Loading fullPage />
+        <Loading label='Loading blogpost' fullPage />
       )
     }
   }

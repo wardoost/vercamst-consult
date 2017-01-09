@@ -1,23 +1,8 @@
-
 import { Component, Router, Route, IndexRoute, getState, Hook, Goto } from 'jumpsuit'
 import ReactGA from 'react-ga'
 import { authInit, isAuthenticated } from '../state/auth'
 import Layout from '../components/Layout'
 import Loading from '../components/Loading'
-
-const requireAuth = (nextState, replace, cb) => {
-  if (getState().auth.initialized && !isAuthenticated()) {
-    replace({pathname: '/login'})
-  }
-  cb()
-}
-
-const noAuth = (nextState, replace, cb) => {
-  if (getState().auth.initialized && isAuthenticated()) {
-    replace({pathname: '/management'})
-  }
-  cb()
-}
 
 Hook((action, getState) => {
   switch (action.type) {
@@ -29,25 +14,40 @@ Hook((action, getState) => {
         ReactGA.pageview(pathname)
       }
       break
-    case 'auth_initSuccess':
-      const currentPath = getState().routing.locationBeforeTransitions.pathname
-
-      if (currentPath === '/login') {
-        Goto(isAuthenticated() ? '/management' : currentPath)
-      } else if (currentPath === '/management' ||
-        currentPath === '/posts/add' ||
-        /^\/posts\/.*\/edit$/.test(currentPath)) {
-        Goto(!isAuthenticated() ? '/login' : currentPath)
-      }
-      break
   }
 })
 
 export default Component({
   componentWillMount () {
     authInit()
+      .then(user => {
+        const path = document.location.pathname
+
+        if (path === '/login') {
+          Goto(isAuthenticated() ? '/management' : path)
+        } else if (path === '/management' ||
+          path === '/posts/add' ||
+          /^\/posts\/.*\/edit$/.test(path)) {
+          Goto(!isAuthenticated() ? '/login' : path)
+        }
+      })
+      .catch(error => console.log(error))
 
     if (process.env.NODE_ENV === 'production') ReactGA.initialize(process.env.GOOGLE_ANALYTICS_TRACKING_ID)
+  },
+
+  requireAuth (nextState, replace, cb) {
+    if (getState().auth.initialized && !isAuthenticated()) {
+      replace({pathname: '/login'})
+    }
+    cb()
+  },
+
+  noAuth (nextState, replace, cb) {
+    if (getState().auth.initialized && isAuthenticated()) {
+      replace({pathname: '/management'})
+    }
+    cb()
   },
 
   render () {
@@ -59,7 +59,7 @@ export default Component({
           />
           <Route
             path='/posts/add'
-            onEnter={requireAuth}
+            onEnter={this.requireAuth}
             getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/AddPost').default))}
           />
           <Route
@@ -68,17 +68,17 @@ export default Component({
           />
           <Route
             path='/posts/:id/edit'
-            onEnter={requireAuth}
+            onEnter={this.requireAuth}
             getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/EditPost').default))}
           />
           <Route
             path='/login'
-            onEnter={noAuth}
+            onEnter={this.noAuth}
             getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/Login').default))}
           />
           <Route
             path='/management'
-            onEnter={requireAuth}
+            onEnter={this.requireAuth}
             getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/Management').default))}
           />
           <Route

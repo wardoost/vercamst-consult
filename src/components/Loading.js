@@ -5,19 +5,26 @@ import './Loading.sass'
 
 export default Component({
   propTypes: {
-    fullPage: PropTypes.bool
+    fullPage: PropTypes.bool,
+    label: PropTypes.string
   },
 
-  defaultProps: {
-    fullPage: false
+  getDefaultProps () {
+    return {
+      fullPage: false,
+      label: 'Loading...'
+    }
   },
 
   render () {
-    if (this.props.fullPage) {
+    const {fullPage, label} = this.props
+
+    if (fullPage) {
       return (
         <main className='content-container loading'>
           <div className='loading-animation'>
             <i className='icon-circle-notch icon-spin' />
+            <p>{label}</p>
           </div>
           <Footer />
         </main>
@@ -27,6 +34,7 @@ export default Component({
         <div className='loading'>
           <div className='loading-animation'>
             <i className='icon-circle-notch icon-spin' />
+            <p>{label}</p>
           </div>
         </div>
       )

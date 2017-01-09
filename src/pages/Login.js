@@ -1,31 +1,52 @@
-import { Component, Actions } from 'jumpsuit'
+import { Component, Goto } from 'jumpsuit'
 import { Grid, Row, Col, Form, FormGroup, FormControl, Button, Alert } from 'react-bootstrap'
-import loginState from '../state/login'
+import classNames from 'classnames'
+import { authLogin } from '../state/auth'
 import SplashPage from '../components/SplashPage'
 import Footer from '../components/Footer'
 import './Login.sass'
 
 export default Component({
+  getInitialState () {
+    return {
+      email: '',
+      password: '',
+      error: null,
+      showAlert: true,
+      loading: false
+    }
+  },
+
   handleSubmit (e) {
     e.preventDefault()
+    this.setState({ loading: true })
 
-    Actions.submitLogin({
-      email: this.props.email,
-      password: this.props.password
-    })
+    const {email, password} = this.state
+    authLogin(email, password)
+      .then(user => Goto('/management'))
+      .catch(error => {
+        this.setState({
+          password: '',
+          error: error,
+          showAlert: true,
+          loading: false
+        })
+      })
   },
 
   render () {
+    const { email, password, error, showAlert, loading } = this.state
+
     return (
       <SplashPage
         className='login'
         title='Login'
         splashHeight={0.3}>
-        <main className='login-content'>
-          { this.props.error && this.props.showAlert
-          ? <Alert bsStyle='danger' onDismiss={loginState.dismissAlert}>
+        <main className={classNames('login-content', { 'content-alert': error && showAlert })}>
+          { error && showAlert
+          ? <Alert bsStyle='danger' onDismiss={() => this.setState({ showAlert: false })}>
             <div className='container'>
-              {this.props.error.message}
+              {error.message}
             </div>
           </Alert>
           : null }
@@ -37,21 +58,21 @@ export default Component({
                     <FormControl
                       type='email'
                       placeholder='Email'
-                      value={this.props.email}
-                      onChange={(e) => loginState.updateEmail(e.target.value)}
+                      value={email}
+                      onChange={(e) => this.setState({ email: e.target.value })}
                     />
                   </FormGroup>
                   <FormGroup>
                     <FormControl
                       type='password'
                       placeholder='Password'
-                      value={this.props.password}
-                      onChange={(e) => loginState.updatePassword(e.target.value)}
+                      value={password}
+                      onChange={(e) => this.setState({ password: e.target.value })}
                     />
                   </FormGroup>
                   <FormGroup>
-                    <Button type='submit' bsStyle='primary' disabled={this.props.loading}>
-                      Log in {this.props.loading ? <i className='icon-circle-notch icon-spin' /> : null }
+                    <Button type='submit' bsStyle='primary' disabled={loading}>
+                      Log in {loading ? <i className='icon-circle-notch icon-spin' /> : null }
                     </Button>
                   </FormGroup>
                 </Form>
@@ -65,6 +86,6 @@ export default Component({
   }
 }, state => {
   return {
-    ...state.login
+    ...state.auth
   }
 })

@@ -65,7 +65,7 @@ export default Component({
           <Row>
             {this.props.loading && !this.props.posts.length
             ? <Col md={12}>
-              <Loading />
+              <Loading label='Loading blogposts...' />
             </Col>
             : this.createPosts()
             }

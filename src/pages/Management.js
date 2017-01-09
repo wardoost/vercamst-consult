@@ -47,7 +47,7 @@ export default Component({
             <Row>
               <Col md={12}>
                 {this.props.loading
-                ? <Loading />
+                ? <Loading label='Loading all blogposts...' />
                 : this.props.posts.length
                 ? <Table responsive>
                   <thead>

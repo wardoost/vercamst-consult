@@ -34,7 +34,7 @@ export default Component({
   render () {
     if (this.props.loading && !this.props.post) {
       return (
-        <Loading fullPage />
+        <Loading label='Loading post...' fullPage />
       )
     } else {
       return (
