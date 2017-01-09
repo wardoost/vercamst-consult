@@ -1,4 +1,4 @@
-import { Component, Goto } from 'jumpsuit'
+import { Component } from 'jumpsuit'
 import { Grid, Row, Col, Form, FormGroup, FormControl, Button } from 'react-bootstrap'
 import addPostState, { createPost } from '../state/addPost'
 import SplashPage from '../components/SplashPage'
@@ -19,12 +19,6 @@ export default Component({
     }
 
     createPost(post)
-  },
-
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.post) {
-      Goto('/management')
-    }
   },
 
   componentWillUnmount () {
@@ -57,8 +51,8 @@ export default Component({
                       onChange={(e) => addPostState.updateBody(e)}
                     />
                   </FormGroup>
-                  <Button type='submit' bsStyle='primary'>
-                    Post aanmaken
+                  <Button type='submit' bsStyle='primary' disabled={this.props.loading}>
+                    Post aanmaken {this.props.loading ? <i className='icon-circle-notch icon-spin' /> : null }
                   </Button>
                 </Form>
               </Col>

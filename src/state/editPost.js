@@ -1,8 +1,7 @@
 import { State, Goto } from 'jumpsuit'
 import { firebaseDb } from '../core/firebase'
-import slug from 'slug'
 
-const addPostState = State('addPost', {
+const editPostState = State('editPost', {
   initial: {
     post: null,
     title: '',
@@ -20,6 +19,14 @@ const addPostState = State('addPost', {
 
   loading: (state, payload) => ({
     loading: Boolean(payload)
+  }),
+
+  loadPostSuccess: (state, payload) => ({
+    post: payload,
+    title: payload.title,
+    body: payload.body,
+    error: null,
+    loading: false
   }),
 
   updateTitle: (state, payload) => ({
@@ -44,20 +51,20 @@ const addPostState = State('addPost', {
   })
 })
 
-export default addPostState
+export default editPostState
 
-export function createPost (post, duplicateSlug = null) {
-  addPostState.loading(true)
+export function loadPost (key) {
+  editPostState.loading(true)
 
-  firebaseDb.ref('posts').once('value', snapshot => {
-    const newSlug = duplicateSlug ? duplicateSlug + '-2' : slug(post.title, {lower: true})
-    
-    if (!snapshot.hasChild(newSlug)) {
-      firebaseDb.ref('posts/' + newSlug).set(post)
-        .then(() => Goto('/management'))
-        .catch(error => addPostState.error(error))
-    } else {
-      createPost(post, newSlug)
-    }
-  })
+  firebaseDb.ref('posts/' + key).once('value')
+    .then(snapshot => editPostState.loadPostSuccess(snapshot.val()))
+    .catch(error => editPostState.error(error))
+}
+
+export function savePost (key, post) {
+  editPostState.loading(true)
+
+  firebaseDb.ref('posts/' + key).update(post)
+    .then(post => Goto('/management'))
+    .catch(error => editPostState.error(error))
 }

@@ -31,14 +31,13 @@ Hook((action, getState) => {
       break
     case 'auth_initSuccess':
       const currentPath = getState().routing.locationBeforeTransitions.pathname
-      switch (currentPath) {
-        case '/login':
-          Goto(isAuthenticated() ? '/management' : currentPath)
-          break
-        case '/management':
-        case '/posts/add':
-          Goto(!isAuthenticated() ? '/login' : currentPath)
-          break
+
+      if (currentPath === '/login') {
+        Goto(isAuthenticated() ? '/management' : currentPath)
+      } else if (currentPath === '/management' ||
+        currentPath === '/posts/add' ||
+        /^\/posts\/.*\/edit$/.test(currentPath)) {
+        Goto(!isAuthenticated() ? '/login' : currentPath)
       }
       break
   }
@@ -66,6 +65,11 @@ export default Component({
           <Route
             path='/posts/:id'
             getComponent={(loc, cb) => require.ensure([], require => cb(null, require('../pages/Post').default))}
+          />
+          <Route
+            path='/posts/:id/edit'
+            onEnter={requireAuth}
+            getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/EditPost').default))}
           />
           <Route
             path='/login'

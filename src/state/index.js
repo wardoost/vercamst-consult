@@ -5,6 +5,7 @@ import blog from './blog'
 import login from './login'
 import management from './management'
 import addPost from './addPost'
+import editPost from './editPost'
 
 export default {
   auth,
@@ -13,5 +14,6 @@ export default {
   blog,
   login,
   management,
-  addPost
+  addPost,
+  editPost
 }

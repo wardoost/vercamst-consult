@@ -1,5 +1,5 @@
-import { Grid, Row, Col, Alert } from 'react-bootstrap'
 import { Component } from 'jumpsuit'
+import { Grid, Row, Col, Alert } from 'react-bootstrap'
 import moment from 'moment'
 import postState, { loadPost } from '../state/post'
 import SplashPage from '../components/SplashPage'
