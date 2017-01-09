@@ -1,14 +1,16 @@
 import { State, Hook } from 'jumpsuit'
 import { FirebasePaginatedList } from '../core/firebase'
 
+const initialState = {
+  posts: [],
+  onLastPage: false,
+  loading: true,
+  error: null,
+  showAlert: true
+}
+
 const blogState = State('blog', {
-  initial: {
-    posts: [],
-    onLastPage: false,
-    loading: true,
-    error: null,
-    showAlert: true
-  },
+  initial: initialState,
 
   error: (state, payload) => ({
     error: payload
@@ -38,13 +40,7 @@ const blogState = State('blog', {
     showAlert: false
   }),
 
-  unload: (state, payload) => ({
-    posts: [],
-    onLastPage: false,
-    loading: true,
-    error: null,
-    showAlert: true
-  })
+  reset: (state, payload) => initialState
 })
 
 export default blogState
@@ -67,7 +63,7 @@ export function loadMorePosts () {
 
 Hook((action, getState) => {
   switch (action.type) {
-    case 'blog_unload':
+    case 'blog_reset':
       publishedPostList.unsubscribe()
       break
   }

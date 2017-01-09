@@ -14,7 +14,7 @@ export default Component({
   },
 
   componentWillUnmount () {
-    blogState.unload()
+    blogState.reset()
   },
 
   checkCreateClearfix (i) {

@@ -1,13 +1,15 @@
 import { State, Hook } from 'jumpsuit'
 import { FirebaseList } from '../core/firebase'
 
+const initialState = {
+  posts: [],
+  loading: true,
+  error: null,
+  showAlert: true
+}
+
 const managementState = State('management', {
-  initial: {
-    posts: [],
-    loading: true,
-    error: null,
-    showAlert: true
-  },
+  initial: initialState,
 
   error: (state, payload) => ({
     error: payload
@@ -42,12 +44,7 @@ const managementState = State('management', {
     showAlert: false
   }),
 
-  unload: (state, payload) => ({
-    posts: [],
-    loading: true,
-    error: null,
-    showAlert: true
-  })
+  reset: (state, payload) => initialState
 })
 
 export default managementState
@@ -80,7 +77,7 @@ export function updatePost (post, changes) {
 
 Hook((action, getState) => {
   switch (action.type) {
-    case 'management_unload':
+    case 'management_reset':
       postList.unsubscribe()
       break
   }

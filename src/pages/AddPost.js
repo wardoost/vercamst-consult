@@ -22,7 +22,7 @@ export default Component({
   },
 
   componentWillUnmount () {
-    postState.unload()
+    postState.reset()
   },
 
   render () {

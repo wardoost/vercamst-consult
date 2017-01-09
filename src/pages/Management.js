@@ -13,7 +13,7 @@ export default Component({
   },
 
   componentWillUnmount () {
-    managementState.unload()
+    managementState.reset()
   },
 
   createPosts () {

@@ -2,15 +2,17 @@ import { State, Goto } from 'jumpsuit'
 import { firebaseDb } from '../core/firebase'
 import slug from 'slug'
 
+const initialState = {
+  post: null,
+  title: '',
+  body: '',
+  error: null,
+  showAlert: true,
+  loading: false
+}
+
 const postState = State('post', {
-  initial: {
-    post: null,
-    title: '',
-    body: '',
-    error: null,
-    showAlert: true,
-    loading: false
-  },
+  initial: initialState,
 
   error: (state, payload) => ({
     showAlert: true,
@@ -42,14 +44,7 @@ const postState = State('post', {
     showAlert: false
   }),
 
-  unload: (state, payload) => ({
-    post: null,
-    title: '',
-    body: '',
-    error: null,
-    showAlert: true,
-    loading: false
-  })
+  reset: (state, payload) => initialState
 })
 
 export default postState
