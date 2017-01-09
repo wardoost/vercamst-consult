@@ -4,19 +4,6 @@ import { authInit, isAuthenticated } from '../state/auth'
 import Layout from '../components/Layout'
 import Loading from '../components/Loading'
 
-Hook((action, getState) => {
-  switch (action.type) {
-    case '@@router/LOCATION_CHANGE':
-      const { pathname } = action.payload
-      window.scrollTo(0, 0)
-      if (process.env.NODE_ENV === 'production') {
-        ReactGA.set({ page: pathname })
-        ReactGA.pageview(pathname)
-      }
-      break
-  }
-})
-
 export default Component({
   componentWillMount () {
     authInit()
@@ -25,9 +12,7 @@ export default Component({
 
         if (path === '/login') {
           Goto(isAuthenticated() ? '/management' : path)
-        } else if (path === '/management' ||
-          path === '/posts/add' ||
-          /^\/posts\/.*\/edit$/.test(path)) {
+        } else if (isRequireAuthPath(path)) {
           Goto(!isAuthenticated() ? '/login' : path)
         }
       })
@@ -90,3 +75,20 @@ export default Component({
     )
   }
 })
+
+Hook((action, getState) => {
+  switch (action.type) {
+    case '@@router/LOCATION_CHANGE':
+      const { pathname } = action.payload
+      window.scrollTo(0, 0)
+      if (process.env.NODE_ENV === 'production') {
+        ReactGA.set({ page: pathname })
+        ReactGA.pageview(pathname)
+      }
+      break
+  }
+})
+
+export function isRequireAuthPath (path) {
+  return /(\/management|\/posts\/add|^\/posts\/.*\/edit)$/.test(path)
+}
