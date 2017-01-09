@@ -1,6 +1,6 @@
 import { Component } from 'jumpsuit'
 import { Grid, Row, Col, Form, FormGroup, FormControl, Button } from 'react-bootstrap'
-import addPostState, { createPost } from '../state/addPost'
+import postState, { createPost } from '../state/post'
 import SplashPage from '../components/SplashPage'
 import Footer from '../components/Footer'
 import Editor from '../components/Editor'
@@ -22,7 +22,7 @@ export default Component({
   },
 
   componentWillUnmount () {
-    addPostState.unload()
+    postState.unload()
   },
 
   render () {
@@ -41,14 +41,14 @@ export default Component({
                       type='text'
                       placeholder='Titel'
                       value={this.props.title}
-                      onChange={(e) => addPostState.updateTitle(e.target.value)}
+                      onChange={(e) => postState.updateTitle(e.target.value)}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Editor
                       ref='editor'
                       value={this.props.body}
-                      onChange={(e) => addPostState.updateBody(e)}
+                      onChange={(e) => postState.updateBody(e)}
                     />
                   </FormGroup>
                   <Button type='submit' bsStyle='primary' disabled={this.props.loading}>
@@ -65,6 +65,6 @@ export default Component({
   }
 }, state => {
   return {
-    ...state.addPost
+    ...state.post
   }
 })

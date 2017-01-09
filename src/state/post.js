@@ -1,9 +1,12 @@
-import { State } from 'jumpsuit'
+import { State, Goto } from 'jumpsuit'
 import { firebaseDb } from '../core/firebase'
+import slug from 'slug'
 
 const postState = State('post', {
   initial: {
     post: null,
+    title: '',
+    body: '',
     error: null,
     showAlert: true,
     loading: false
@@ -21,8 +24,18 @@ const postState = State('post', {
 
   loadPostSuccess: (state, payload) => ({
     post: payload,
+    title: payload.title,
+    body: payload.body,
     error: null,
     loading: false
+  }),
+
+  updateTitle: (state, payload) => ({
+    title: payload
+  }),
+
+  updateBody: (state, payload) => ({
+    body: payload
   }),
 
   dismissAlert: (state, payload) => ({
@@ -31,6 +44,8 @@ const postState = State('post', {
 
   unload: (state, payload) => ({
     post: null,
+    title: '',
+    body: '',
     error: null,
     showAlert: true,
     loading: false
@@ -43,9 +58,30 @@ export function loadPost (key) {
   postState.loading(true)
 
   firebaseDb.ref('posts/' + key).once('value')
-    .then(snapshot => {
-      postState.loadPostSuccess(snapshot.val())
-      postState.loading(false)
-    })
+    .then(snapshot => postState.loadPostSuccess(snapshot.val()))
+    .catch(error => postState.error(error))
+}
+
+export function createPost (post, duplicateSlug = null) {
+  postState.loading(true)
+
+  firebaseDb.ref('posts').once('value', snapshot => {
+    const newSlug = duplicateSlug ? duplicateSlug + '-2' : slug(post.title, {lower: true})
+
+    if (!snapshot.hasChild(newSlug)) {
+      firebaseDb.ref('posts/' + newSlug).set(post)
+        .then(() => Goto('/management'))
+        .catch(error => postState.error(error))
+    } else {
+      createPost(post, newSlug)
+    }
+  })
+}
+
+export function savePost (key, post) {
+  postState.loading(true)
+
+  firebaseDb.ref('posts/' + key).update(post)
+    .then(post => Goto('/management'))
     .catch(error => postState.error(error))
 }
