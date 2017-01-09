@@ -77,13 +77,15 @@ export default Component({
 })
 
 Hook((action, getState) => {
-  switch (action.type) {
+  const { type, payload } = action
+
+  switch (type) {
     case '@@router/LOCATION_CHANGE':
-      const { pathname } = action.payload
-      window.scrollTo(0, 0)
+      if (payload.action !== 'REPLACE') window.scrollTo(0, 0)
+
       if (process.env.NODE_ENV === 'production') {
-        ReactGA.set({ page: pathname })
-        ReactGA.pageview(pathname)
+        ReactGA.set({ page: payload.pathname })
+        ReactGA.pageview(payload.pathname)
       }
       break
   }

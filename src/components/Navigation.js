@@ -1,4 +1,4 @@
-import { Component, Link as RouterLink, Goto, getState } from 'jumpsuit'
+import { Component, Link as RouterLink, Goto } from 'jumpsuit'
 import { Link as ScrollLink, Events, scrollSpy } from 'react-scroll'
 import classNames from 'classnames'
 import _ from 'lodash'
@@ -108,10 +108,8 @@ export default Component({
     const self = this
 
     Events.scrollEvent.register('begin', function (to, element) {
-      const currentPath = getState().routing.locationBeforeTransitions.pathname
-
-      if (to !== 'top' && to !== 'post-top') {
-        Goto(currentPath + '#' + to)
+      if (to !== 'top' && to !== 'content-top') {
+        Goto({hash: to}, false, true)
       }
 
       self.setState({

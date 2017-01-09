@@ -25,7 +25,7 @@ export default Component({
   },
 
   handleScrollToContent () {
-    scroller.scrollTo('page-top', {
+    scroller.scrollTo('content-top', {
       smooth: true,
       duration: 500
     })
@@ -63,7 +63,7 @@ export default Component({
         <div
           className={classNames('content-container', {'invert-sections': scrollToContent})}
           style={styles.content}
-          id='page-top'>
+          id='content-top'>
           {scrollToContent
           ? <Button onClick={this.handleScrollToContent} className='btn-show-content'>
             <i className='icon-angle-double-down' />
