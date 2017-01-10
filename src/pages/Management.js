@@ -18,11 +18,12 @@ export default Component({
 
   createPosts (posts, published) {
     return (
-      <Table responsive>
+      <Table responsive hover>
         <thead>
           <tr>
             <th>Titel</th>
             <th>Gemaakt op</th>
+            <th>Laatste update</th>
             <th className='actions'>Acties</th>
           </tr>
         </thead>
@@ -47,10 +48,10 @@ export default Component({
     if (publishedPosts.length || unpublishedPosts.length) {
       return (
         <Tabs defaultActiveKey={1} id='tabs-posts' animation={false}>
-          <Tab eventKey={1} title='Published'>
+          <Tab eventKey={1} title='Gepubliceerde posts'>
             {this.createPosts(publishedPosts, true)}
           </Tab>
-          <Tab eventKey={2} title='Drafts'>
+          <Tab eventKey={2} title='Ongepubliceerde posts'>
             {this.createPosts(unpublishedPosts, false)}
           </Tab>
         </Tabs>

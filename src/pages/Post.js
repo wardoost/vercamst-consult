@@ -1,4 +1,4 @@
-import { Component } from 'jumpsuit'
+import { Component, Link } from 'jumpsuit'
 import { Grid, Row, Col, Alert } from 'react-bootstrap'
 import moment from 'moment'
 import postState, { loadPost } from '../state/post'
@@ -45,7 +45,7 @@ export default Component({
             { !this.props.published && this.props.showAlert
               ? <Alert bsStyle='warning' onDismiss={postState.dismissAlert}>
                 <div className='container'>
-                  This post is not visible to visitors.
+                  Deze post is niet zichbaar voor bezoekers. Misschien wil je deze post <Link to={`/posts/${this.props.params.key}/edit`}>publiceren</Link>?
                 </div>
               </Alert>
               : null}

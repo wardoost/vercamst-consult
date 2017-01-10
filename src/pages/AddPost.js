@@ -23,7 +23,10 @@ export default Component({
   },
 
   handlePublish () {
-    addPost(this.createPost(), true).then((url) => Goto(url))
+    if (window.confirm('Je post zal meteen zichtbaar zijn voor bezoekers. Ben je zeker dat je deze post wil publiceren?')) {
+      addPost(this.createPost(), true)
+        .then((url) => Goto(url))
+    }
   },
 
   componentWillUnmount () {
@@ -31,7 +34,7 @@ export default Component({
   },
 
   render () {
-    const { loading, showAlert, published, error } = this.props
+    const { loading, showAlert, published, error, unsavedChanges } = this.props
 
     return (
       <SplashPage
@@ -72,13 +75,13 @@ export default Component({
                       disabled={loading}>
                       <i className='icon-left-open' />
                     </Button>
-                    <Button type='submit' bsStyle='primary' disabled={loading}>
+                    <Button type='submit' bsStyle='primary' disabled={loading || !unsavedChanges}>
                       Post opslaan {loading ? <i className='icon-circle-notch icon-spin' /> : null }
                     </Button>
                     <Button
                       onClick={this.handlePublish}
                       bsStyle={published ? 'warning' : 'success'}
-                      disabled={loading}>
+                      disabled={loading || !unsavedChanges}>
                       Post publiceren {loading ? <i className='icon-circle-notch icon-spin' /> : null }
                     </Button>
                   </ButtonToolbar>

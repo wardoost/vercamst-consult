@@ -5,7 +5,10 @@ import slug from 'slug'
 const initialState = {
   post: null,
   title: '',
+  titleChanged: false,
   body: '',
+  bodyChanged: false,
+  unsavedChanges: false,
   published: false,
   error: null,
   showAlert: true,
@@ -40,11 +43,15 @@ const postState = State('post', {
   }),
 
   updateTitle: (state, payload) => ({
-    title: payload
+    title: payload,
+    titleChanged: state.post ? payload !== state.post.title : payload !== '',
+    unsavedChanges: state.post ? payload !== state.post.title : payload !== '' && state.bodyChanged
   }),
 
   updateBody: (state, payload) => ({
-    body: payload
+    body: payload,
+    bodyChanged: true,
+    unsavedChanges: state.post ? true : state.titleChanged
   }),
 
   dismissAlert: (state, payload) => ({
@@ -133,9 +140,7 @@ export function depublishPost (key, post) {
     postState.loading(true)
 
     firebaseMove(`posts/published/${key}`, `posts/unpublished/${key}`)
-      .then(() => {
-        resolve(`/posts/${key}`)
-      })
+      .then(() => resolve(`/posts/${key}`))
       .catch(error => {
         postState.error(error)
         reject(error)

@@ -1,7 +1,6 @@
 import { PropTypes } from 'react'
 import { Component, Link } from 'jumpsuit'
 import { ButtonGroup, Button } from 'react-bootstrap'
-import classNames from 'classnames'
 import moment from 'moment'
 
 moment.locale('nl')
@@ -14,22 +13,26 @@ export default Component({
   },
 
   deletePost () {
-    this.props.deletePost(this.props.post)
+    if (window.confirm('Ben je zeker dat je deze post wil verwijderen?')) {
+      this.props.deletePost(this.props.post)
+    }
   },
 
   render () {
     const { published } = this.props
-    const { key, title, createdAt } = this.props.post
-    const calendarDate = createdAt ? moment(createdAt).calendar() : 'Onbekend'
+    const { key, title, createdAt, updatedAt } = this.props.post
+    const calendarCreateDate = createdAt ? moment(createdAt).calendar() : 'Onbekend'
+    const calendarUpdateDate = updatedAt ? moment(updatedAt).calendar() : 'Onbekend'
 
     return (
-      <tr className={classNames({'warning': !published})}>
+      <tr>
         <td>
           <Link to={`/posts/${key}`} title='Bekijken'>
             {title}
           </Link>
         </td>
-        <td>{calendarDate}</td>
+        <td>{calendarCreateDate}</td>
+        <td>{calendarUpdateDate}</td>
         <td className='actions'>
           <ButtonGroup>
             <Link to={`/posts/${key}/edit`} className='btn btn-primary' title='Wijzigen'>

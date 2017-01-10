@@ -12,23 +12,37 @@ import './EditPost.sass'
 moment.locale('nl')
 
 export default Component({
-  handleSubmit (e) {
-    e.preventDefault()
-
-    const post = {
+  createPost () {
+    return {
       title: this.props.title,
       body: this.props.body.toString('html'),
       updatedAt: new Date().getTime()
     }
+  },
 
-    updatePost(this.props.params.key, post)
+  handleSubmit (e) {
+    e.preventDefault()
+
+    updatePost(this.props.params.key, this.createPost())
       .then(() => Goto(this.props.published ? `/posts/${this.props.params.key}` : '/management'))
   },
 
+  handlePublish () {
+    if (window.confirm('Je post zal zichtbaar worden voor bezoekers. Ben je zeker dat je deze post wil publiceren?')) {
+      publishPost(this.props.params.key, this.props.post)
+        .then((url) => Goto(url))
+    }
+  },
+
   handleTogglePublish () {
-    this.props.published
-    ? depublishPost(this.props.params.key, this.props.post)
-    : publishPost(this.props.params.key, this.props.post).then((url) => Goto(url))
+    if (this.props.published) {
+      depublishPost(this.props.params.key, this.props.post)
+    } else if (this.props.unsavedChanges) {
+      updatePost(this.props.params.key, this.createPost())
+        .then(() => this.handlePublish())
+    } else {
+      this.handlePublish()
+    }
   },
 
   componentWillMount () {
@@ -40,7 +54,7 @@ export default Component({
   },
 
   render () {
-    const { loading, showAlert, published, post, title, body } = this.props
+    const { post, title, body, loading, published, unsavedChanges } = this.props
 
     if (loading && !post) {
       return (
@@ -56,10 +70,10 @@ export default Component({
           subTitle={'Gepost op ' + moment(post.createdAt).format('dddd D MMMM YYYY')}
           splashHeight={0.3}>
           <main className='edit-post-content'>
-            {!published && showAlert
-            ? <Alert bsStyle='warning' onDismiss={postState.dismissAlert}>
+            {!published
+            ? <Alert bsStyle='warning'>
               <div className='container'>
-                This post is unpublished. Publish this post to show it in your blog.
+                Deze post is niet gepubliceerd. Om deze post op je blog to tonen moet je deze publiceren.
               </div>
             </Alert>
             : null
@@ -90,14 +104,14 @@ export default Component({
                         disabled={loading}>
                         <i className='icon-left-open' />
                       </Button>
-                      <Button type='submit' bsStyle='primary' disabled={loading}>
-                        Wijzigingen opslaan {loading ? <i className='icon-circle-notch icon-spin' /> : null }
+                      <Button type='submit' bsStyle='primary' disabled={loading || !unsavedChanges}>
+                        Opslaan {loading ? <i className='icon-circle-notch icon-spin' /> : null }
                       </Button>
                       <Button
                         onClick={this.handleTogglePublish}
                         bsStyle={published ? 'warning' : 'success'}
                         disabled={loading}>
-                        {published ? 'Depubliceren' : 'Opslaan & publiceren'} {loading ? <i className='icon-circle-notch icon-spin' /> : null }
+                        {published ? 'Depubliceren' : unsavedChanges ? 'Opslaan & publiceren' : 'Publiceren'} {loading ? <i className='icon-circle-notch icon-spin' /> : null }
                       </Button>
                     </ButtonToolbar>
                   </Form>
