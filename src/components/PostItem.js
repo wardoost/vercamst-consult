@@ -8,25 +8,18 @@ moment.locale('nl')
 
 export default Component({
   propTypes: {
+    post: PropTypes.object.isRequired,
     deletePost: PropTypes.func.isRequired,
-    updatePost: PropTypes.func.isRequired,
-    post: PropTypes.object.isRequired
+    published: PropTypes.bool.isRequired
   },
 
   deletePost () {
     this.props.deletePost(this.props.post)
   },
 
-  publishPost () {
-    this.props.updatePost(this.props.post, {published: true})
-  },
-
-  depublishPost () {
-    this.props.updatePost(this.props.post, {published: false})
-  },
-
   render () {
-    const {key, title, published, createdAt} = this.props.post
+    const { published } = this.props
+    const { key, title, createdAt } = this.props.post
     const calendarDate = createdAt ? moment(createdAt).calendar() : 'Onbekend'
 
     return (
@@ -39,14 +32,6 @@ export default Component({
         <td>{calendarDate}</td>
         <td className='actions'>
           <ButtonGroup>
-            {published
-            ? <Button bsStyle='warning' onClick={this.depublishPost} title='Depubliceren'>
-              <i className='icon-user-times' />
-            </Button>
-            : <Button bsStyle='success' onClick={this.publishPost} title='Publiceren'>
-              <i className='icon-users' />
-            </Button>
-            }
             <Link to={`/posts/${key}/edit`} className='btn btn-primary' title='Wijzigen'>
               <i className='icon-pencil' />
             </Link>

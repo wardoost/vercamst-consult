@@ -49,7 +49,7 @@ export const publishedPostList = new FirebasePaginatedList({
   onReady: blogState.loadPostsSuccess,
   onMore: blogState.loadMorePostsSuccess,
   onLastPage: blogState.lastPagePosts
-}, 'posts', {pageSize: 6})
+}, 'posts/published', {pageSize: 6})
 
 export function loadPosts () {
   blogState.loading(true)

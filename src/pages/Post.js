@@ -2,8 +2,10 @@ import { Component } from 'jumpsuit'
 import { Grid, Row, Col, Alert } from 'react-bootstrap'
 import moment from 'moment'
 import postState, { loadPost } from '../state/post'
+import { isAuthenticated } from '../state/auth'
 import SplashPage from '../components/SplashPage'
 import Loading from '../components/Loading'
+import Error from './Error'
 import './Post.sass'
 
 moment.locale('nl')
@@ -18,8 +20,12 @@ export default Component({
   },
 
   render () {
-    if (this.props.post) {
-      const {title, createdAt, body} = this.props.post
+    if (this.props.loading && !this.props.post) {
+      return <Loading label='Loading blogpost' fullPage />
+    } else if ((!this.props.loading && !this.props.post) || (!this.props.published && !isAuthenticated())) {
+      return <Error />
+    } else {
+      const { title, body, createdAt } = this.props.post
 
       return (
         <SplashPage
@@ -30,12 +36,19 @@ export default Component({
           scrollToContent>
           <section className='post-content'>
             { this.props.error && this.props.showAlert
-            ? <Alert bsStyle='danger' onDismiss={postState.dismissAlert}>
-              <div className='container'>
-                {this.props.error.message}
-              </div>
-            </Alert>
-            : null }
+              ? <Alert bsStyle='danger' onDismiss={postState.dismissAlert}>
+                <div className='container'>
+                  {this.props.error.message}
+                </div>
+              </Alert>
+              : null }
+            { !this.props.published && this.props.showAlert
+              ? <Alert bsStyle='warning' onDismiss={postState.dismissAlert}>
+                <div className='container'>
+                  This post is not visible to visitors.
+                </div>
+              </Alert>
+              : null}
             <Grid>
               <Row>
                 <Col md={12}>
@@ -45,10 +58,6 @@ export default Component({
             </Grid>
           </section>
         </SplashPage>
-      )
-    } else {
-      return (
-        <Loading label='Loading blogpost' fullPage />
       )
     }
   }

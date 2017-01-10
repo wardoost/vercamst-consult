@@ -1,6 +1,6 @@
-import { Grid, Row, Col, Table, Alert, Button } from 'react-bootstrap'
+import { Grid, Row, Col, Table, Button, Tabs, Tab, Alert } from 'react-bootstrap'
 import { Component, Link } from 'jumpsuit'
-import managementState, { loadPosts, deletePost, updatePost } from '../state/management'
+import managementState, { loadAllPosts, deletePublishedPost, updatePublishedPost, deleteUnpublishedPost, updateUnpublishedPost } from '../state/management'
 import { authLogout } from '../state/auth'
 import SplashPage from '../components/SplashPage'
 import Loading from '../components/Loading'
@@ -9,24 +9,55 @@ import './Management.sass'
 
 export default Component({
   componentWillMount () {
-    loadPosts()
+    loadAllPosts()
   },
 
   componentWillUnmount () {
     managementState.reset()
   },
 
-  createPosts () {
-    return this.props.posts.map(post => {
+  createPosts (posts, published) {
+    return (
+      <Table responsive>
+        <thead>
+          <tr>
+            <th>Titel</th>
+            <th>Gemaakt op</th>
+            <th className='actions'>Acties</th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.map(post => {
+            return (
+              <PostItem
+                key={post.key}
+                post={post}
+                published={published}
+                deletePost={published ? deletePublishedPost : deleteUnpublishedPost}
+                updatePost={published ? updatePublishedPost : updateUnpublishedPost}
+              />
+            )
+          })}
+        </tbody>
+      </Table>
+    )
+  },
+
+  createAllPosts (publishedPosts, unpublishedPosts) {
+    if (publishedPosts.length || unpublishedPosts.length) {
       return (
-        <PostItem
-          key={post.key}
-          post={post}
-          deletePost={deletePost}
-          updatePost={updatePost}
-        />
+        <Tabs defaultActiveKey={1} id='tabs-posts' animation={false}>
+          <Tab eventKey={1} title='Published'>
+            {this.createPosts(publishedPosts, true)}
+          </Tab>
+          <Tab eventKey={2} title='Drafts'>
+            {this.createPosts(unpublishedPosts, false)}
+          </Tab>
+        </Tabs>
       )
-    })
+    } else {
+      return <p>Geen posts beschikbaar.</p>
+    }
   },
 
   render () {
@@ -47,22 +78,8 @@ export default Component({
             <Row>
               <Col md={12}>
                 {this.props.loading
-                ? <Loading label='Loading all blogposts...' />
-                : this.props.posts.length
-                ? <Table responsive>
-                  <thead>
-                    <tr>
-                      <th>Titel</th>
-                      <th>Gemaakt op</th>
-                      <th className='actions'>Acties</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.createPosts()}
-                  </tbody>
-                </Table>
-                : <p>Geen posts beschikbaar.</p>
-                }
+                  ? <Loading label='Loading all blogposts...' />
+                  : this.createAllPosts(this.props.posts.published, this.props.posts.unpublished)}
               </Col>
             </Row>
           </Grid>

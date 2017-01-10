@@ -1,11 +1,12 @@
-import { Component } from 'jumpsuit'
-import { Grid, Row, Col, Form, FormGroup, FormControl, Button } from 'react-bootstrap'
+import { Component, Goto } from 'jumpsuit'
+import { Grid, Row, Col, Form, FormGroup, FormControl, Button, ButtonToolbar, Alert } from 'react-bootstrap'
 import moment from 'moment'
-import postState, { loadPost, savePost } from '../state/post'
+import postState, { loadPost, updatePost, publishPost, depublishPost } from '../state/post'
 import SplashPage from '../components/SplashPage'
 import Footer from '../components/Footer'
 import Editor from '../components/Editor'
 import Loading from '../components/Loading'
+import Error from './Error'
 import './EditPost.sass'
 
 moment.locale('nl')
@@ -20,7 +21,14 @@ export default Component({
       updatedAt: new Date().getTime()
     }
 
-    savePost(this.props.params.id, post)
+    updatePost(this.props.params.id, post)
+      .then(() => Goto('/management'))
+  },
+
+  handleTogglePublish () {
+    this.props.published
+    ? depublishPost(this.props.params.id, this.props.post)
+    : publishPost(this.props.params.id, this.props.post).then((url) => Goto(url))
   },
 
   componentWillMount () {
@@ -32,18 +40,30 @@ export default Component({
   },
 
   render () {
-    if (this.props.loading && !this.props.post) {
+    const { loading, showAlert, published, post, title, body } = this.props
+
+    if (loading && !post) {
       return (
         <Loading label='Loading post...' fullPage />
       )
+    } else if (!post) {
+      return <Error />
     } else {
       return (
         <SplashPage
-          className='add-post'
-          title={this.props.title || 'Titel'}
-          subTitle={'Gepost op ' + moment(this.props.createdAt).format('dddd D MMMM YYYY')}
+          className='edit-post'
+          title={post.title || 'Titel'}
+          subTitle={'Gepost op ' + moment(post.createdAt).format('dddd D MMMM YYYY')}
           splashHeight={0.3}>
           <main className='edit-post-content'>
+            {!published && showAlert
+            ? <Alert bsStyle='warning' onDismiss={postState.dismissAlert}>
+              <div className='container'>
+                This post is unpublished. Publish this post to show it in your blog.
+              </div>
+            </Alert>
+            : null
+            }
             <Grid>
               <Row>
                 <Col md={12}>
@@ -52,20 +72,34 @@ export default Component({
                       <FormControl
                         type='text'
                         placeholder='Titel'
-                        value={this.props.title}
+                        value={title}
                         onChange={(e) => postState.updateTitle(e.target.value)}
                       />
                     </FormGroup>
                     <FormGroup>
                       <Editor
                         ref='editor'
-                        value={this.props.body}
+                        value={body}
                         onChange={(e) => postState.updateBody(e)}
                       />
                     </FormGroup>
-                    <Button type='submit' bsStyle='primary' disabled={this.props.loading}>
-                      Wijzigingen opslaan {this.props.loading ? <i className='icon-circle-notch icon-spin' /> : null }
-                    </Button>
+                    <ButtonToolbar>
+                      <Button
+                        onClick={() => Goto('/management')}
+                        bsStyle='primary'
+                        disabled={loading}>
+                        <i className='icon-left-open' />
+                      </Button>
+                      <Button type='submit' bsStyle='primary' disabled={loading}>
+                        Wijzigingen opslaan {loading ? <i className='icon-circle-notch icon-spin' /> : null }
+                      </Button>
+                      <Button
+                        onClick={this.handleTogglePublish}
+                        bsStyle={published ? 'warning' : 'success'}
+                        disabled={loading}>
+                        {published ? 'Depubliceren' : 'Opslaan & publiceren'} {loading ? <i className='icon-circle-notch icon-spin' /> : null }
+                      </Button>
+                    </ButtonToolbar>
                   </Form>
                 </Col>
               </Row>

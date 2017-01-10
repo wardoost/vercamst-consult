@@ -1,24 +1,29 @@
-import { Component } from 'jumpsuit'
-import { Grid, Row, Col, Form, FormGroup, FormControl, Button } from 'react-bootstrap'
-import postState, { createPost } from '../state/post'
+import { Component, Goto } from 'jumpsuit'
+import { Grid, Row, Col, Form, FormGroup, FormControl, Button, ButtonToolbar, Alert } from 'react-bootstrap'
+import postState, { addPost } from '../state/post'
 import SplashPage from '../components/SplashPage'
 import Footer from '../components/Footer'
 import Editor from '../components/Editor'
 import './AddPost.sass'
 
 export default Component({
-  handleSubmit (e) {
-    e.preventDefault()
-
-    const post = {
+  createPost () {
+    return {
       title: this.props.title,
       body: this.props.body.toString('html'),
-      published: false,
       createdAt: new Date().getTime(),
       updatedAt: new Date().getTime()
     }
+  },
 
-    createPost(post)
+  handleSubmit (e) {
+    e.preventDefault()
+
+    addPost(this.createPost()).then((url) => Goto(url))
+  },
+
+  handlePublish () {
+    addPost(this.createPost(), true).then((url) => Goto(url))
   },
 
   componentWillUnmount () {
@@ -26,12 +31,21 @@ export default Component({
   },
 
   render () {
+    const { loading, showAlert, published, error } = this.props
+
     return (
       <SplashPage
         className='add-post'
         title='Een nieuwe post aanmaken'
         splashHeight={0.3}>
         <main className='add-post-content'>
+          { error && showAlert
+          ? <Alert bsStyle='danger' onDismiss={() => this.setState({ showAlert: false })}>
+            <div className='container'>
+              {error.message}
+            </div>
+          </Alert>
+          : null }
           <Grid>
             <Row>
               <Col md={12}>
@@ -51,9 +65,23 @@ export default Component({
                       onChange={(e) => postState.updateBody(e)}
                     />
                   </FormGroup>
-                  <Button type='submit' bsStyle='primary' disabled={this.props.loading}>
-                    Post aanmaken {this.props.loading ? <i className='icon-circle-notch icon-spin' /> : null }
-                  </Button>
+                  <ButtonToolbar>
+                    <Button
+                      onClick={() => Goto('/management')}
+                      bsStyle='primary'
+                      disabled={loading}>
+                      <i className='icon-left-open' />
+                    </Button>
+                    <Button type='submit' bsStyle='primary' disabled={loading}>
+                      Post opslaan {loading ? <i className='icon-circle-notch icon-spin' /> : null }
+                    </Button>
+                    <Button
+                      onClick={this.handlePublish}
+                      bsStyle={published ? 'warning' : 'success'}
+                      disabled={loading}>
+                      Post publiceren {loading ? <i className='icon-circle-notch icon-spin' /> : null }
+                    </Button>
+                  </ButtonToolbar>
                 </Form>
               </Col>
             </Row>

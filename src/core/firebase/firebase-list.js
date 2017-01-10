@@ -52,37 +52,42 @@ export class FirebaseList {
   }
 
   subscribe () {
-    let ref = firebaseDb.ref(this._path)
-    let initialized = false
-    let list = []
+    return new Promise((resolve, reject) => {
+      let ref = firebaseDb.ref(this._path)
+      let initialized = false
+      let list = []
 
-    if (this._filter) {
-      const {orderByChild, equalTo} = this._filter
-      ref = ref.orderByChild(orderByChild).equalTo(equalTo)
-    }
-
-    ref.once('value', () => {
-      initialized = true
-      this._actions.onLoad(list)
-    })
-
-    ref.on('child_added', snapshot => {
-      if (initialized) {
-        this._actions.onAdd(this.unwrapSnapshot(snapshot))
-      } else {
-        list.push(this.unwrapSnapshot(snapshot))
+      if (this._filter) {
+        const {orderByChild, equalTo} = this._filter
+        ref = ref.orderByChild(orderByChild).equalTo(equalTo)
       }
-    })
 
-    ref.on('child_changed', snapshot => {
-      this._actions.onChange(this.unwrapSnapshot(snapshot))
-    })
+      ref.on('child_added', snapshot => {
+        if (initialized) {
+          this._actions.onAdd(this.unwrapSnapshot(snapshot))
+        } else {
+          list.push(this.unwrapSnapshot(snapshot))
+        }
+      })
 
-    ref.on('child_removed', snapshot => {
-      this._actions.onRemove(this.unwrapSnapshot(snapshot))
-    })
+      ref.on('child_changed', snapshot => {
+        this._actions.onChange(this.unwrapSnapshot(snapshot))
+      })
 
-    this._unsubscribe = () => ref.off()
+      ref.on('child_removed', snapshot => {
+        this._actions.onRemove(this.unwrapSnapshot(snapshot))
+      })
+
+      ref.once('value', () => {
+        initialized = true
+        this._actions.onLoad(list)
+        resolve()
+      }, error => {
+        reject(error)
+      })
+
+      this._unsubscribe = () => ref.off()
+    })
   }
 
   unsubscribe () {

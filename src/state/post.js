@@ -1,11 +1,12 @@
-import { State, Goto } from 'jumpsuit'
-import { firebaseDb } from '../core/firebase'
+import { State } from 'jumpsuit'
+import { firebaseDb, firebaseMove } from '../core/firebase'
 import slug from 'slug'
 
 const initialState = {
   post: null,
   title: '',
   body: '',
+  published: false,
   error: null,
   showAlert: true,
   loading: false
@@ -25,10 +26,16 @@ const postState = State('post', {
   }),
 
   loadPostSuccess: (state, payload) => ({
-    post: payload,
-    title: payload.title,
-    body: payload.body,
+    post: payload.post,
+    title: payload.post.title,
+    body: payload.post.body,
+    published: payload.published,
     error: null,
+    loading: false
+  }),
+
+  publishPostSuccess: (state, payload) => ({
+    published: true,
     loading: false
   }),
 
@@ -52,31 +59,86 @@ export default postState
 export function loadPost (key) {
   postState.loading(true)
 
-  firebaseDb.ref('posts/' + key).once('value')
-    .then(snapshot => postState.loadPostSuccess(snapshot.val()))
+  firebaseDb.ref(`posts/published/${key}`).once('value')
+    .then(snapPublished => {
+      const postPublished = snapPublished.val()
+
+      if (postPublished) {
+        postState.loadPostSuccess({post: postPublished, published: true})
+      } else {
+        firebaseDb.ref(`posts/unpublished/${key}`).once('value')
+          .then(snapUnpublished => postState.loadPostSuccess({post: snapUnpublished.val(), published: false}))
+          .catch(error => postState.error(error))
+      }
+    })
     .catch(error => postState.error(error))
 }
 
-export function createPost (post, duplicateSlug = null) {
-  postState.loading(true)
+export function addPost (post, published = false, duplicateSlug = null) {
+  return new Promise((resolve, reject) => {
+    postState.loading(true)
 
-  firebaseDb.ref('posts').once('value', snapshot => {
-    const newSlug = duplicateSlug ? duplicateSlug + '-2' : slug(post.title, {lower: true})
+    const refPath = `posts/${published ? 'published' : 'unpublished'}/`
+    firebaseDb.ref(refPath).once('value', snapshot => {
+      const newSlug = duplicateSlug ? duplicateSlug + '-2' : slug(post.title || 'post', {lower: true})
 
-    if (!snapshot.hasChild(newSlug)) {
-      firebaseDb.ref('posts/' + newSlug).set(post)
-        .then(() => Goto('/management'))
-        .catch(error => postState.error(error))
-    } else {
-      createPost(post, newSlug)
-    }
+      if (!snapshot.hasChild(newSlug)) {
+        firebaseDb.ref(refPath + newSlug).set(post)
+          .then(() => resolve(`posts/${newSlug}`))
+          .catch(error => {
+            postState.error(error)
+            reject(error)
+          })
+      } else {
+        addPost(post, published, newSlug)
+      }
+    })
   })
 }
 
-export function savePost (key, post) {
-  postState.loading(true)
+export function updatePost (key, post) {
+  return new Promise((resolve, reject) => {
+    postState.loading(true)
 
-  firebaseDb.ref('posts/' + key).update(post)
-    .then(post => Goto('/management'))
-    .catch(error => postState.error(error))
+    const published = postState.getState().published
+    const postRefPath = `posts/${published ? 'published' : 'unpublished'}/${key}`
+
+    firebaseDb.ref(postRefPath).update(post)
+      .then(post => resolve())
+      .catch(error => {
+        postState.error(error)
+        reject(error)
+      })
+  })
+}
+
+export function publishPost (key, post) {
+  return new Promise((resolve, reject) => {
+    postState.loading(true)
+
+    firebaseMove(`posts/unpublished/${key}`, `posts/published/${key}`)
+      .then(() => {
+        postState.publishPostSuccess()
+        resolve(`/posts/${key}`)
+      })
+      .catch(error => {
+        postState.error(error)
+        reject(error)
+      })
+  })
+}
+
+export function depublishPost (key, post) {
+  return new Promise((resolve, reject) => {
+    postState.loading(true)
+
+    firebaseMove(`posts/published/${key}`, `posts/unpublished/${key}`)
+      .then(() => {
+        resolve(`/posts/${key}`)
+      })
+      .catch(error => {
+        postState.error(error)
+        reject(error)
+      })
+  })
 }

@@ -2,8 +2,13 @@ import { State, Hook } from 'jumpsuit'
 import { FirebaseList } from '../core/firebase'
 
 const initialState = {
-  posts: [],
+  posts: {
+    published: [],
+    unpublished: []
+  },
   loading: true,
+  loadingPublished: true,
+  loadingUnpublished: true,
   error: null,
   showAlert: true
 }
@@ -15,28 +20,71 @@ const managementState = State('management', {
     error: payload
   }),
 
-  loadPostsSuccess: (state, payload) => ({
-    posts: payload,
+  loadPublishedPostsSuccess: (state, payload) => ({
+    posts: {
+      published: payload,
+      unpublished: state.posts.unpublished
+    },
     error: null,
-    loading: false
+    loading: false,
+    loadingPublished: false
   }),
 
-  createPostSuccess: (state, payload) => ({
-    posts: state.posts.map(post => {
-      return post.key === payload.key ? payload : post
-    }),
+  createPublishedPostSuccess: (state, payload) => ({
+    posts: {
+      published: state.posts.published.map(post => { return post.key === payload.key ? payload : post }),
+      unpublished: state.posts.unpublished
+    },
     error: null
   }),
 
-  updatePostSuccess: (state, payload) => ({
-    posts: state.posts.map(post => {
-      return post.key === payload.key ? payload : post
-    }),
+  updatePublishedPostsSuccess: (state, payload) => ({
+    posts: {
+      published: state.posts.published.map(post => { return post.key === payload.key ? payload : post }),
+      unpublished: state.posts.unpublished
+    },
     error: null
   }),
 
-  deletePostSuccess: (state, payload) => ({
-    posts: state.posts.filter(post => post.key !== payload.key),
+  deletePublishedPostSuccess: (state, payload) => ({
+    posts: {
+      published: state.posts.published.filter(post => post.key !== payload.key),
+      unpublished: state.posts.unpublished
+    },
+    error: null
+  }),
+
+  loadUnpublishedPostsSuccess: (state, payload) => ({
+    posts: {
+      published: state.posts.published,
+      unpublished: payload
+    },
+    error: null,
+    loading: false,
+    loadingUnpublished: false
+  }),
+
+  createUnpublishedPostSuccess: (state, payload) => ({
+    posts: {
+      published: state.posts.published,
+      unpublished: state.posts.unpublished.map(post => { return post.key === payload.key ? payload : post })
+    },
+    error: null
+  }),
+
+  updateUnpublishedPostsSuccess: (state, payload) => ({
+    posts: {
+      published: state.posts.published,
+      unpublished: state.posts.published.map(post => { return post.key === payload.key ? payload : post })
+    },
+    error: null
+  }),
+
+  deleteUnpublishedPostSuccess: (state, payload) => ({
+    posts: {
+      published: state.posts.published,
+      unpublished: state.posts.unpublished.filter(post => post.key !== payload.key)
+    },
     error: null
   }),
 
@@ -49,36 +97,65 @@ const managementState = State('management', {
 
 export default managementState
 
-const postList = new FirebaseList({
-  onAdd: managementState.createPostSuccess,
-  onLoad: managementState.loadPostsSuccess,
-  onChange: managementState.updatePostSuccess,
-  onRemove: managementState.deletePostSuccess
-}, 'posts')
+const publishedPostList = new FirebaseList({
+  onAdd: managementState.createPublishedPostSuccess,
+  onLoad: managementState.loadPublishedPostsSuccess,
+  onChange: managementState.updatePublishedPostsSuccess,
+  onRemove: managementState.deletePublishedPostSuccess
+}, 'posts/published')
 
-export function loadPosts () {
-  postList.subscribe()
-}
+const unpublishedPostList = new FirebaseList({
+  onAdd: managementState.createUnpublishedPostSuccess,
+  onLoad: managementState.loadUnpublishedPostsSuccess,
+  onChange: managementState.updateUnpublishedPostsSuccess,
+  onRemove: managementState.deleteUnpublishedPostSuccess
+}, 'posts/unpublished')
 
-export function createPost (post) {
-  postList.push(post)
+export function loadAllPosts () {
+  loadPublishedPosts()
+    .then(() => {
+      loadUnpublishedPosts()
+    })
     .catch(error => managementState.error(error))
 }
 
-export function deletePost (post) {
-  postList.remove(post.key)
+export function loadPublishedPosts () {
+  return new Promise((resolve, reject) => {
+    publishedPostList.subscribe()
+      .then(() => resolve())
+      .catch(error => reject(error))
+  })
+}
+
+export function loadUnpublishedPosts () {
+  unpublishedPostList.subscribe()
+}
+
+export function createPublishedPost (post) {
+  publishedPostList.set(post.key, post)
     .catch(error => managementState.error(error))
 }
 
-export function updatePost (post, changes) {
-  postList.update(post.key, changes)
+export function createUnpublishedPost (post) {
+  unpublishedPostList.set(post.key, post)
+    .catch(error => managementState.error(error))
+}
+
+export function deletePublishedPost (post) {
+  publishedPostList.remove(post.key)
+    .catch(error => managementState.error(error))
+}
+
+export function deleteUnpublishedPost (post) {
+  unpublishedPostList.remove(post.key)
     .catch(error => managementState.error(error))
 }
 
 Hook((action, getState) => {
   switch (action.type) {
     case 'management_reset':
-      postList.unsubscribe()
+      publishedPostList.unsubscribe()
+      unpublishedPostList.unsubscribe()
       break
   }
 })
