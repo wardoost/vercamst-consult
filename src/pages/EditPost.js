@@ -21,18 +21,18 @@ export default Component({
       updatedAt: new Date().getTime()
     }
 
-    updatePost(this.props.params.id, post)
-      .then(() => Goto('/management'))
+    updatePost(this.props.params.key, post)
+      .then(() => Goto(this.props.published ? `/posts/${this.props.params.key}` : '/management'))
   },
 
   handleTogglePublish () {
     this.props.published
-    ? depublishPost(this.props.params.id, this.props.post)
-    : publishPost(this.props.params.id, this.props.post).then((url) => Goto(url))
+    ? depublishPost(this.props.params.key, this.props.post)
+    : publishPost(this.props.params.key, this.props.post).then((url) => Goto(url))
   },
 
   componentWillMount () {
-    loadPost(this.props.params.id)
+    loadPost(this.props.params.key)
   },
 
   componentWillUnmount () {
@@ -47,7 +47,7 @@ export default Component({
         <Loading label='Loading post...' fullPage />
       )
     } else if (!post) {
-      return <Error />
+      return <Error TypeString='post' />
     } else {
       return (
         <SplashPage

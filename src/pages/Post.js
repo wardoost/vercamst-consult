@@ -12,7 +12,7 @@ moment.locale('nl')
 
 export default Component({
   componentWillMount () {
-    loadPost(this.props.params.id)
+    loadPost(this.props.params.key)
   },
 
   componentWillUnmount () {
@@ -23,7 +23,7 @@ export default Component({
     if (this.props.loading && !this.props.post) {
       return <Loading label='Loading blogpost' fullPage />
     } else if ((!this.props.loading && !this.props.post) || (!this.props.published && !isAuthenticated())) {
-      return <Error />
+      return <Error TypeString='post' />
     } else {
       const { title, body, createdAt } = this.props.post
 

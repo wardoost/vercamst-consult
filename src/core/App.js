@@ -48,11 +48,11 @@ export default Component({
             getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/AddPost').default))}
           />
           <Route
-            path='/posts/:id'
+            path='/posts/:key'
             getComponent={(loc, cb) => require.ensure([], require => cb(null, require('../pages/Post').default))}
           />
           <Route
-            path='/posts/:id/edit'
+            path='/posts/:key/edit'
             onEnter={this.requireAuth}
             getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/EditPost').default))}
           />
