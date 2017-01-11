@@ -45,6 +45,16 @@ export default Component({
     }
   },
 
+  handleGoBack () {
+    if (this.props.unsavedChanges) {
+      if (window.confirm('De wijzigingen voor deze post zijn nog niet opgeslaan. Ben je zeker dat je je wijzigingen niet wil opslaan?')) {
+        Goto('/management')
+      }
+    } else {
+      Goto('/management')
+    }
+  },
+
   componentWillMount () {
     loadPost(this.props.params.key)
   },
@@ -99,7 +109,7 @@ export default Component({
                     </FormGroup>
                     <ButtonToolbar>
                       <Button
-                        onClick={() => Goto('/management')}
+                        onClick={this.handleGoBack}
                         bsStyle='primary'
                         disabled={loading}>
                         <i className='icon-left-open' />
