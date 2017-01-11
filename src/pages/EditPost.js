@@ -73,7 +73,7 @@ export default Component({
             {!published
             ? <Alert bsStyle='warning'>
               <div className='container'>
-                Deze post is niet gepubliceerd. Om deze post op je blog to tonen moet je deze publiceren.
+                Deze post is niet gepubliceerd. Om deze post op je blog te tonen moet je deze publiceren.
               </div>
             </Alert>
             : null
