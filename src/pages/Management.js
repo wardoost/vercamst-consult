@@ -21,7 +21,7 @@ export default Component({
 
     if (published ? loadingPublished : loadingUnpublished) {
       return <Loading />
-    } else if (posts ? false : !posts.length && (published ? loadingPublished : loadingUnpublished)) {
+    } else if (posts ? !posts.length : published ? loadingPublished : loadingUnpublished) {
       return <p>Geen {published ? 'gepubliceerde' : 'ongepubliceerde'} posts beschikbaar.</p>
     } else if (posts ? posts.length : false) {
       return (
