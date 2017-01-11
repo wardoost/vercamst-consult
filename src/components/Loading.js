@@ -12,7 +12,7 @@ export default Component({
   getDefaultProps () {
     return {
       fullPage: false,
-      label: 'Loading...'
+      label: ''
     }
   },
 
@@ -24,7 +24,7 @@ export default Component({
         <main className='content-container loading'>
           <div className='loading-animation'>
             <i className='icon-circle-notch icon-spin' />
-            <p>{label}</p>
+            {label ? <p>{label}</p> : null}
           </div>
           <Footer />
         </main>

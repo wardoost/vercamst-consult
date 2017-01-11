@@ -42,6 +42,11 @@ const postState = State('post', {
     loading: false
   }),
 
+  depublishPostSuccess: (state, payload) => ({
+    published: false,
+    loading: false
+  }),
+
   updateTitle: (state, payload) => ({
     title: payload,
     titleChanged: state.post ? payload !== state.post.title : payload !== '',
@@ -140,7 +145,10 @@ export function depublishPost (key, post) {
     postState.loading(true)
 
     firebaseMove(`posts/published/${key}`, `posts/unpublished/${key}`)
-      .then(() => resolve(`/posts/${key}`))
+      .then(() => {
+        postState.depublishPostSuccess()
+        resolve(`/posts/${key}`)
+      })
       .catch(error => {
         postState.error(error)
         reject(error)

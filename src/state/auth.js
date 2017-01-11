@@ -72,6 +72,10 @@ export function authLogout () {
   })
 }
 
+export function isInitialized () {
+  return authState.getState().initialized
+}
+
 export function isAuthenticated () {
   return Boolean(authState.getState().uid)
 }

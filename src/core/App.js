@@ -1,6 +1,7 @@
-import { Component, Router, Route, IndexRoute, getState, Hook, Goto } from 'jumpsuit'
+import { Component, Router, Route, IndexRoute, Hook, Goto } from 'jumpsuit'
 import ReactGA from 'react-ga'
-import { authInit, isAuthenticated } from '../state/auth'
+import { authInit, isInitialized, isAuthenticated } from '../state/auth'
+import { chunkLoaded, lazyLoadChunk } from '../state/chunks'
 import Layout from '../components/Layout'
 import Loading from '../components/Loading'
 
@@ -22,14 +23,14 @@ export default Component({
   },
 
   requireAuth (nextState, replace, cb) {
-    if (getState().auth.initialized && !isAuthenticated()) {
+    if (isInitialized() && !isAuthenticated()) {
       replace({pathname: '/login'})
     }
     cb()
   },
 
   noAuth (nextState, replace, cb) {
-    if (getState().auth.initialized && isAuthenticated()) {
+    if (isInitialized() && isAuthenticated()) {
       replace({pathname: '/management'})
     }
     cb()
@@ -40,35 +41,98 @@ export default Component({
       <Router>
         <Route path='/' component={Layout}>
           <IndexRoute
-            getComponent={(loc, cb) => require.ensure([], require => cb(null, require('../pages/Index').default))}
+            getComponent={(loc, cb) => {
+              lazyLoadChunk('Index', loc)
+                .then((chunkName, markAsLoaded) => {
+                  require.ensure([], require => {
+                    if (!markAsLoaded) chunkLoaded(chunkName)
+                    cb(null, require('../pages/Index').default)
+                  })
+                })
+                .catch(() => cb(null, Loading))
+            }}
           />
           <Route
             path='/posts/add'
             onEnter={this.requireAuth}
-            getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/AddPost').default))}
+            getComponent={(loc, cb) => {
+              lazyLoadChunk('AddPost', loc, true)
+                .then((chunkName, markAsLoaded) => {
+                  require.ensure([], require => {
+                    if (!markAsLoaded) chunkLoaded(chunkName)
+                    cb(null, require('../pages/AddPost').default)
+                  })
+                })
+                .catch(() => cb(null, Loading))
+            }}
           />
           <Route
             path='/posts/:key'
-            getComponent={(loc, cb) => require.ensure([], require => cb(null, require('../pages/Post').default))}
+            getComponent={(loc, cb) => {
+              lazyLoadChunk('Post', loc)
+                .then((chunkName, markAsLoaded) => {
+                  require.ensure([], require => {
+                    if (!markAsLoaded) chunkLoaded(chunkName)
+                    cb(null, require('../pages/Post').default)
+                  })
+                })
+                .catch(() => cb(null, Loading))
+            }}
           />
           <Route
             path='/posts/:key/edit'
             onEnter={this.requireAuth}
-            getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/EditPost').default))}
+            getComponent={(loc, cb) => {
+              lazyLoadChunk('EditPost', loc, true)
+                .then((chunkName, markAsLoaded) => {
+                  require.ensure([], require => {
+                    if (!markAsLoaded) chunkLoaded(chunkName)
+                    cb(null, require('../pages/EditPost').default)
+                  })
+                })
+                .catch(() => cb(null, Loading))
+            }}
           />
           <Route
             path='/login'
             onEnter={this.noAuth}
-            getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/Login').default))}
+            getComponent={(loc, cb) => {
+              lazyLoadChunk('Login', loc, true)
+                .then((chunkName, markAsLoaded) => {
+                  require.ensure([], require => {
+                    if (!markAsLoaded) chunkLoaded(chunkName)
+                    cb(null, require('../pages/Login').default)
+                  })
+                })
+                .catch(() => cb(null, Loading))
+            }}
           />
           <Route
             path='/management'
             onEnter={this.requireAuth}
-            getComponent={(loc, cb) => !getState().auth.initialized ? cb(null, Loading) : require.ensure([], require => cb(null, require('../pages/Management').default))}
+            getComponent={(loc, cb) => {
+              lazyLoadChunk('Management', loc, true)
+                .then((chunkName, markAsLoaded) => {
+                  require.ensure([], require => {
+                    if (!markAsLoaded) chunkLoaded(chunkName)
+                    cb(null, require('../pages/Management').default)
+                  })
+                })
+                .catch(() => cb(null, Loading))
+            }}
           />
           <Route
             path='/*'
-            getComponent={(loc, cb) => require.ensure([], require => cb(null, require('../pages/Error').default))}
+            getComponent={(loc, cb) => {
+              lazyLoadChunk('Error', loc)
+                .then((chunkName, markAsLoaded) => {
+                  require.ensure([], require => {
+                    if (!markAsLoaded) chunkLoaded(chunkName)
+                    cb(null, require('../pages/Error').default)
+                  })
+                })
+                .catch(() => cb(null, Loading))
+            }}
           />
         </Route>
       </Router>
