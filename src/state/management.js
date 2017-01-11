@@ -6,9 +6,8 @@ const initialState = {
     published: [],
     unpublished: []
   },
-  loading: true,
-  loadingPublished: true,
-  loadingUnpublished: true,
+  loadingPublished: false,
+  loadingUnpublished: false,
   error: null,
   showAlert: true
 }
@@ -20,13 +19,20 @@ const managementState = State('management', {
     error: payload
   }),
 
+  loadingPublished: (state, payload) => ({
+    loadingPublished: Boolean(payload)
+  }),
+
+  loadingUnpublished: (state, payload) => ({
+    loadingUnpublished: Boolean(payload)
+  }),
+
   loadPublishedPostsSuccess: (state, payload) => ({
     posts: {
       published: payload,
       unpublished: state.posts.unpublished
     },
     error: null,
-    loading: false,
     loadingPublished: false
   }),
 
@@ -60,7 +66,6 @@ const managementState = State('management', {
       unpublished: payload
     },
     error: null,
-    loading: false,
     loadingUnpublished: false
   }),
 
@@ -121,6 +126,7 @@ export function loadAllPosts () {
 
 export function loadPublishedPosts () {
   return new Promise((resolve, reject) => {
+    managementState.loadingPublished(true)
     publishedPostList.subscribe()
       .then(() => resolve())
       .catch(error => reject(error))
@@ -128,6 +134,7 @@ export function loadPublishedPosts () {
 }
 
 export function loadUnpublishedPosts () {
+  managementState.loadingUnpublished(true)
   unpublishedPostList.subscribe()
 }
 

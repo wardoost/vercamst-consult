@@ -17,47 +17,38 @@ export default Component({
   },
 
   createPosts (posts, published) {
-    return (
-      <Table responsive hover>
-        <thead>
-          <tr>
-            <th>Titel</th>
-            <th>Gemaakt op</th>
-            <th>Laatste update</th>
-            <th className='actions'>Acties</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.map(post => {
-            return (
-              <PostItem
-                key={post.key}
-                post={post}
-                published={published}
-                deletePost={published ? deletePublishedPost : deleteUnpublishedPost}
-                updatePost={published ? updatePublishedPost : updateUnpublishedPost}
-              />
-            )
-          })}
-        </tbody>
-      </Table>
-    )
-  },
+    const { loadingPublished, loadingUnpublished } = this.props
 
-  createAllPosts (publishedPosts, unpublishedPosts) {
-    if (publishedPosts.length || unpublishedPosts.length) {
+    if (published ? loadingPublished : loadingUnpublished) {
+      return <Loading />
+    } else if (posts ? false : !posts.length && (published ? loadingPublished : loadingUnpublished)) {
+      return <p>Geen {published ? 'gepubliceerde' : 'ongepubliceerde'} posts beschikbaar.</p>
+    } else if (posts ? posts.length : false) {
       return (
-        <Tabs defaultActiveKey={1} id='tabs-posts' animation={false}>
-          <Tab eventKey={1} title='Gepubliceerde posts'>
-            {this.createPosts(publishedPosts, true)}
-          </Tab>
-          <Tab eventKey={2} title='Ongepubliceerde posts'>
-            {this.createPosts(unpublishedPosts, false)}
-          </Tab>
-        </Tabs>
+        <Table responsive hover>
+          <thead>
+            <tr>
+              <th>Titel</th>
+              <th>Gemaakt op</th>
+              <th>Laatste update</th>
+              <th className='actions'>Acties</th>
+            </tr>
+          </thead>
+          <tbody>
+            {posts.map(post => {
+              return (
+                <PostItem
+                  key={post.key}
+                  post={post}
+                  published={published}
+                  deletePost={published ? deletePublishedPost : deleteUnpublishedPost}
+                  updatePost={published ? updatePublishedPost : updateUnpublishedPost}
+                />
+              )
+            })}
+          </tbody>
+        </Table>
       )
-    } else {
-      return <p>Geen posts beschikbaar.</p>
     }
   },
 
@@ -78,9 +69,14 @@ export default Component({
           <Grid>
             <Row>
               <Col md={12}>
-                {this.props.loading
-                  ? <Loading label='Loading all blogposts...' />
-                  : this.createAllPosts(this.props.posts.published, this.props.posts.unpublished)}
+                <Tabs defaultActiveKey={1} id='tabs-posts' animation={false}>
+                  <Tab eventKey={1} title='Gepubliceerde posts'>
+                    {this.createPosts(this.props.posts.published, true)}
+                  </Tab>
+                  <Tab eventKey={2} title='Ongepubliceerde posts'>
+                    {this.createPosts(this.props.posts.unpublished, false)}
+                  </Tab>
+                </Tabs>
               </Col>
             </Row>
           </Grid>
