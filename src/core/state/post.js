@@ -1,6 +1,7 @@
 import { State } from 'jumpsuit'
-import { firebaseDb, firebaseMove } from '../firebase'
+import RichTextEditor from 'react-rte'
 import slug from 'slug'
+import { firebaseDb, firebaseMove } from '../firebase'
 
 const initialState = {
   post: null,
@@ -31,8 +32,19 @@ const postState = State('post', {
   loadPostSuccess: (state, payload) => ({
     post: payload.post,
     title: payload.post.title,
-    body: payload.post.body,
+    body: payload.post.body ? RichTextEditor.createValueFromString(payload.post.body, 'html') : RichTextEditor.createEmptyValue(),
     published: payload.published,
+    error: null,
+    loading: false
+  }),
+
+  updatePostSuccess: (state, payload) => ({
+    post: payload,
+    title: payload.title,
+    titleChanged: false,
+    body: payload.body ? RichTextEditor.createValueFromString(payload.body, 'html') : RichTextEditor.createEmptyValue(),
+    bodyChanged: false,
+    unsavedChanges: false,
     error: null,
     loading: false
   }),
@@ -116,7 +128,10 @@ export function updatePost (key, post) {
     const postRefPath = `posts/${published ? 'published' : 'unpublished'}/${key}`
 
     firebaseDb.ref(postRefPath).update(post)
-      .then(post => resolve())
+      .then(() => {
+        postState.updatePostSuccess(post)
+        resolve(`/posts/${key}`)
+      })
       .catch(error => {
         postState.error(error)
         reject(error)

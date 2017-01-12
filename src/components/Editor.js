@@ -10,7 +10,7 @@ export default Component({
 
   getInitialState () {
     return {
-      value: this.props.value ? RichTextEditor.createValueFromString(this.props.value, 'html') : RichTextEditor.createEmptyValue()
+      value: this.props.value || RichTextEditor.createEmptyValue()
     }
   },
 
