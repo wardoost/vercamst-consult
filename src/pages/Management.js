@@ -1,13 +1,48 @@
-import { Grid, Row, Col, Table, Button, Tabs, Tab, Alert } from 'react-bootstrap'
 import { Component, Link } from 'jumpsuit'
+import { Grid, Row, Col, Table, Button, Tabs, Tab, Alert } from 'react-bootstrap'
+import _ from 'lodash'
 import managementState, { loadAllPosts } from '../core/state/management'
 import { authLogout } from '../core/state/auth'
 import SplashPage from '../components/SplashPage'
+import TableHeader from '../components/TableHeader'
 import Loading from '../components/Loading'
 import PostItem from '../components/PostItem'
 import './Management.sass'
 
 export default Component({
+  getInitialState () {
+    return {
+      sortPublishedBy: 'createdAt',
+      sortPublishedReverse: false,
+      sortUnpublishedBy: 'createdAt',
+      sortUnpublishedReverse: false
+    }
+  },
+
+  handlePublishSort (key) {
+    if (this.state.sortPublishedBy === key) {
+      const sortReverse = this.state.sortPublishedReverse
+      this.setState({ sortPublishedReverse: !sortReverse })
+    } else {
+      this.setState({
+        sortPublishedBy: key,
+        sortPublishedReverse: false
+      })
+    }
+  },
+
+  handleUnpublishSort (key) {
+    if (this.state.sortUnpublishedBy === key) {
+      const sortReverse = this.state.sortUnpublishedReverse
+      this.setState({ sortUnpublishedReverse: !sortReverse })
+    } else {
+      this.setState({
+        sortUnpublishedBy: key,
+        sortUnpublishedReverse: false
+      })
+    }
+  },
+
   componentWillMount () {
     loadAllPosts()
   },
@@ -17,25 +52,51 @@ export default Component({
   },
 
   createPosts (posts, published) {
-    const { loadingPublished, loadingUnpublished } = this.props
+    const loading = published ? this.props.loadingPublished : this.props.loadingUnpublished
+    const sortBy = published ? this.state.sortPublishedBy : this.state.sortUnpublishedBy
+    const sortReverse = published ? this.state.sortPublishedReverse : this.state.sortUnpublishedReverse
+    const handleSort = published ? this.handlePublishSort : this.handleUnpublishSort
 
-    if (published ? loadingPublished : loadingUnpublished) {
+    if (loading) {
       return <Loading />
-    } else if (posts ? !posts.length : published ? loadingPublished : loadingUnpublished) {
+    } else if (posts ? !posts.length : loading) {
       return <p>Geen {published ? 'gepubliceerde' : 'ongepubliceerde'} posts beschikbaar.</p>
     } else if (posts ? posts.length : false) {
+      const postsSorted = sortReverse ? _.reverse(_.sortBy(posts, [sortBy])) : _.sortBy(posts, [sortBy])
+
       return (
         <Table responsive hover>
           <thead>
             <tr>
-              <th>Titel</th>
-              <th>Gemaakt op</th>
-              <th>Laatste update</th>
+              <TableHeader
+                keyTable={published}
+                keyValue='title'
+                label='titel'
+                activeSort={sortBy}
+                sortReverse={sortReverse}
+                onSort={handleSort}
+              />
+              <TableHeader
+                keyTable={published}
+                keyValue='createdAt'
+                label='gemaakt op'
+                activeSort={sortBy}
+                sortReverse={sortReverse}
+                onSort={handleSort}
+                />
+              <TableHeader
+                keyTable={published}
+                keyValue='updatedAt'
+                label='laatste update'
+                activeSort={sortBy}
+                sortReverse={sortReverse}
+                onSort={handleSort}
+                />
               <th className='actions'>Acties</th>
             </tr>
           </thead>
           <tbody>
-            {posts.map(post => {
+            {postsSorted.map(post => {
               return (
                 <PostItem
                   key={post.key}
