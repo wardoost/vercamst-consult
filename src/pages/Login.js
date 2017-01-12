@@ -1,7 +1,7 @@
 import { Component, Goto } from 'jumpsuit'
 import { Grid, Row, Col, Form, FormGroup, FormControl, Button, Alert } from 'react-bootstrap'
 import classNames from 'classnames'
-import { authLogin } from '../state/auth'
+import { authLogin } from '../core/state/auth'
 import SplashPage from '../components/SplashPage'
 import Footer from '../components/Footer'
 import './Login.sass'

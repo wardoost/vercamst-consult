@@ -1,5 +1,5 @@
 import { State, Hook } from 'jumpsuit'
-import { FirebasePaginatedList } from '../core/firebase'
+import { FirebasePaginatedList } from '../firebase'
 
 const initialState = {
   posts: [],

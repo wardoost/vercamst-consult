@@ -1,6 +1,6 @@
 import { Component, Goto } from 'jumpsuit'
 import { Grid, Row, Col, Form, FormGroup, FormControl, Button, ButtonToolbar, Alert } from 'react-bootstrap'
-import postState, { addPost } from '../state/post'
+import postState, { addPost } from '../core/state/post'
 import SplashPage from '../components/SplashPage'
 import Footer from '../components/Footer'
 import Editor from '../components/Editor'

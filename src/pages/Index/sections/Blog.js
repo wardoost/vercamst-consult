@@ -1,7 +1,7 @@
 import { Component } from 'jumpsuit'
 import { Grid, Row, Col, Clearfix, Button } from 'react-bootstrap'
 import moment from 'moment'
-import blogState, { loadPosts, loadMorePosts } from '../../../state/blog'
+import blogState, { loadPosts, loadMorePosts } from '../../../core/state/blog'
 import ColButton from '../../../components/ColButton'
 import Loading from '../../../components/Loading'
 import './Blog.sass'

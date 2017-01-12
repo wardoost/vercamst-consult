@@ -1,5 +1,5 @@
 import { State } from 'jumpsuit'
-import { firebaseDb, firebaseMove } from '../core/firebase'
+import { firebaseDb, firebaseMove } from '../firebase'
 import slug from 'slug'
 
 const initialState = {

@@ -1,7 +1,7 @@
 import { Component, Goto } from 'jumpsuit'
 import { Grid, Row, Col, Form, FormGroup, FormControl, Button, ButtonToolbar, Alert } from 'react-bootstrap'
 import moment from 'moment'
-import postState, { loadPost, updatePost, publishPost, depublishPost } from '../state/post'
+import postState, { loadPost, updatePost, publishPost, depublishPost } from '../core/state/post'
 import SplashPage from '../components/SplashPage'
 import Footer from '../components/Footer'
 import Editor from '../components/Editor'

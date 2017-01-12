@@ -1,5 +1,5 @@
 import { State, Hook } from 'jumpsuit'
-import { FirebaseList } from '../core/firebase'
+import { FirebaseList } from '../firebase'
 
 const initialState = {
   posts: {

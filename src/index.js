@@ -1,5 +1,5 @@
 import { Render } from 'jumpsuit'
-import state from './state'
+import state from './core/state'
 import App from './core/App'
 
 Render(state, (

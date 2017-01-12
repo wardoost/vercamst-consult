@@ -1,5 +1,5 @@
 import { State, Goto } from 'jumpsuit'
-import { firebaseAuth } from '../core/firebase'
+import { firebaseAuth } from '../firebase'
 
 const authState = State('auth', {
   initial: {

@@ -1,7 +1,7 @@
 import { Component, Router, Route, IndexRoute, Hook, Goto } from 'jumpsuit'
 import ReactGA from 'react-ga'
-import { authInit, isInitialized, isAuthenticated } from '../state/auth'
-import { chunkLoaded, lazyLoadChunk } from '../state/chunks'
+import { authInit, isInitialized, isAuthenticated } from './state/auth'
+import { chunkLoaded, lazyLoadChunk } from './state/chunks'
 import Layout from '../components/Layout'
 import Loading from '../components/Loading'
 
