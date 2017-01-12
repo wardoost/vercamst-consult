@@ -120,17 +120,16 @@ export function addPost (post, published = false, duplicateSlug = null) {
   })
 }
 
-export function updatePost (key, post) {
+export function updatePost (key, post, published) {
   return new Promise((resolve, reject) => {
     postState.loading(true)
 
-    const published = postState.getState().published
     const postRefPath = `posts/${published ? 'published' : 'unpublished'}/${key}`
 
     firebaseDb.ref(postRefPath).update(post)
       .then(() => {
         postState.updatePostSuccess(post)
-        resolve(`/posts/${key}`)
+        resolve()
       })
       .catch(error => {
         postState.error(error)
@@ -139,33 +138,33 @@ export function updatePost (key, post) {
   })
 }
 
-export function publishPost (key, post) {
+export function publishPost (key, post, updatePostState = true) {
   return new Promise((resolve, reject) => {
-    postState.loading(true)
+    if (updatePostState) postState.loading(true)
 
     firebaseMove(`posts/unpublished/${key}`, `posts/published/${key}`)
       .then(() => {
-        postState.publishPostSuccess()
-        resolve(`/posts/${key}`)
+        if (updatePostState) postState.publishPostSuccess()
+        resolve()
       })
       .catch(error => {
-        postState.error(error)
+        if (updatePostState) postState.error(error)
         reject(error)
       })
   })
 }
 
-export function depublishPost (key, post) {
+export function depublishPost (key, post, updatePostState = true) {
   return new Promise((resolve, reject) => {
-    postState.loading(true)
+    if (updatePostState) postState.loading(true)
 
     firebaseMove(`posts/published/${key}`, `posts/unpublished/${key}`)
       .then(() => {
-        postState.depublishPostSuccess()
-        resolve(`/posts/${key}`)
+        if (updatePostState) postState.depublishPostSuccess()
+        resolve()
       })
       .catch(error => {
-        postState.error(error)
+        if (updatePostState) postState.error(error)
         reject(error)
       })
   })

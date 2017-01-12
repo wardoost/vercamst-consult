@@ -31,7 +31,7 @@ export default Component({
   handleSave (e) {
     e.preventDefault()
 
-    updatePost(this.props.params.key, this.createPost())
+    updatePost(this.props.params.key, this.createPost(), this.props.published)
       .then(() => {
         this.setState({ preview: true })
         animateScroll.scrollToTop({duration: 100})
@@ -40,22 +40,22 @@ export default Component({
 
   handleTogglePublish () {
     if (this.props.published) {
-      if (window.confirm('Je post zal niet meer zichtbaar zijn op je blog. Ben je zeker dat je deze post wil depubliceren?')) {
+      if (window.confirm('Ben je zeker dat je deze post wil depubliceren? Je post zal niet meer zichtbaar zijn op je blog.')) {
         depublishPost(this.props.params.key, this.props.post)
           .then(() => animateScroll.scrollToTop({duration: 100}))
       }
     } else if (this.props.unsavedChanges) {
-      if (window.confirm('Je wijzigen worden opgeslagen en je post zal zichtbaar worden voor bezoekers. Ben je zeker dat je deze post wil opslaan en publiceren?')) {
-        updatePost(this.props.params.key, this.createPost())
+      if (window.confirm('Ben je zeker dat je deze post wil opslaan en publiceren? Je post is meteen zichtbaar voor bezoekers.')) {
+        updatePost(this.props.params.key, this.createPost(), this.props.published)
           .then(() => {
             publishPost(this.props.params.key, this.props.post)
-              .then((url) => Goto(url))
+              .then(() => Goto(`/posts/${this.props.params.key}`))
           })
       }
     } else {
       if (window.confirm('Je post zal zichtbaar worden voor bezoekers. Ben je zeker dat je deze post wil publiceren?')) {
         publishPost(this.props.params.key, this.props.post)
-          .then((url) => Goto(url))
+          .then(() => Goto(`/posts/${this.props.params.key}`))
       }
     }
   },

@@ -1,5 +1,6 @@
 import { State, Hook } from 'jumpsuit'
 import { FirebaseList } from '../firebase'
+import _ from 'lodash'
 
 const initialState = {
   posts: {
@@ -38,7 +39,7 @@ const managementState = State('management', {
 
   createPublishedPostSuccess: (state, payload) => ({
     posts: {
-      published: state.posts.published.map(post => { return post.key === payload.key ? payload : post }),
+      published: _.concat(state.posts.published, payload),
       unpublished: state.posts.unpublished
     },
     error: null
@@ -72,7 +73,7 @@ const managementState = State('management', {
   createUnpublishedPostSuccess: (state, payload) => ({
     posts: {
       published: state.posts.published,
-      unpublished: state.posts.unpublished.map(post => { return post.key === payload.key ? payload : post })
+      unpublished: _.concat(state.posts.unpublished, payload)
     },
     error: null
   }),
@@ -138,24 +139,43 @@ export function loadUnpublishedPosts () {
   unpublishedPostList.subscribe()
 }
 
-export function createPublishedPost (post) {
-  publishedPostList.set(post.key, post)
-    .catch(error => managementState.error(error))
+export function createPost (post, published) {
+  return new Promise((resolve, reject) => {
+    const postList = published ? publishedPostList : unpublishedPostList
+
+    postList.set(post.key, post)
+      .then(() => resolve())
+      .catch(error => {
+        managementState.error(error)
+        reject(error)
+      })
+  })
 }
 
-export function createUnpublishedPost (post) {
-  unpublishedPostList.set(post.key, post)
-    .catch(error => managementState.error(error))
+export function updatePost (post, published) {
+  return new Promise((resolve, reject) => {
+    const postList = published ? publishedPostList : unpublishedPostList
+
+    postList.update(post.key, post)
+      .then(() => resolve())
+      .catch(error => {
+        managementState.error(error)
+        reject(error)
+      })
+  })
 }
 
-export function deletePublishedPost (post) {
-  publishedPostList.remove(post.key)
-    .catch(error => managementState.error(error))
-}
+export function deletePost (post, published) {
+  return new Promise((resolve, reject) => {
+    const postList = published ? publishedPostList : unpublishedPostList
 
-export function deleteUnpublishedPost (post) {
-  unpublishedPostList.remove(post.key)
-    .catch(error => managementState.error(error))
+    postList.remove(post.key)
+      .then(() => resolve())
+      .catch(error => {
+        managementState.error(error)
+        reject(error)
+      })
+  })
 }
 
 Hook((action, getState) => {

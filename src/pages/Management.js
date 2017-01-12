@@ -1,6 +1,6 @@
 import { Grid, Row, Col, Table, Button, Tabs, Tab, Alert } from 'react-bootstrap'
 import { Component, Link } from 'jumpsuit'
-import managementState, { loadAllPosts, deletePublishedPost, updatePublishedPost, deleteUnpublishedPost, updateUnpublishedPost } from '../core/state/management'
+import managementState, { loadAllPosts } from '../core/state/management'
 import { authLogout } from '../core/state/auth'
 import SplashPage from '../components/SplashPage'
 import Loading from '../components/Loading'
@@ -39,10 +39,9 @@ export default Component({
               return (
                 <PostItem
                   key={post.key}
+                  keyValue={post.key}
                   post={post}
                   published={published}
-                  deletePost={published ? deletePublishedPost : deleteUnpublishedPost}
-                  updatePost={published ? updatePublishedPost : updateUnpublishedPost}
                 />
               )
             })}
