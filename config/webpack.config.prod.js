@@ -50,7 +50,7 @@ module.exports = {
   bail: true,
   // We generate sourcemaps in production. This is slow but gives good results.
   // Use --deploy flag to disable source-maps for deployment.
-  devtool: process.env.npm_config_deploy ? 'eval' : 'source-map',
+  devtool: process.env.DEPLOY ? 'eval' : 'source-map',
   entry: {
     main: [
       // In production, we only want to load the polyfills and the app code.

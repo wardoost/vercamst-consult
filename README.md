@@ -7,13 +7,14 @@ You can find the most recent version of this guide [here](https://github.com/fac
 ## Configuration
 
 Create a .env file in project folder with the at least following variables:
+- FIREBASE_PROJECT_ID
 - FIREBASE_API_KEY
 - FIREBASE_AUTH_DOMAIN
 - FIREBASE_DATABASE_URL
 - FIREBASE_STORAGE_BUCKET
 - GOOGLE_ANALYTICS_TRACKING_ID
 
-You can add these optional variables for development:
+You can add these optional variables for development with a different database:
 - FIREBASE_API_KEY_DEV
 - FIREBASE_AUTH_DOMAIN_DEV
 - FIREBASE_DATABASE_URL_DEV

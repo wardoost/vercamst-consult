@@ -1,9 +1,15 @@
 {
   "rules": {
-    ".read": true,
-    ".write": "auth != null",
     "posts": {
-      ".indexOn": ["published"]
+      "published": {
+        ".read": true,
+        ".write": "auth != null",
+        ".indexOn": ["createdAt"]
+      },
+      "unpublished": {
+        ".read": "auth != null",
+        ".write": "auth != null"
+      }
     }
   }
 }
