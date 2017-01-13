@@ -46,6 +46,7 @@ export default Component({
     }
     return (
       <RichTextEditor
+        className='rte'
         toolbarConfig={toolbarConfig}
         value={this.state.value}
         onChange={this.onChange}
