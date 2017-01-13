@@ -67,7 +67,7 @@ module.exports = {
     // This does not produce a real file. It's just the virtual path that is
     // served by WebpackDevServer in development. This is the JS bundle
     // containing code from all our entry points, and the Webpack runtime.
-    filename: 'static/js/bundle.js',
+    filename: 'js/bundle.js',
     // This is the URL that app is served from. We use "/" in development.
     publicPath: publicPath
   },
@@ -145,7 +145,7 @@ module.exports = {
         test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
         loader: 'file',
         query: {
-          name: 'static/media/[name].[hash:8].[ext]'
+          name: 'media/[name].[hash:8].[ext]'
         }
       },
       // "url" loader works just like "file" loader but it also embeds
@@ -155,7 +155,7 @@ module.exports = {
         loader: 'url',
         query: {
           limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]'
+          name: 'media/[name].[hash:8].[ext]'
         }
       }
     ]
@@ -207,7 +207,7 @@ module.exports = {
     // Bundle vendor in seperate js file
     new webpack.optimize.CommonsChunkPlugin({
       names: ['common', 'vendor'],
-      filename: 'static/js/[name].js',
+      filename: 'js/[name].js',
       minChunks: 2
     })
   ],
