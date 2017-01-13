@@ -127,20 +127,14 @@ export default Component({
                 </Tabs>
               </Col>
             </Row>
-          </Grid>
-        </section>
-        <section className='management-actions'>
-          <Grid>
-            <Row>
-              <Col md={12}>
-                <Link to='/posts/add' className='btn btn-primary'>
-                  <i className='icon-plus' /> Nieuwe post aanmaken
-                </Link>
-                <Button bsStyle='primary' className='pull-right' onClick={authLogout}>
-                  <i className='icon-logout' /> Log uit
-                </Button>
-              </Col>
-            </Row>
+            <div className='management-toolbar'>
+              <Link to='/posts/add' className='btn btn-success'>
+                <i className='icon-plus' /> Nieuwe post aanmaken
+              </Link>
+              <Button bsStyle='primary' className='pull-right' onClick={authLogout}>
+                <i className='icon-logout' /> Log uit
+              </Button>
+            </div>
           </Grid>
         </section>
       </SplashPage>
