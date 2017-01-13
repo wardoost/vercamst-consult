@@ -44,59 +44,62 @@ export default Component({
     const newOffset = this.state.scrollOffset / this.state.maxOffset * maxOffset
     const indicatorHeight = Math.round(containerHeight / (contentHeight / containerHeight))
 
-    this.setState({
+    this.setState((prevState, props) => ({
       containerHeight: containerHeight,
       contentHeight: contentHeight,
       maxOffset: maxOffset,
       indicatorHeight: indicatorHeight,
-      indicatorOffset: Math.round((containerHeight - indicatorHeight) * newOffset / (maxOffset - this.state.minOffset))
-    })
+      indicatorOffset: Math.round((containerHeight - indicatorHeight) * newOffset / (maxOffset - prevState.minOffset))
+    }))
   },
 
   scrollUp () {
-    const newOffset = this.state.scrollOffset - this.state.containerHeight
-    const scrollOffset = newOffset > this.state.minOffset ? newOffset : this.state.minOffset
+    const { scrollOffset, containerHeight, minOffset, maxOffset, indicatorHeight } = this.state
+    const checkOffset = scrollOffset - containerHeight
+    const newOffset = checkOffset > minOffset ? checkOffset : minOffset
 
     this.setState({
-      scrollOffset: Math.round(scrollOffset),
-      topReached: newOffset > this.state.minOffset,
-      bottomReached: newOffset < this.state.maxOffset,
-      indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset)),
+      scrollOffset: Math.round(newOffset),
+      topReached: newOffset <= minOffset,
+      bottomReached: newOffset >= maxOffset,
+      indicatorOffset: Math.round((containerHeight - indicatorHeight) * newOffset / (maxOffset - minOffset)),
       active: true
     })
   },
 
   scrollDown () {
-    const newOffset = this.state.scrollOffset + this.state.containerHeight
-    const scrollOffset = newOffset < this.state.maxOffset ? newOffset : this.state.maxOffset
+    const { scrollOffset, containerHeight, minOffset, maxOffset, indicatorHeight } = this.state
+    const checkOffset = scrollOffset + containerHeight
+    const newOffset = checkOffset < maxOffset ? checkOffset : maxOffset
 
     if (!this.state.active) {
       this.handleResize(200)
     }
 
     this.setState({
-      scrollOffset: Math.round(scrollOffset),
-      topReached: newOffset > this.state.minOffset,
-      bottomReached: newOffset < this.state.maxOffset,
-      indicatorOffset: Math.round((this.state.containerHeight - this.state.indicatorHeight) * scrollOffset / (this.state.maxOffset - this.state.minOffset)),
+      scrollOffset: Math.round(newOffset),
+      topReached: newOffset <= minOffset,
+      bottomReached: newOffset >= maxOffset,
+      indicatorOffset: Math.round((containerHeight - indicatorHeight) * newOffset / (maxOffset - minOffset)),
       active: true
     })
   },
 
   render () {
+    const { active, touchEnabled, topReached, bottomReached, scrollOffset, indicatorHeight, indicatorOffset } = this.state
     return (
-      <div className={classNames('vertical-scroller', {'active': this.state.active, 'touchEnabled': this.state.touchEnabled})}>
-        <Button className='vertical-scroller-btn up' onClick={this.scrollUp} disabled={this.state.topReached}>
+      <div className={classNames('vertical-scroller', {'active': active, 'touchEnabled': touchEnabled})}>
+        <Button className='vertical-scroller-btn up' onClick={this.scrollUp} disabled={topReached}>
           <i className='icon-angle-double-up' />
         </Button>
-        <div className={classNames('vertical-scroller-container', {'bottomReached': this.state.bottomReached, 'topReached': this.state.topReached})} ref='verticalScrollerContainer'>
-          <div className='vertical-scroller-content' ref='verticalScrollerContent' style={{top: -this.state.scrollOffset}}>
+        <div className={classNames('vertical-scroller-container', {'bottomReached': bottomReached, 'topReached': topReached})} ref='verticalScrollerContainer'>
+          <div className='vertical-scroller-content' ref='verticalScrollerContent' style={{top: -scrollOffset}}>
             {this.props.children}
           </div>
-          <span className='vertical-scroller-indicator' ref='vertical-scroller-indicator' style={{height: this.state.indicatorHeight, top: this.state.indicatorOffset}} />
+          <span className='vertical-scroller-indicator' ref='vertical-scroller-indicator' style={{height: indicatorHeight, top: indicatorOffset}} />
         </div>
-        <Button className='vertical-scroller-btn down' onClick={this.scrollDown} disabled={this.state.bottomReached}>
-          {!this.state.active && this.props.label ? this.props.label : <i className='icon-angle-double-down' />}
+        <Button className='vertical-scroller-btn down' onClick={this.scrollDown} disabled={bottomReached}>
+          {!active && this.props.label ? this.props.label : <i className='icon-angle-double-down' />}
         </Button>
       </div>
     )
