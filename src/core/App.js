@@ -3,7 +3,6 @@ import ReactGA from 'react-ga'
 import { authInit, isInitialized, isAuthenticated } from './state/auth'
 import { chunkLoaded, lazyLoadChunk } from './state/chunks'
 import Layout from '../components/Layout'
-import Loading from '../components/Loading'
 
 export default Component({
   componentWillMount () {
@@ -49,7 +48,7 @@ export default Component({
                     cb(null, require('../pages/Index').default)
                   })
                 })
-                .catch(() => cb(null, Loading))
+                .catch(component => cb(null, component))
             }}
           />
           <Route
@@ -63,7 +62,7 @@ export default Component({
                     cb(null, require('../pages/AddPost').default)
                   })
                 })
-                .catch(() => cb(null, Loading))
+                .catch(component => cb(null, component))
             }}
           />
           <Route
@@ -76,7 +75,7 @@ export default Component({
                     cb(null, require('../pages/Post').default)
                   })
                 })
-                .catch(() => cb(null, Loading))
+                .catch(component => cb(null, component))
             }}
           />
           <Route
@@ -90,7 +89,7 @@ export default Component({
                     cb(null, require('../pages/EditPost').default)
                   })
                 })
-                .catch(() => cb(null, Loading))
+                .catch(component => cb(null, component))
             }}
           />
           <Route
@@ -104,7 +103,7 @@ export default Component({
                     cb(null, require('../pages/Login').default)
                   })
                 })
-                .catch(() => cb(null, Loading))
+                .catch(component => cb(null, component))
             }}
           />
           <Route
@@ -118,7 +117,7 @@ export default Component({
                     cb(null, require('../pages/Management').default)
                   })
                 })
-                .catch(() => cb(null, Loading))
+                .catch(component => cb(null, component))
             }}
           />
           <Route
@@ -131,7 +130,7 @@ export default Component({
                     cb(null, require('../pages/Error').default)
                   })
                 })
-                .catch(() => cb(null, Loading))
+                .catch(component => cb(null, component))
             }}
           />
         </Route>

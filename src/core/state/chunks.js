@@ -1,5 +1,7 @@
 import { State, Goto } from 'jumpsuit'
 import { isInitialized } from './auth'
+import Loading from '../../components/Loading'
+import LoadingAuth from '../../components/LoadingAuth'
 
 const chunksState = State('chunks', {
   initial: {
@@ -33,8 +35,11 @@ function getChunkState (key) {
 export function lazyLoadChunk (chunkName, loc, authInitRequired = false) {
   return new Promise((resolve, reject) => {
     const { exists, loading } = getChunkState(chunkName)
-    if (authInitRequired ? !isInitialized() || (exists && loading) : exists && loading) {
-      reject()
+
+    if (authInitRequired && !isInitialized()) {
+      reject(LoadingAuth)
+    } else if (exists && loading) {
+      reject(Loading)
     } else {
       if (!exists) {
         const { chunks } = chunksState.getState()

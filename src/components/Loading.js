@@ -34,7 +34,7 @@ export default Component({
         <div className='loading'>
           <div className='loading-animation'>
             <i className='icon-circle-notch icon-spin' />
-            <p>{label}</p>
+            {label ? <p>{label}</p> : null}
           </div>
         </div>
       )
