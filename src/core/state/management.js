@@ -7,6 +7,7 @@ const initialState = {
     published: [],
     unpublished: []
   },
+  loading: false,
   loadingPublished: false,
   loadingUnpublished: false,
   error: null,
@@ -20,12 +21,10 @@ const managementState = State('management', {
     error: payload
   }),
 
-  loadingPublished: (state, payload) => ({
-    loadingPublished: Boolean(payload)
-  }),
-
-  loadingUnpublished: (state, payload) => ({
-    loadingUnpublished: Boolean(payload)
+  loading: (state, payload) => ({
+    loading: payload,
+    loadingPublished: payload,
+    loadingUnpublished: payload
   }),
 
   loadPublishedPostsSuccess: (state, payload) => ({
@@ -33,8 +32,9 @@ const managementState = State('management', {
       published: payload,
       unpublished: state.posts.unpublished
     },
-    error: null,
-    loadingPublished: false
+    loading: state.loadingUnpublished,
+    loadingPublished: false,
+    error: null
   }),
 
   createPublishedPostSuccess: (state, payload) => ({
@@ -66,8 +66,9 @@ const managementState = State('management', {
       published: state.posts.published,
       unpublished: payload
     },
-    error: null,
-    loadingUnpublished: false
+    loading: state.loadingPublished,
+    loadingUnpublished: false,
+    error: null
   }),
 
   createUnpublishedPostSuccess: (state, payload) => ({
@@ -118,25 +119,11 @@ const unpublishedPostList = new FirebaseList({
 }, 'posts/unpublished')
 
 export function loadAllPosts () {
-  loadPublishedPosts()
-    .then(() => {
-      loadUnpublishedPosts()
-    })
+  managementState.loading(true)
+
+  publishedPostList.subscribe()
+    .then(() => unpublishedPostList.subscribe())
     .catch(error => managementState.error(error))
-}
-
-export function loadPublishedPosts () {
-  return new Promise((resolve, reject) => {
-    managementState.loadingPublished(true)
-    publishedPostList.subscribe()
-      .then(() => resolve())
-      .catch(error => reject(error))
-  })
-}
-
-export function loadUnpublishedPosts () {
-  managementState.loadingUnpublished(true)
-  unpublishedPostList.subscribe()
 }
 
 export function createPost (post, published) {

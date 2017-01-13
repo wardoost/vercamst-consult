@@ -21,9 +21,13 @@ export default Component({
   },
 
   createPost () {
+    const { editorState, bodyChanged, title } = this.props
+    const body = editorState.toString('html')
+
+    if (bodyChanged) postState.updateBody(body)
     return {
-      title: this.props.title,
-      body: this.props.body.toString('html'),
+      title: title,
+      body: body,
       updatedAt: new Date().getTime()
     }
   },
@@ -61,12 +65,11 @@ export default Component({
   },
 
   handleTogglePreview () {
-    const preview = !this.state.preview
+    const { editorState } = this.props
+    const { preview } = this.state
 
-    this.setState({
-      preview: preview
-    })
-
+    if (!preview) postState.updateBody(editorState.toString('html'))
+    this.setState({ preview: !preview })
     animateScroll.scrollToTop({duration: 100})
   },
 
@@ -89,23 +92,30 @@ export default Component({
   },
 
   render () {
-    const { post, title, body, loading, published, unsavedChanges } = this.props
-    const { preview } = this.state
+    const { post, loading } = this.props
 
     if (loading && !post) {
-      return (
-        <Loading label='Loading post...' fullPage />
-      )
-    } else if (!post) {
-      return <Error TypeString='post' />
+      return <Loading label='Loading post...' fullPage />
+    } else if (!loading && !post) {
+      return <Error typeString='post' />
     } else {
+      const { title, body, published, unsavedChanges, error, showAlert } = this.props
+      const { preview } = this.state
+
       return (
         <SplashPage
           className={classNames('edit-post', {'edit-post-preview': preview})}
-          title={post.title || 'Titel'}
-          subTitle={'Gepost op ' + moment(post.createdAt).format('dddd D MMMM YYYY')}
+          title={`Bewerk ${post.title || 'post'}`}
+          subTitle={preview ? 'Gepost op ' + moment(post.createdAt).format('dddd D MMMM YYYY') : null}
           splashHeight={0.3}>
           <main className='edit-post-content'>
+            {error && showAlert
+            ? <Alert bsStyle='danger' onDismiss={postState.dismissAlert}>
+              <div className='container'>
+                {error.message}
+              </div>
+            </Alert>
+            : null }
             {!published
             ? <Alert bsStyle='warning'>
               <div className='container'>
@@ -124,14 +134,15 @@ export default Component({
                         type='text'
                         placeholder='Titel'
                         value={title}
-                        onChange={(e) => postState.updateTitle(e.target.value)}
+                        onChange={e => postState.updateTitle(e.target.value)}
                       />
                     </FormGroup>
                     <FormGroup>
                       <Editor
                         ref='editor'
                         value={body}
-                        onChange={(value) => postState.updateBody(value)}
+                        onInitialized={value => postState.initEditor(value)}
+                        onChange={value => postState.updateEditor(value)}
                       />
                     </FormGroup>
                   </Form>

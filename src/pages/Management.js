@@ -13,34 +13,22 @@ export default Component({
   getInitialState () {
     return {
       sortPublishedBy: 'createdAt',
-      sortPublishedReverse: false,
+      sortPublishedReverse: true,
       sortUnpublishedBy: 'createdAt',
-      sortUnpublishedReverse: false
+      sortUnpublishedReverse: true
     }
   },
 
   handlePublishSort (key) {
-    if (this.state.sortPublishedBy === key) {
-      const sortReverse = this.state.sortPublishedReverse
-      this.setState({ sortPublishedReverse: !sortReverse })
-    } else {
-      this.setState({
-        sortPublishedBy: key,
-        sortPublishedReverse: false
-      })
-    }
+    this.state.sortPublishedBy === key
+    ? this.setState((prevState, props) => ({ sortPublishedReverse: !prevState.sortPublishedReverse }))
+    : this.setState({ sortPublishedBy: key, sortPublishedReverse: false })
   },
 
   handleUnpublishSort (key) {
-    if (this.state.sortUnpublishedBy === key) {
-      const sortReverse = this.state.sortUnpublishedReverse
-      this.setState({ sortUnpublishedReverse: !sortReverse })
-    } else {
-      this.setState({
-        sortUnpublishedBy: key,
-        sortUnpublishedReverse: false
-      })
-    }
+    this.state.sortUnpublishedBy === key
+    ? this.setState((prevState, props) => ({ sortUnpublishedReverse: !prevState.sortUnpublishedReverse }))
+    : this.setState({ sortUnpublishedBy: key, sortUnpublishedReverse: false })
   },
 
   componentWillMount () {
@@ -52,7 +40,7 @@ export default Component({
   },
 
   createPosts (posts, published) {
-    const loading = published ? this.props.loadingPublished : this.props.loadingUnpublished
+    const loading = this.props.loading && published ? this.props.loadingPublished : this.props.loadingUnpublished
     const sortBy = published ? this.state.sortPublishedBy : this.state.sortUnpublishedBy
     const sortReverse = published ? this.state.sortPublishedReverse : this.state.sortUnpublishedReverse
     const handleSort = published ? this.handlePublishSort : this.handleUnpublishSort

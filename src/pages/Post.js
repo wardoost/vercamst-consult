@@ -20,12 +20,15 @@ export default Component({
   },
 
   render () {
-    if (this.props.loading && !this.props.post) {
+    const { post, loading, published } = this.props
+
+    if (loading && !post) {
       return <Loading label='Loading blogpost' fullPage />
-    } else if ((!this.props.loading && !this.props.post) || (!this.props.published && !isAuthenticated())) {
-      return <Error TypeString='post' />
+    } else if ((!loading && !post) || (!published && !isAuthenticated())) {
+      return <Error typeString='post' />
     } else {
-      const { title, body, createdAt } = this.props.post
+      const { title, body, createdAt } = post
+      const { error, showAlert } = this.props
 
       return (
         <SplashPage
@@ -35,14 +38,14 @@ export default Component({
           splashHeight={0.4}
           scrollToContent>
           <section className='post-content'>
-            { this.props.error && this.props.showAlert
+            { error && showAlert
               ? <Alert bsStyle='danger' onDismiss={postState.dismissAlert}>
                 <div className='container'>
-                  {this.props.error.message}
+                  {error.message}
                 </div>
               </Alert>
               : null }
-            { !this.props.published && this.props.showAlert
+            { !published && showAlert
               ? <Alert bsStyle='warning' onDismiss={postState.dismissAlert}>
                 <div className='container'>
                   Deze post is niet zichbaar voor bezoekers. Misschien wil je deze post <Link to={`/posts/${this.props.params.key}/edit`}>publiceren</Link>?

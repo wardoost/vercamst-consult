@@ -1,5 +1,4 @@
 import { State } from 'jumpsuit'
-import RichTextEditor from 'react-rte'
 import slug from 'slug'
 import { firebaseDb, firebaseMove } from '../firebase'
 
@@ -9,6 +8,7 @@ const initialState = {
   titleChanged: false,
   body: '',
   bodyChanged: false,
+  editorState: null,
   unsavedChanges: false,
   published: false,
   error: null,
@@ -29,10 +29,14 @@ const postState = State('post', {
     loading: Boolean(payload)
   }),
 
+  initEditor: (state, payload) => ({
+    editorState: payload
+  }),
+
   loadPostSuccess: (state, payload) => ({
     post: payload.post,
     title: payload.post.title,
-    body: payload.post.body ? RichTextEditor.createValueFromString(payload.post.body, 'html') : RichTextEditor.createEmptyValue(),
+    body: payload.post.body,
     published: payload.published,
     error: null,
     loading: false
@@ -42,7 +46,7 @@ const postState = State('post', {
     post: payload,
     title: payload.title,
     titleChanged: false,
-    body: payload.body ? RichTextEditor.createValueFromString(payload.body, 'html') : RichTextEditor.createEmptyValue(),
+    body: payload.body,
     bodyChanged: false,
     unsavedChanges: false,
     error: null,
@@ -65,10 +69,14 @@ const postState = State('post', {
     unsavedChanges: state.post ? payload !== state.post.title : payload !== '' && state.bodyChanged
   }),
 
-  updateBody: (state, payload) => ({
-    body: payload,
+  updateEditor: (state, payload) => ({
+    editorState: payload,
     bodyChanged: true,
     unsavedChanges: state.post ? true : state.titleChanged
+  }),
+
+  updateBody: (state, payload) => ({
+    body: payload
   }),
 
   dismissAlert: (state, payload) => ({
@@ -83,19 +91,17 @@ export default postState
 export function loadPost (key) {
   postState.loading(true)
 
-  firebaseDb.ref(`posts/published/${key}`).once('value')
-    .then(snapPublished => {
-      const postPublished = snapPublished.val()
-
-      if (postPublished) {
-        postState.loadPostSuccess({post: postPublished, published: true})
-      } else {
-        firebaseDb.ref(`posts/unpublished/${key}`).once('value')
-          .then(snapUnpublished => postState.loadPostSuccess({post: snapUnpublished.val(), published: false}))
-          .catch(error => postState.error(error))
-      }
+  firebaseDb.ref(`posts/published/${key}`).once('value', snap => {
+    const post = snap.val()
+    post
+    ? postState.loadPostSuccess({post: post, published: true})
+    : firebaseDb.ref(`posts/unpublished/${key}`).once('value', snap => {
+      const post = snap.val()
+      post
+      ? postState.loadPostSuccess({post: post, published: false})
+      : postState.error({message: 'Could not find post.'})
     })
-    .catch(error => postState.error(error))
+  })
 }
 
 export function addPost (post, published = false, duplicateSlug = null) {

@@ -7,12 +7,12 @@ import './Error.sass'
 
 export default Component({
   propTypes: {
-    TypeString: PropTypes.string
+    typeString: PropTypes.string
   },
 
   getDefaultProps () {
     return {
-      TypeString: 'page'
+      typeString: 'page'
     }
   },
 
@@ -23,7 +23,7 @@ export default Component({
   },
 
   render () {
-    const title = `${_.upperFirst(this.props.TypeString)} not found`
+    const title = `${_.upperFirst(this.props.typeString)} not found`
 
     return (
       <main className='content-container error'>

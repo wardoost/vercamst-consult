@@ -1,22 +1,28 @@
 import { PropTypes } from 'react'
 import { Component } from 'jumpsuit'
-import RichTextEditor from 'react-rte'
+import RichTextEditor, { createValueFromString, createEmptyValue } from 'react-rte'
 import './Editor.sass'
 
 export default Component({
   propTypes: {
-    onChange: PropTypes.func.isRequired
+    onInitialized: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.string
   },
 
   getInitialState () {
     return {
-      value: this.props.value || RichTextEditor.createEmptyValue()
+      value: this.props.value ? createValueFromString(this.props.value, 'html') : createEmptyValue()
     }
   },
 
   onChange (value) {
-    this.setState({value: value})
+    this.setState({ value: value })
     this.props.onChange(value)
+  },
+
+  componentDidMount () {
+    this.props.onInitialized(this.state.value)
   },
 
   render () {

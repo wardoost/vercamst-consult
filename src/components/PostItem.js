@@ -1,5 +1,5 @@
 import { PropTypes } from 'react'
-import { Component, Link } from 'jumpsuit'
+import { Component, Link, Goto } from 'jumpsuit'
 import { ButtonGroup, Button } from 'react-bootstrap'
 import moment from 'moment'
 import { deletePost } from '../core/state/management'
@@ -71,9 +71,9 @@ export default Component({
         <td>{calendarUpdateDate}</td>
         <td className='actions'>
           <ButtonGroup>
-            <Link to={`/posts/${key}/edit`} className='btn btn-primary' title='Wijzigen' disabled={loading}>
+            <Button bsStyle='primary' onClick={() => Goto(`/posts/${key}/edit`)} title='Wijzigen' disabled={loading}>
               <i className='icon-pencil' />
-            </Link>
+            </Button>
             {published
             ? <Button bsStyle='warning' onClick={this.handleUnpublish} title='Unpublish' disabled={loading}>
               <i className='icon-user-times' />

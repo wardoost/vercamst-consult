@@ -19,9 +19,14 @@ export default Component({
   },
 
   createPost () {
+    const { editorState, bodyChanged, title } = this.props
+    const body = editorState.toString('html')
+
+    if (bodyChanged) postState.updateBody(body)
+
     return {
-      title: this.props.title,
-      body: this.props.body.toString('html'),
+      title: title,
+      body: body,
       createdAt: new Date().getTime(),
       updatedAt: new Date().getTime()
     }
@@ -52,12 +57,11 @@ export default Component({
   },
 
   handleTogglePreview () {
-    const preview = !this.state.preview
+    const { editorState } = this.props
+    const { preview } = this.state
 
-    this.setState({
-      preview: preview
-    })
-
+    if (!preview) postState.updateBody(editorState.toString('html'))
+    this.setState({ preview: !preview })
     animateScroll.scrollToTop({duration: 100})
   },
 
@@ -76,8 +80,8 @@ export default Component({
         subTitle={!preview ? '' : 'Gepost op ' + moment().format('dddd D MMMM YYYY')}
         splashHeight={0.3}>
         <main className='add-post-content'>
-          { error && showAlert
-          ? <Alert bsStyle='danger' onDismiss={() => this.setState({ showAlert: false })}>
+          {error && showAlert
+          ? <Alert bsStyle='danger' onDismiss={postState.dismissAlert}>
             <div className='container'>
               {error.message}
             </div>
@@ -93,14 +97,15 @@ export default Component({
                       type='text'
                       placeholder='Titel'
                       value={this.props.title}
-                      onChange={(e) => postState.updateTitle(e.target.value)}
+                      onChange={e => postState.updateTitle(e.target.value)}
                     />
                   </FormGroup>
                   <FormGroup>
                     <Editor
                       ref='editor'
                       value={this.props.body}
-                      onChange={(value) => postState.updateBody(value)}
+                      onInitialized={value => postState.initEditor(value)}
+                      onChange={value => postState.updateEditor(value)}
                     />
                   </FormGroup>
                 </Form>
