@@ -25,7 +25,7 @@ export class FirebasePaginatedList {
   setPage (cursor) {
     const {pageSize} = this._options
     const paginator = this
-    let ref = this._ref.orderByKey()
+    let ref = this._ref.orderByChild('createdAt')
 
     // Limit result
     ref = ref.limitToLast(pageSize + 1)
@@ -39,10 +39,9 @@ export class FirebasePaginatedList {
         let cursor
 
         snap.forEach(childSnap => {
-          if (!cursor) {
-            cursor = childSnap.key
-          }
-          list.push(this.unwrapSnapshot(childSnap))
+          const post = this.unwrapSnapshot(childSnap)
+          if (!cursor) cursor = post.createdAt
+          list.push(post)
         })
 
         if (list.length === pageSize + 1) {

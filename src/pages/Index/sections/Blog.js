@@ -1,5 +1,6 @@
 import { Component } from 'jumpsuit'
 import { Grid, Row, Col, Clearfix, Button } from 'react-bootstrap'
+import _ from 'lodash'
 import moment from 'moment'
 import blogState, { loadPosts, loadMorePosts } from '../../../core/state/blog'
 import ColButton from '../../../components/ColButton'
@@ -33,9 +34,7 @@ export default Component({
     return this.props.posts.map((post, index) => {
       const {title, body, createdAt} = post
       const humanDate = moment(createdAt).format('dddd D MMMM YYYY')
-      const summaryLength = 300
-      const strippedBody = body.replace(/\n/gm, ' ').replace(/<(?:.|\n)*?>/gm, '')
-      const summary = strippedBody.length > summaryLength ? strippedBody.substring(0, summaryLength) + '...' : strippedBody
+      const summary = _.truncate(body.replace(/\n/gm, ' ').replace(/<(?:.|\n)*?>/gm, ''), {length: 300})
 
       return ([
         <ColButton sm={6} md={4} className='article' key={post.key} to={'/posts/' + post.key} action='Lees meer' >
