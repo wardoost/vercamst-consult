@@ -1,6 +1,6 @@
 import { Render } from 'jumpsuit'
 import state from './core/state'
-import App from './core/App'
+import App from './core/Router'
 
 Render(state, (
   <App />
@@ -8,8 +8,8 @@ Render(state, (
 
 if (process.env.NODE_ENV === 'development') {
   if (module.hot) {
-    module.hot.accept('./core/App', () => {
-      const NextApp = require('./core/App').default
+    module.hot.accept('./core/Router', () => {
+      const NextApp = require('./core/Router').default
       Render(state, (
         <NextApp />
       ))
