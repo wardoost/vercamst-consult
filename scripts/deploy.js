@@ -40,6 +40,15 @@ function getLastDir(path) {
 function uploadBuild(callback) {
   if (processBoolFlag(process.env.npm_config_upload, true)) {
     if (process.env.FTP_PATH && process.env.FTP_HOST && process.env.FTP_USER && (process.env.FTP_PASSWORD || process.env.FTP_PRIVATE_KEY)) {
+      console.log(
+        'Will upload all files from the ' +
+        chalk.cyan('build') + ' folder to ' +
+        chalk.dim(path.dirname(ensureSlash(process.env.FTP_PATH, false)) + path.sep) +
+        chalk.cyan(getLastDir(ensureSlash(process.env.FTP_PATH, false))) +
+        ' on ' +
+        chalk.cyan(process.env.FTP_HOST) +
+        '.'
+      );
       console.log('Starting file transfer...');
       console.log();
 
@@ -54,15 +63,11 @@ function uploadBuild(callback) {
       ftpClient.on('write', function(options) {
         console.log(
           '  ' +
-          chalk.dim('build' + path.dirname(options.source).replace(paths.appBuild, '') + path.sep) +
+          chalk.green('Transfered ') +
+          chalk.dim(path.dirname(options.source).replace(paths.appBuild, '') + path.sep) +
           chalk.cyan(path.basename(options.source))
         );
-        console.log(
-          '    -> ' +
-          chalk.dim(getLastDir(process.env.FTP_PATH) + path.dirname(options.destination).replace(process.env.FTP_PATH, '') + path.sep) +
-          chalk.cyan(path.basename(options.destination))
-        );
-      })
+      });
 
       ftp.scp(paths.appBuild, {path: process.env.FTP_PATH}, ftpClient, function(err) {
         if (err) {
