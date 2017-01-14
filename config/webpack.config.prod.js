@@ -243,8 +243,7 @@ module.exports = {
       prefix: 'media/favicons-[hash:8]/',
       background: '#fff',
       icons: {
-        opengraph: true,
-        twitter: true,
+        appleStartup: false,
         windows: true
       }
     })
