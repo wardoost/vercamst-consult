@@ -3,6 +3,7 @@ var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var url = require('url');
 var paths = require('./paths');
@@ -49,8 +50,7 @@ module.exports = {
   // Don't attempt to continue if there are any errors.
   bail: true,
   // We generate sourcemaps in production. This is slow but gives good results.
-  // Use --deploy flag to disable source-maps for deployment.
-  devtool: process.env.DEPLOY ? 'eval' : 'source-map',
+  devtool: 'source-map',
   entry: {
     main: [
       // In production, we only want to load the polyfills and the app code.
@@ -212,6 +212,7 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: !process.env.DEPLOY, // We don't need sourcemaps for deployment
       compress: {
         screw_ie8: true, // React doesn't support IE8
         warnings: false
@@ -235,6 +236,17 @@ module.exports = {
       names: ['common', 'vendor'],
       filename: 'js/[name].[hash:8].js',
       minChunks: 2
+    }),
+    // Generate icons
+    new FaviconsWebpackPlugin({
+      logo: paths.appIcon,
+      prefix: 'media/favicons-[hash:8]/',
+      background: '#fff',
+      icons: {
+        opengraph: true,
+        twitter: true,
+        windows: true
+      }
     })
   ],
   // Some libraries import Node modules but don't use them in the browser.

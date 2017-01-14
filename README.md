@@ -46,7 +46,7 @@ See the section about [running tests](#running-tests) for more information.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.<br>
+Builds the app for production with source maps to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br>
@@ -55,8 +55,5 @@ Your app is ready to be deployed!
 ### `npm run deploy`
 
 Builds the app for production without source maps to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Transfers the build if the correct environment variables are present<br>
-Deploy the
+Transfers the build if the correct environment variables are present. Set `--upload` flag to false to disable.<br>
+Deploy the database rules. Set `--deploy-db` flag to false to disable.

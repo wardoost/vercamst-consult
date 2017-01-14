@@ -15,6 +15,10 @@ var ftp = require('scp2')
 var Client = require('scp2').Client
 var paths = require('../config/paths');
 
+function processBoolFlag(flag, defaultValue) {
+  return Boolean(flag !== undefined ? flag : defaultValue);
+}
+
 function ensureSlash(path, needsSlash) {
   var hasSlash = path.endsWith(path.sep);
   if (hasSlash && !needsSlash) {
@@ -26,72 +30,83 @@ function ensureSlash(path, needsSlash) {
   }
 }
 
-// Input: /User/dan/app/build/static/js/main.82be8.js
-// Output: /static/js/main.js
+// Input: /User/dan/app/build/static/js/
+// Output: js
 function getLastDir(path) {
   return ensureSlash(path, false)
     .replace(/.*\/([^\/]+)/, (match, p1) => p1);
 }
 
 function uploadBuild(callback) {
-  if (process.env.FTP_PATH && process.env.FTP_HOST && process.env.FTP_USER && (process.env.FTP_PASSWORD || process.env.FTP_PRIVATE_KEY)) {
-    console.log('Starting file transfer...');
-    console.log();
+  if (processBoolFlag(process.env.npm_config_upload, true)) {
+    if (process.env.FTP_PATH && process.env.FTP_HOST && process.env.FTP_USER && (process.env.FTP_PASSWORD || process.env.FTP_PRIVATE_KEY)) {
+      console.log('Starting file transfer...');
+      console.log();
 
-    var ftpClient = new Client({
-      host: process.env.FTP_HOST,
-      port: process.env.FTP_PORT,
-      username: process.env.FTP_USER,
-      password: process.env.FTP_PASSWORD,
-      privateKey: fs.readFileSync(process.env.FTP_PRIVATE_KEY),
-    });
+      var ftpClient = new Client({
+        host: process.env.FTP_HOST,
+        port: process.env.FTP_PORT,
+        username: process.env.FTP_USER,
+        password: process.env.FTP_PASSWORD,
+        privateKey: fs.readFileSync(process.env.FTP_PRIVATE_KEY),
+      });
 
-    ftpClient.on('write', function(options) {
-      console.log(
-        '  ' +
-        chalk.dim('build' + path.dirname(options.source).replace(paths.appBuild, '') + path.sep) +
-        chalk.cyan(path.basename(options.source)) +
-        ' -> ' +
-        chalk.dim(getLastDir(process.env.FTP_PATH) + path.dirname(options.destination).replace(process.env.FTP_PATH, '') + path.sep) +
-        chalk.cyan(path.basename(options.destination))
-      );
-    })
+      ftpClient.on('write', function(options) {
+        console.log(
+          '  ' +
+          chalk.dim('build' + path.dirname(options.source).replace(paths.appBuild, '') + path.sep) +
+          chalk.cyan(path.basename(options.source))
+        );
+        console.log(
+          '    -> ' +
+          chalk.dim(getLastDir(process.env.FTP_PATH) + path.dirname(options.destination).replace(process.env.FTP_PATH, '') + path.sep) +
+          chalk.cyan(path.basename(options.destination))
+        );
+      })
 
-    ftp.scp(paths.appBuild, {path: process.env.FTP_PATH}, ftpClient, function(err) {
-      if (err) {
-        callback(err);
-      } else {
-        console.log();
-        console.log(chalk.green('All files transfered successfully.'));
+      ftp.scp(paths.appBuild, {path: process.env.FTP_PATH}, ftpClient, function(err) {
+        if (err) {
+          callback(err);
+        } else {
+          console.log();
+          console.log(chalk.green('All files transfered successfully.'));
+          console.log();
+          callback(null, true);
+        }
+      });
+    } else {
+      console.log();
+      if (!process.env.FTP_PATH) console.log(chalk.cyan('FTP_PATH') + ' environment variable required to upload.');
+      if (!process.env.FTP_HOST) console.log(chalk.cyan('FTP_HOST') + ' environment variable required to upload.');
+      if (!process.env.FTP_USER) console.log(chalk.cyan('FTP_USER') + ' environment variable required to upload.');
+      if (!process.env.FTP_PASSWORD && !process.env.FTP_PRIVATE_KEY) console.log(chalk.cyan('FTP_PASSWORD') + ' or ' + chalk.cyan('FTP_PRIVATE_KEY') + ' environment variable required to upload.');
+      console.log(chalk.red('Could not upload files!'));
+      console.log();
 
-        callback(null, true);
-      }
-    });
+      callback();
+    }
   } else {
-    console.log();
-    if (!process.env.FTP_PATH) console.log(chalk.cyan('FTP_PATH') + ' environment variable required to upload.');
-    if (!process.env.FTP_HOST) console.log(chalk.cyan('FTP_HOST') + ' environment variable required to upload.');
-    if (!process.env.FTP_USER) console.log(chalk.cyan('FTP_USER') + ' environment variable required to upload.');
-    if (!process.env.FTP_PASSWORD && !process.env.FTP_PRIVATE_KEY) console.log(chalk.cyan('FTP_PASSWORD') + ' or ' + chalk.cyan('FTP_PRIVATE_KEY') + ' environment variable required to upload.');
-    console.log(chalk.red('Could not upload files!'));
-
-    callback();
+    callback(null, true);
   }
 }
 
 function deployDbRules(callback) {
-  if (process.env.FIREBASE_PROJECT_ID) {
-    console.log('Deploying Firebase rules to ' + chalk.cyan(process.env.FIREBASE_PROJECT_ID) + '...')
-    childProcess.exec(`firebase deploy --only database --project ${process.env.FIREBASE_PROJECT_ID}`, (err, stdout, stderr) => {
-      if (err) callback(err)
+  if (processBoolFlag(process.env.npm_config_deploy_db, true)) {
+    if (process.env.FIREBASE_PROJECT_ID) {
+      console.log('Deploying Firebase rules to ' + chalk.cyan(process.env.FIREBASE_PROJECT_ID) + '...')
+      childProcess.exec(`firebase deploy --only database --project ${process.env.FIREBASE_PROJECT_ID}`, (err, stdout, stderr) => {
+        if (err) callback(err)
 
-      console.log(chalk.green('Database rules deployed successfully.'));
-      callback(null, true)
-    });
+        console.log(chalk.green('Database rules deployed successfully.'));
+        callback(null, true)
+      });
+    } else {
+      console.log(chalk.cyan('FIREBASE_PROJECT_ID') + ' environment variable required to deploy the database rules.');
+      console.log(chalk.red('Could not deploy database rules!'));
+      callback()
+    }
   } else {
-    console.log(chalk.cyan('FIREBASE_PROJECT_ID') + ' environment variable required to deploy the database rules.');
-    console.log(chalk.red('Could not deploy database rules!'));
-    callback()
+    callback(null, true);
   }
 }
 
@@ -101,17 +116,16 @@ childProcess.fork('scripts/build.js').on('exit', function (err) {
 
   uploadBuild(function(err, ftpSuccess) {
     if (err) throw err;
-    console.log();
     deployDbRules(function(err, deployDbSuccess) {
       if (err) throw err;
       if (ftpSuccess && deployDbSuccess) {
         console.log();
-        console.log('👏  ' + chalk.green('Deployment successfull') + ' 👏');
+        console.log('😎  🎉  👏  ' + chalk.green('Deployment successfull') + ' 👏  🎉  😎');
         console.log();
       } else {
         console.log();
-        if (!ftpSuccess) console.log('😵  ' + chalk.red('You still have to transfer the files in the ' + chalk.cyan('build') + ' folder') + ' 😵');
-        if (!deployDbSuccess) console.log('😵  ' + chalk.red('You still have to deploy the database rules') + ' 😵');
+        if (!ftpSuccess) console.log('💻  😵  ' + chalk.red('You still have to transfer the files in the ' + chalk.cyan('build') + ' folder') + ' 😵  💻');
+        if (!deployDbSuccess) console.log('💻  😵  ' + chalk.red('You still have to deploy the database rules') + ' 😵  💻');
         console.log();
       }
     })
