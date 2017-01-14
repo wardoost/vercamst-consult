@@ -102,7 +102,7 @@
     &[disabled]
       color: #aaa
 
-    &:not([disabled]):before
+    &:before
       content: ""
       position: absolute
       z-index: 1
@@ -114,22 +114,29 @@
       transform: scaleX(0)
       transition: all 0.3s ease-in-out
 
+    &[disabled]:before
+      background-color: #aaa
+
     &.up
       top: -50px
-      &:not([disabled]):before
+      &:before
         top: 0
 
     &.down
       top: 50px
-      &:not([disabled]):before
+      &:before
         bottom: 0
 
     &:hover
       background-color: #ddd
 
-      &:not([disabled]):before
+      &:before
         visibility: visible
         transform: scaleX(1)
+
+      &[disabled]:before
+        visibility: hidden
+        transform: scaleX(0)
 
     &:focus
       outline: 0
