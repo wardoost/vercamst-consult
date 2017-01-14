@@ -166,8 +166,8 @@ function build(previousSizeMap) {
         console.log('  ' + chalk.green('"homepage"') + chalk.cyan(': ') + chalk.green('"http://myname.github.io/myapp"') + chalk.cyan(','));
         console.log();
       }
+      console.log('The ' + chalk.cyan('build') + ' folder is ready to be deployed.');
       if (!process.env.DEPLOY) {
-        console.log('The ' + chalk.cyan('build') + ' folder is ready to be deployed.');
         console.log('You may also serve it locally with a static server:')
         console.log();
         console.log('  ' + chalk.cyan('npm') +  ' install -g pushstate-server');

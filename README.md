@@ -6,7 +6,7 @@ You can find the most recent version of this guide [here](https://github.com/fac
 
 ## Configuration
 
-Create a .env file in project folder with the at least following variables:
+Create a .env file in project folder with the at least following variables for development:
 - FIREBASE_PROJECT_ID
 - FIREBASE_API_KEY
 - FIREBASE_AUTH_DOMAIN
@@ -19,6 +19,14 @@ You can add these optional variables for development with a different database:
 - FIREBASE_AUTH_DOMAIN_DEV
 - FIREBASE_DATABASE_URL_DEV
 - FIREBASE_STORAGE_BUCKET_DEV
+
+Add these variables for automatic deployment:
+- FIREBASE_PROJECT_ID
+- FTP_HOST
+- FTP_USER
+- FTP_PATH
+- FTP_PASSWORD
+- FTP_PRIVATE_KEY
 
 ## Available Scripts
 
@@ -51,4 +59,5 @@ Builds the app for production without source maps to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Transfers the build if the correct environment variables are present<br>
+Deploy the
