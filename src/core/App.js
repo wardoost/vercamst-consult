@@ -1,6 +1,7 @@
 import { Component, Router, Route, IndexRoute, Hook, Goto } from 'jumpsuit'
 import ReactGA from 'react-ga'
 import { authInit, isInitialized, isAuthenticated } from './state/auth'
+import navigationState, { updateAll } from './state/navigation'
 import { chunkLoaded, lazyLoadChunk } from './state/chunks'
 import Layout from '../components/Layout'
 
@@ -8,12 +9,13 @@ export default Component({
   componentWillMount () {
     authInit()
       .then(user => {
-        const path = document.location.pathname
+        const { pathname, hash } = document.location
+        const authenticated = isAuthenticated()
 
-        if (path === '/login') {
-          Goto(isAuthenticated() ? '/management' : path)
-        } else if (isRequireAuthPath(path)) {
-          Goto(!isAuthenticated() ? '/login' : path)
+        if (pathname === '/login') {
+          authenticated ? Goto('/management') : Goto({path: pathname, hash: hash.substr(1)}, false, true)
+        } else if (isRequireAuthPath(pathname)) {
+          !authenticated ? Goto('/login') : Goto({path: pathname, hash: hash.substr(1)}, false, true)
         }
       })
       .catch(error => console.log(error))
@@ -144,12 +146,17 @@ Hook((action, getState) => {
 
   switch (type) {
     case '@@router/LOCATION_CHANGE':
-      if (payload.action !== 'REPLACE') window.scrollTo(0, 0)
+      if (payload.action !== 'REPLACE') {
+        window.scrollTo(0, 0)
+        updateAll(payload.pathname)
 
-      if (process.env.NODE_ENV === 'production') {
-        ReactGA.set({ page: payload.pathname })
-        ReactGA.pageview(payload.pathname)
+        if (process.env.NODE_ENV === 'production') {
+          ReactGA.set({ page: payload.pathname })
+          ReactGA.pageview(payload.pathname)
+        }
       }
+
+      navigationState.toggleMenu(false)
       break
   }
 })

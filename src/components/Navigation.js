@@ -3,6 +3,7 @@ import { Link as ScrollLink, Events, scrollSpy } from 'react-scroll'
 import classNames from 'classnames'
 import _ from 'lodash'
 import { isRequireAuthPath } from '../core/App'
+import navigationState, { updateAll } from '../core/state/navigation'
 import logo from '../assets/logo.svg'
 import './Navigation.sass'
 
@@ -44,38 +45,19 @@ export default Component({
 
   getInitialState () {
     return {
-      menuOpen: false,
       activeScrollLink: null,
-      goto: null,
-      scrollEnd: false,
-      showLogo: this.shouldShowLogo()
+      goto: null
     }
   },
 
   componentWillMount () {
-    this.setActive = _.debounce(this.setActive, 100)
-    this.handleScroll = _.debounce(this.handleScroll, 100)
+    this.setActive = _.debounce(this.setActive, 250)
+    this.handleScroll = _.debounce(this.handleScroll, 250)
   },
 
-  shouldShowLogo () {
-    const currentPath = document.location.pathname
-    const atHomePage = (currentPath === '/')
-    const overSplash = (window.scrollY > window.innerHeight / 3 - 50)
-
-    return !atHomePage ? true : overSplash
-  },
-
-  toggleMenu () {
-    const { menuOpen } = this.state
-    this.setState({ menuOpen: !menuOpen })
-  },
-
-  atScrollEnd () {
-    const body = document.body
-    const html = document.documentElement
-    const maxScrollY = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) - window.innerHeight
-
-    return window.scrollY > 0 && (window.scrollY >= maxScrollY - window.innerHeight / 4)
+  handleScroll () {
+    const { pathname } = this.props.location
+    if (this.props.location.action !== 'POP' && pathname === '/') updateAll(pathname)
   },
 
   setActive (to) {
@@ -84,42 +66,24 @@ export default Component({
     })
   },
 
-  handleScroll () {
-    const { shouldShowLogo, atScrollEnd } = this
-
-    this.setState({
-      showLogo: shouldShowLogo(),
-      scrollEnd: atScrollEnd()
-    })
-  },
-
-  onMenuLinkClick (url, e) {
-    e.preventDefault()
-
-    Goto(url)
-    const { shouldShowLogo } = this
-    this.setState({
-      menuOpen: false,
-      showLogo: shouldShowLogo()
-    })
-  },
-
   componentDidMount () {
     const self = this
-
     Events.scrollEvent.register('begin', function (to, element) {
-      if (to !== 'top' && to !== 'content-top') {
-        Goto({hash: to}, false, true)
-      }
-
       self.setState({
         goto: to,
-        activeScrollLink: null,
-        menuOpen: false
+        activeScrollLink: null
       })
     })
 
     Events.scrollEvent.register('end', function (to, element) {
+      if (to === 'top') {
+        Goto({path: self.props.location.pathname}, false, true)
+      } else if (to !== 'content-top') {
+        Goto({hash: to}, false, true)
+      }
+
+      navigationState.updateLogo(self.props.location.pathname)
+
       self.setState({
         goto: null,
         activeScrollLink: to
@@ -138,18 +102,18 @@ export default Component({
     window.removeEventListener('scroll', this.handleScroll)
   },
 
-  getMenu () {
+  createMenu () {
     return menu.map((item, i) => {
       const { path, to, title } = item
-      const { location, scrollDuration } = this.props
-      const { goto, activeScrollLink, showLogo } = this.state
+      const { location, scrollDuration, showLogo, atScrollEnd } = this.props
+      const { goto, activeScrollLink } = this.state
       const currentPath = location.pathname
       const pathMatched = (path === currentPath)
-      const activeScrollLinkMatched = (goto || activeScrollLink) === to
       const url = to ? path + '#' + to : path
-      const lastItemActive = this.atScrollEnd()
 
       if (pathMatched && to) {
+        const activeScrollLinkMatched = (goto || activeScrollLink) === to
+        const lastItemActive = atScrollEnd
         let isActive = false
 
         if (i < menu.length - 1) {
@@ -179,7 +143,9 @@ export default Component({
 
         return (
           <li key={url} role='presentation' className={classNames({'active': isActive})}>
-            <a className='nav-link' role='button' onClick={this.onMenuLinkClick.bind(null, url)}>{title}</a>
+            <RouterLink className='nav-link' role='button' to={url}>
+              {title}
+            </RouterLink>
           </li>
         )
       }
@@ -187,8 +153,7 @@ export default Component({
   },
 
   render () {
-    const { authenticated, logoScrollLink, scrollDuration, location } = this.props
-    const { showLogo, menuOpen } = this.state
+    const { menuOpen, authenticated, logoScrollLink, scrollDuration, location, showLogo } = this.props
 
     return (
       <nav className='navbar navbar-default navbar-fixed-top'>
@@ -214,7 +179,7 @@ export default Component({
             <button
               type='button'
               className={classNames('navbar-toggle', {'open': menuOpen})}
-              onClick={this.toggleMenu}>
+              onClick={navigationState.toggleMenu}>
               <div className='icon-hamburger'>
                 <span />
                 <span />
@@ -223,12 +188,12 @@ export default Component({
             </button>
           </div>
           <ul className={classNames('nav', 'navbar-nav', {'open': menuOpen, 'center': !showLogo})}>
-            {this.getMenu()}
+            {this.createMenu()}
             {authenticated
             ? <li role='presentation' className={classNames({'active': isRequireAuthPath(location.pathname)})}>
-              <a title='Beheer' className='nav-link nav-link-management' onClick={this.onMenuLinkClick.bind(null, '/management')} role='button'>
+              <RouterLink title='Beheer' className='nav-link nav-link-management' to={'/management'} role='button'>
                 <i className='icon-cog' />
-              </a>
+              </RouterLink>
             </li>
             : null}
           </ul>
@@ -238,6 +203,7 @@ export default Component({
   }
 }, state => {
   return {
+    ...state.navigation,
     authenticated: Boolean(state.auth.uid)
   }
 })

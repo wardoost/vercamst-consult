@@ -46,7 +46,7 @@ export function lazyLoadChunk (chunkName, loc, authInitRequired = false) {
         if (!chunks.filter(e => { return e.key === chunkName }).length > 0) {
           chunksState.initLoad(chunkName)
           const { pathname, hash } = loc.location
-          Goto(hash ? pathname + hash : pathname)
+          Goto({path: pathname, hash: hash.substr(1)}, false, true)
         }
       }
       resolve(chunkName, !exists)
