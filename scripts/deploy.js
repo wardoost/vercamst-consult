@@ -43,7 +43,7 @@ function uploadBuild(callback) {
       port: process.env.FTP_PORT,
       username: process.env.FTP_USER,
       password: process.env.FTP_PASSWORD,
-      privateKey: process.env.FTP_PRIVATE_KEY,
+      privateKey: fs.readFileSync(process.env.FTP_PRIVATE_KEY),
     });
 
     ftpClient.on('write', function(options) {

@@ -25,8 +25,7 @@ Add these variables for automatic deployment:
 - FTP_HOST
 - FTP_USER
 - FTP_PATH
-- FTP_PASSWORD
-- FTP_PRIVATE_KEY
+- FTP_PRIVATE_KEY or FTP_PASSWORD
 
 ## Available Scripts
 
