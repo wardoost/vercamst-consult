@@ -142,13 +142,23 @@ module.exports = {
         test: /\.json$/,
         loader: 'json'
       },
-      // "file" loader makes sure those assets end up in the `build` folder.
-      // When you `import` an asset, you get its filename.
+      // Minify images with image-webpack loader and file loader
       {
-        test: /\.(ico|jpe?g|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
-        loader: 'file',
+        test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
+        exclude: /fonts.*\.svg$/,
+        loaders: [
+            'file?hash=sha512&digest=hex&name=media/[name].[hash:8].[ext]',
+            'image-webpack?{optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}, mozjpeg: {quality: 65}}'
+        ]
+      },
+      // Embed small font files, copy big ones. Fonts have to be in a
+      // fonts directory to differentiate svg font files from svg graphics
+      {
+        test: /fonts.*\.(eot|[ot]tf|woff|woff2|svg)(\?.*)?$/,
+        loader: 'url',
         query: {
-          name: 'media/[name].[hash:8].[ext]'
+          limit: 12000,
+          name: 'media/fonts/[name].[hash:8].[ext]'
         }
       },
       // "url" loader works just like "file" loader but it also embeds
@@ -157,7 +167,7 @@ module.exports = {
         test: /\.(mp4|webm|wav|mp3|m4a|aac|oga)(\?.*)?$/,
         loader: 'url',
         query: {
-          limit: 10000,
+          limit: 12000,
           name: 'media/[name].[hash:8].[ext]'
         }
       }

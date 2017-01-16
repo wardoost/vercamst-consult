@@ -142,20 +142,31 @@ module.exports = {
       // When you `import` an asset, you get its (virtual) filename.
       // In production, they would get copied to the `build` folder.
       {
-        test: /\.(ico|jpe?g|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
+        test: /\.(jpe?g|png|gif|svg)(\?.*)?$/,
+        exclude: /fonts.*\.svg$/,
         loader: 'file',
         query: {
-          name: 'media/[name].[hash:8].[ext]'
+          name: 'media/[name].[ext]'
+        }
+      },
+      // Embed small font files, copy big ones. Fonts have to be in a
+      // fonts directory to differentiate svg font files from svg graphics
+      {
+        test: /fonts.*\.(eot|[ot]tf|woff|woff2|svg)(\?.*)?$/,
+        loader: 'url',
+        query: {
+          limit: 12000,
+          name: 'media/fonts/[name].[ext]'
         }
       },
       // "url" loader works just like "file" loader but it also embeds
       // assets smaller than specified size as data URLs to avoid requests.
       {
-        test: /\.(mp4|webm|wav|mp3|m4a|aac|oga)(\?.*)?$/,
+        test: /\.(webp|mp4|webm|wav|mp3|m4a|aac|oga)(\?.*)?$/,
         loader: 'url',
         query: {
           limit: 10000,
-          name: 'media/[name].[hash:8].[ext]'
+          name: 'media/[name].[ext]'
         }
       }
     ]
