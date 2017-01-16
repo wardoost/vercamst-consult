@@ -233,8 +233,8 @@ module.exports = {
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nl/),
     // Bundle vendor in seperate js file
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['common', 'vendor'],
-      filename: 'js/[name].[hash:8].js',
+      name: 'vendor',
+      filename: 'js/[name].js',
       minChunks: 2
     }),
     // Generate icons

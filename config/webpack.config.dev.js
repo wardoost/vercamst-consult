@@ -184,7 +184,7 @@ module.exports = {
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
-      template: paths.appHtml,
+      template: paths.appHtml
     }),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
@@ -206,7 +206,7 @@ module.exports = {
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nl/),
     // Bundle vendor in seperate js file
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['common', 'vendor'],
+      name: 'vendor',
       filename: 'js/[name].js',
       minChunks: 2
     })
