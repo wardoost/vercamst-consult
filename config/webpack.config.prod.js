@@ -234,7 +234,6 @@ module.exports = {
     // Remove vendor modules from main chunk
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'js/[name].js',
       minChunks: Infinity
     }),
     // Generate icons
