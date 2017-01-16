@@ -48,7 +48,7 @@ export default Component({
                   require.ensure([], require => {
                     if (!markAsLoaded) chunkLoaded(chunkName)
                     cb(null, require('../pages/Index').default)
-                  })
+                  }, 'index')
                 })
                 .catch(component => cb(null, component))
             }}
@@ -62,7 +62,7 @@ export default Component({
                   require.ensure([], require => {
                     if (!markAsLoaded) chunkLoaded(chunkName)
                     cb(null, require('../pages/AddPost').default)
-                  })
+                  }, 'addpost')
                 })
                 .catch(component => cb(null, component))
             }}
@@ -75,7 +75,7 @@ export default Component({
                   require.ensure([], require => {
                     if (!markAsLoaded) chunkLoaded(chunkName)
                     cb(null, require('../pages/Post').default)
-                  })
+                  }, 'post')
                 })
                 .catch(component => cb(null, component))
             }}
@@ -89,7 +89,7 @@ export default Component({
                   require.ensure([], require => {
                     if (!markAsLoaded) chunkLoaded(chunkName)
                     cb(null, require('../pages/EditPost').default)
-                  })
+                  }, 'editpost')
                 })
                 .catch(component => cb(null, component))
             }}
@@ -103,7 +103,7 @@ export default Component({
                   require.ensure([], require => {
                     if (!markAsLoaded) chunkLoaded(chunkName)
                     cb(null, require('../pages/Login').default)
-                  })
+                  }, 'login')
                 })
                 .catch(component => cb(null, component))
             }}
@@ -117,7 +117,7 @@ export default Component({
                   require.ensure([], require => {
                     if (!markAsLoaded) chunkLoaded(chunkName)
                     cb(null, require('../pages/Management').default)
-                  })
+                  }, 'management')
                 })
                 .catch(component => cb(null, component))
             }}
@@ -130,7 +130,7 @@ export default Component({
                   require.ensure([], require => {
                     if (!markAsLoaded) chunkLoaded(chunkName)
                     cb(null, require('../pages/Error').default)
-                  })
+                  }, 'error')
                 })
                 .catch(component => cb(null, component))
             }}

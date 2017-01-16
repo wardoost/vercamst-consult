@@ -124,7 +124,7 @@ module.exports = {
       // use the "style" loader inside the async code so CSS from them won't be
       // in the main CSS file.
       {
-        test: /\.(css|sass)$/,
+        test: /\.(css|sass|scss)$/,
         // "?-autoprefixer" disables autoprefixer in css-loader itself:
         // https://github.com/webpack/css-loader/issues/281
         // We already have it thanks to postcss. We only pass this flag in
@@ -234,6 +234,7 @@ module.exports = {
     // Remove vendor modules from main chunk
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
+      filename: 'js/[name].[hash:8].js',
       minChunks: Infinity
     }),
     // Generate icons

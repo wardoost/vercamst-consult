@@ -1,7 +1,7 @@
 import { Component } from 'jumpsuit'
 import Helmet from 'react-helmet'
 import Navigation from '../Navigation'
-import 'bootstrap/dist/css/bootstrap.css'
+import './bootstrap.sass'
 import './style.sass'
 import './icons.css'
 

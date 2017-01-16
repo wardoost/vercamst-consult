@@ -129,7 +129,7 @@ module.exports = {
       // In production, we use a plugin to extract that CSS to a file, but
       // in development "style" loader enables hot editing of CSS.
       {
-        test: /\.(css|sass)$/,
+        test: /\.(css|sass|scss)$/,
         loader: 'style!css!postcss!sass'
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
@@ -207,6 +207,7 @@ module.exports = {
     // Remove vendor modules from main chunk
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
+      filename: 'js/[name].js',
       minChunks: Infinity
     })
   ],
