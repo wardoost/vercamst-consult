@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import { isRequireAuthPath } from '../core/Router'
 import navigationState, { updateAll } from '../core/state/navigation'
-import logo from '../assets/logo.svg'
+import Logo from '-!babel!svg-react!../assets/logo.svg'
 import './Navigation.sass'
 
 const menu = [
@@ -168,12 +168,12 @@ export default Component({
               isDynamic
               className={classNames('navbar-brand', {'show': showLogo || menuOpen})}
               role='button'>
-              <img src={logo} alt='Vercamst Consult' />
+              <Logo className='logo' alt='Vercamst Consult' />
             </ScrollLink>
             : <RouterLink
               to='/'
               className={classNames('navbar-brand', {'show': showLogo || menuOpen})}>
-              <img src={logo} alt='Vercamst Consult' />
+              <Logo className='logo' alt='Vercamst Consult' />
             </RouterLink>
             }
             <button

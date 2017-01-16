@@ -8,7 +8,7 @@ import Participation from './sections/Participation'
 import Themes from './sections/Themes'
 import Who from './sections/Who'
 import Footer from '../../components/Footer'
-import logo from '../../assets/logo-large.svg'
+import Logo from '-!babel!svg-react!../../assets/logo-large.svg'
 import './style.sass'
 
 export default Component({
@@ -41,7 +41,7 @@ export default Component({
         <Helmet title={'Home'} />
         <div className='splash-container'>
           <div className='splash'>
-            <img src={logo} className='logo' alt='Vercamst Consult' />
+            <Logo className='logo' alt='Vercamst Consult' />
           </div>
         </div>
         <div className='content-container invert-sections'>
