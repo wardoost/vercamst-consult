@@ -19,15 +19,10 @@ export default Component({
   },
 
   checkCreateClearfix (i) {
-    if (i % 2 === 0) {
-      return (
-        <Clearfix visibleSmBlock key={'cf-' + i} />
-      )
-    } else if (i % 3 === 0) {
-      return (
-        <Clearfix visibleMdBlock visibleLgBlock key={'cf-' + i} />
-      )
-    }
+    let clearFixes = []
+    if (i % 2 === 0) clearFixes.push(<Clearfix visibleSmBlock key={'cf2-' + i} />)
+    if (i % 3 === 0) clearFixes.push(<Clearfix visibleMdBlock visibleLgBlock key={'cf3-' + i} />)
+    return clearFixes
   },
 
   createPosts () {
