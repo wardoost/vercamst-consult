@@ -144,6 +144,24 @@ export function updatePost (key, post, published) {
   })
 }
 
+export function removePost (key, published) {
+  return new Promise((resolve, reject) => {
+    postState.loading(true)
+
+    const postRefPath = `posts/${published ? 'published' : 'unpublished'}/${key}`
+
+    firebaseDb.ref(postRefPath).remove(error => {
+      if (error) {
+        postState.error(error)
+        reject(error)
+      } else {
+        postState.loading(false)
+        resolve()
+      }
+    })
+  })
+}
+
 export function publishPost (key, post, updatePostState = true) {
   return new Promise((resolve, reject) => {
     if (updatePostState) postState.loading(true)

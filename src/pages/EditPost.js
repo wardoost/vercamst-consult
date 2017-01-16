@@ -3,7 +3,7 @@ import { Grid, Row, Col, Form, FormGroup, FormControl, Button, ButtonToolbar, Al
 import { animateScroll } from 'react-scroll'
 import classNames from 'classnames'
 import moment from 'moment'
-import postState, { loadPost, updatePost, publishPost, depublishPost } from '../core/state/post'
+import postState, { loadPost, updatePost, removePost, publishPost, depublishPost } from '../core/state/post'
 import SplashPage from '../components/SplashPage'
 import Footer from '../components/Footer'
 import Editor from '../components/Editor'
@@ -40,6 +40,13 @@ export default Component({
         this.setState({ preview: true })
         animateScroll.scrollToTop({duration: 100})
       })
+  },
+
+  handleRemove () {
+    if (window.confirm('Ben je zeker dat je deze post wil verwijderen?')) {
+      removePost(this.props.params.key, this.props.published)
+        .then(() => Goto('/management'))
+    }
   },
 
   handleTogglePublish () {
@@ -161,6 +168,9 @@ export default Component({
                     <i className='icon-left-open' />
                   </Button>
                   : null}
+                  <Button onClick={this.handleRemove} bsStyle='danger' disabled={loading || published}>
+                    Verwijderen
+                  </Button>
                   <Button onClick={this.handleTogglePreview} bsStyle='primary'>
                     {preview ? <i className='icon-left-open' /> : null} {preview ? 'Bewerken' : 'Voorvertoning'}
                   </Button>
