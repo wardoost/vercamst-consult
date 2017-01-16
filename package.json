@@ -71,7 +71,7 @@
     "react-helmet": "^3.2.3",
     "react-rte": "^0.10.0",
     "react-scroll": "^1.4.0",
-    "slug": "^0.9.1"
+    "slugify": "^1.1.0"
   },
   "scripts": {
     "start": "node scripts/start.js",

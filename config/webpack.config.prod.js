@@ -231,11 +231,11 @@ module.exports = {
     new webpack.ProvidePlugin({React: 'react'}),
     // Only load specific moment.js locales
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nl/),
-    // Bundle vendor in seperate js file
+    // Remove vendor modules from main chunk
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       filename: 'js/[name].js',
-      minChunks: 2
+      minChunks: Infinity
     }),
     // Generate icons
     new FaviconsWebpackPlugin({

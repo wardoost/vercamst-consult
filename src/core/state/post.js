@@ -1,5 +1,5 @@
 import { State } from 'jumpsuit'
-import slug from 'slug'
+import slugify from 'slugify'
 import { firebaseDb, firebaseMove } from '../firebase'
 
 const initialState = {
@@ -110,7 +110,7 @@ export function addPost (post, published = false, duplicateSlug = null) {
 
     const refPath = `posts/${published ? 'published' : 'unpublished'}/`
     firebaseDb.ref(refPath).once('value', snapshot => {
-      const newSlug = duplicateSlug ? duplicateSlug + '-2' : slug(post.title || 'post', {lower: true})
+      const newSlug = duplicateSlug ? duplicateSlug + '-2' : slugify(post.title || 'post').replace(/[^a-zA-Z0-9-]/g, '')
 
       if (!snapshot.hasChild(newSlug)) {
         firebaseDb.ref(refPath + newSlug).set(post)
