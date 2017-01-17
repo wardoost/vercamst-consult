@@ -42,9 +42,9 @@
       }
     </style>
     <% for (var css in htmlWebpackPlugin.files.css) { %>
-      <link rel="preload" href="<%= htmlWebpackPlugin.files.css[css] %>" onload="this.rel='stylesheet'">
+      <link rel="preload" href="<%= htmlWebpackPlugin.files.css[css] %>" onload="this.rel='stylesheet'" as='style'>
     <% } %>
-    <link rel="preload" href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans:300" onload="this.rel='stylesheet'">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans:300" onload="this.rel='stylesheet'" as='style'>
   </head>
   <body>
     <div id="app">
