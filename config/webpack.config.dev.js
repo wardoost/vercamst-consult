@@ -194,7 +194,7 @@ module.exports = {
     }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
-      inject: true,
+      inject: false,
       template: paths.appHtml
     }),
     // Makes some environment variables available to the JS code, for example:

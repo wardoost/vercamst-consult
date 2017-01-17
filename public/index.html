@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Vercamst Consult</title>
-    <link href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans:300" rel="stylesheet">
     <style>
       html, body {
         margin: 0;
@@ -42,6 +41,10 @@
         }
       }
     </style>
+    <% for (var css in htmlWebpackPlugin.files.css) { %>
+      <link rel="preload" href="<%= htmlWebpackPlugin.files.css[css] %>" onload="this.rel='stylesheet'">
+    <% } %>
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Montserrat|Open+Sans:300" onload="this.rel='stylesheet'">
   </head>
   <body>
     <div id="app">
@@ -51,5 +54,8 @@
         </svg>
       </div>
     </div>
+    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+      <script type="text/javascript" src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>" defer="true"></script>
+    <% } %>
   </body>
 </html>
