@@ -2,6 +2,7 @@ import { Component } from 'jumpsuit'
 import Helmet from 'react-helmet'
 import Navigation from '../Navigation'
 import './bootstrap.sass'
+import './fonts.css'
 import './style.sass'
 import './icons.css'
 
