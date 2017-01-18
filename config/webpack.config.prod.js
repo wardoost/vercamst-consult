@@ -2,6 +2,7 @@ var path = require('path');
 var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ScriptExtHtmlWebpackPlugin  = require('script-ext-html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
@@ -196,7 +197,7 @@ module.exports = {
     }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
-      inject: false,
+      inject: true,
       template: paths.appHtml,
       minify: {
         removeComments: true,
@@ -210,6 +211,9 @@ module.exports = {
         minifyCSS: true,
         minifyURLs: true
       }
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: "defer"
     }),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.

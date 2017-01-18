@@ -3,6 +3,7 @@ var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 var findCacheDir = require('find-cache-dir');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ScriptExtHtmlWebpackPlugin  = require('script-ext-html-webpack-plugin');
 var CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 var InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 var WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
@@ -194,8 +195,11 @@ module.exports = {
     }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
-      inject: false,
+      inject: true,
       template: paths.appHtml
+    }),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: "defer"
     }),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'development') { ... }. See `./env.js`.
