@@ -20,12 +20,8 @@ You can add these optional variables for development with a different database:
 - FIREBASE_DATABASE_URL_DEV
 - FIREBASE_STORAGE_BUCKET_DEV
 
-Add these variables for automatic deployment:
+Add these variables for automatic deployment of the Firebase database rules:
 - FIREBASE_PROJECT_ID
-- FTP_HOST
-- FTP_USER
-- FTP_PATH
-- FTP_PRIVATE_KEY or FTP_PASSWORD
 
 ## Available Scripts
 
@@ -54,6 +50,4 @@ Your app is ready to be deployed!
 
 ### `npm run deploy`
 
-Builds the app for production without source maps to the `build` folder.<br>
-Transfers the build if the correct environment variables are present. Set `--upload` flag to false to disable.<br>
-Deploy the database rules. Set `--deploy-db` flag to false to disable.
+Builds the app for production without source maps to the `build` folder. and deploy the database rules.
